@@ -23,7 +23,7 @@
 
 /* Estilo do logótipo na barra de navegação */
 .bng-navbar img {
-    height: 90px;
+    height: 120px;
     margin-right: 10px;
 }
 
@@ -31,5 +31,37 @@
 .bng-navbar h3 {
     font-size: 1.5em;
     color: #1f4e79;
+}
+
+/* Estilos para os links centrais da navegação */
+.container-navegacao {
+    text-align: center;
+    padding: 20px;
+}
+
+.container-navegacao a {
+    font-size: 1.5em;
+    margin: 0px 50px;
+    text-decoration: none;
+    color: #1f4e79;
+}
+
+.container-navegacao a:hover {
+    color: #ffffff;
+}
+
+/* Estilos para o botão da Área Cliente */
+.nav-cliente a {
+    color: #1f4e79;
+    text-decoration: none;
+    font-size: 1.5em;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+/* Efeito ao passar o mouse */
+.nav-cliente a:hover {
+    background-color: #8fb9d9;
 }
 
