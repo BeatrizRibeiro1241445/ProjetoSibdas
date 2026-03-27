@@ -6,3 +6,30 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Estilo da barra de navegação principal */
+.bng-navbar {
+    background-color: #a9cbe6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+/* Estilo para os div internos da barra de navegação */
+.bng-navbar div {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo do logótipo na barra de navegação */
+.bng-navbar img {
+    height: 90px;
+    margin-right: 10px;
+}
+
+/* Estilo do texto com o nome do site */
+.bng-navbar h3 {
+    font-size: 1.5em;
+    color: #1f4e79;
+}
+
