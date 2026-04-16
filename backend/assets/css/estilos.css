@@ -1,0 +1,63 @@
+/* Seletor universal - aplica-se a todos os elementos da página */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.bng-navbar-menu {
+    background-color: #a9cbe6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid #8fb9d9;
+    z-index: 1000;
+}
+
+.bng-navbar-menu div {
+    display: flex;
+    align-items: center;
+}
+
+.bng-navbar-menu img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+.bng-navbar-menu h3 {
+    font-size: 1.5em;
+    color: #1f4e79;
+}
+
+/* Estilos para o menu lateral fixo (sidebar) */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #a9cbe6;
+    color: #1f4e79;
+    padding: 100px 20px 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/* Estilos para os links dentro da sidebar */
+.sidebar a {
+    display: flex;
+    align-items: center;
+    color: #1f4e79;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #8fb9d9;
+    color: white;
+}
