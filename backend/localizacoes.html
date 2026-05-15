@@ -50,6 +50,57 @@
         <section>
             <h2>Gestão de Localizações</h2>
             <p>Aqui poderá organizar e consultar as localizações hospitalares dos equipamentos.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Edifício</th>
+                        <th>Piso</th>
+                        <th>Serviço</th>
+                        <th>Sala</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>L001</td>
+                        <td>Hospital Central</td>
+                        <td>0</td>
+                        <td>Urgência</td>
+                        <td>Sala 3</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Adicionar Localização</h3>
+
+            <form action="#" method="post">
+                <div class="form-group">
+                    <label for="edificio">Edifício:</label>
+                    <input type="text" id="edificio" name="edificio" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="piso">Piso:</label>
+                    <input type="number" id="piso" name="piso" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="servico">Serviço / Departamento:</label>
+                    <input type="text" id="servico" name="servico" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sala">Sala / Gabinete:</label>
+                    <input type="text" id="sala" name="sala" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="reset" value="Limpar">
+                    <input type="submit" value="Guardar">
+                </div>
+            </form>
         </section>
     </main>
 
