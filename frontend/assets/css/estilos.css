@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Titillium Web', Arial, Helvetica, sans-serif;
 }
 
 /* Estilo da barra de navegação principal */
@@ -96,14 +96,16 @@
 
 /* Texto Genérico */
 .container-texto-generico {
-    min-height: 100vh;
-    width: 85%;
-    margin: 30px auto;
-    padding: 40px 30px;
-    background-color: #ffffff;
-    border: 1px solid #d7e6f2;
-    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 100px 40px;
     text-align: center;
+    min-height: 100vh;
+    background-color: #ffffff;
+    border-bottom: 1px solid #d7e6f2;
 }
 
 .footer-section strong {
@@ -116,5 +118,52 @@
 .footer-section p {
     font-size: 1rem;
     color: #2c3e50;
+}
+
+/* Texto da secção com imagem */
+.texto-seccao {
+    max-width: 600px;
+}
+
+/* Imagem da secção */
+.imagem-seccao img {
+    max-width: 350px;
+    border-radius: 8px;
+}
+
+/* Botão principal */
+.botao-principal {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #a9cbe6;
+    color: #1f4e79;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.botao-principal:hover {
+    background-color: #8fb9d9;
+    color: white;
+}
+
+/* Títulos das secções */
+.container-texto-generico h1,
+.container-texto-generico h2 {
+    color: #1f4e79;
+    margin-bottom: 15px;
+}
+
+/* Parágrafos */
+.container-texto-generico p {
+    margin-top: 10px;
+    color: #2c3e50;
+}
+
+/* Lista de funcionalidades */
+.container-texto-generico ul {
+    margin-top: 15px;
+    list-style-position: inside;
 }
 
