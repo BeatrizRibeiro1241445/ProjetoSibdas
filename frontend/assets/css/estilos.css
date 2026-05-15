@@ -167,3 +167,18 @@
     list-style-position: inside;
 }
 
+/* Lista com ícones */
+.lista-funcionalidades {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-funcionalidades li {
+    margin: 10px 0;
+}
+
+.lista-funcionalidades i {
+    margin-right: 8px;
+    color: #1f4e79;
+}
+
