@@ -50,6 +50,87 @@
         <section>
             <h2>Gestão de Equipamentos</h2>
             <p>Aqui poderá consultar, adicionar, editar e remover equipamentos médicos.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Equipamento</th>
+                        <th>Localização</th>
+                        <th>Estado</th>
+                        <th>Criticidade</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>EQ001</td>
+                        <td>Monitor Multiparamétrico</td>
+                        <td>UCI - Sala 1</td>
+                        <td>Ativo</td>
+                        <td>Alta</td>
+                    </tr>
+
+                    <tr>
+                        <td>EQ002</td>
+                        <td>Bomba de Infusão</td>
+                        <td>Bloco Operatório</td>
+                        <td>Em manutenção</td>
+                        <td>Média</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Adicionar Equipamento</h3>
+
+            <form action="#" method="post">
+                <div class="form-group">
+                    <label for="codigo">Código interno:</label>
+                    <input type="text" id="codigo" name="codigo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nome">Nome do equipamento:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="localizacao">Localização:</label>
+                    <select id="localizacao" name="localizacao" required>
+                        <option value="">Selecione uma localização</option>
+                        <option value="uci">UCI</option>
+                        <option value="bloco">Bloco Operatório</option>
+                        <option value="urgencia">Urgência</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <select id="estado" name="estado" required>
+                        <option value="">Selecione um estado</option>
+                        <option value="ativo">Ativo</option>
+                        <option value="manutencao">Em manutenção</option>
+                        <option value="inativo">Inativo</option>
+                        <option value="calibracao">Em calibração</option>
+                        <option value="abatido">Abatido</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="criticidade">Criticidade:</label>
+                    <select id="criticidade" name="criticidade" required>
+                        <option value="">Selecione a criticidade</option>
+                        <option value="baixa">Baixa</option>
+                        <option value="media">Média</option>
+                        <option value="alta">Alta</option>
+                        <option value="suporte-vida">Suporte de vida</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="reset" value="Limpar">
+                    <input type="submit" value="Guardar">
+                </div>
+            </form>
         </section>
     </main>
 

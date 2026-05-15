@@ -69,3 +69,63 @@
     flex-grow: 1;
     padding: 20px;
 }
+
+/* Estilos para tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #8fb9d9;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #a9cbe6;
+    color: #1f4e79;
+}
+
+/* Estilos para formulários */
+form {
+    margin-top: 20px;
+    max-width: 600px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #1f4e79;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #8fb9d9;
+    border-radius: 5px;
+}
+
+.form-group input[type="submit"],
+.form-group input[type="reset"] {
+    width: auto;
+    background-color: #a9cbe6;
+    color: #1f4e79;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.form-group input[type="submit"]:hover,
+.form-group input[type="reset"]:hover {
+    background-color: #8fb9d9;
+    color: white;
+}
+
