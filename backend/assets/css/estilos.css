@@ -61,3 +61,11 @@
     background-color: #8fb9d9;
     color: white;
 }
+
+/* Ajuste do conteúdo para não ficar sob a navbar */
+.content {
+    margin-left: 250px;
+    margin-top: 70px;
+    flex-grow: 1;
+    padding: 20px;
+}
