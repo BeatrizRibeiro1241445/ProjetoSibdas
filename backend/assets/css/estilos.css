@@ -129,3 +129,10 @@ form {
     color: white;
 }
 
+/* Mensagem apresentada pelo JavaScript */
+#mensagem-formulario {
+    margin-top: 15px;
+    color: #1f4e79;
+    font-weight: bold;
+}
+
