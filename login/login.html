@@ -6,27 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedInventário - Login</title>
 
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../assets/images/logo.png" type="image/png">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../backend/assets/bootstrap/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../frontend/assets/fontawesome/all.min.css">
 
     <!-- folha de estilos CSS -->
     <link rel="stylesheet" href="../backend/assets/css/estilos.css">
 </head>
 
-<body>
+<body class="login-page">
 
-    <main class="container mt-5">
+    <main class="container">
         <section class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-md-6">
 
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h3>MedInventário</h3>
-                    </div>
+                <div class="card login-box">
 
                     <div class="card-body">
 
-                        <form action="area_pessoal.html" method="get">
+                        <!-- Cabeçalho do login -->
+                        <div class="login-brand">
+                            <img src="../assets/images/logo.png" alt="Logo MedInventário" class="login-logo">
+                            <h2>MedInventário</h2>
+                        </div>
+
+                        <!-- Formulário de login -->
+                        <form action="../backend/views/area_pessoal.html" method="get">
 
                             <div class="mb-3">
                                 <label for="utilizador" class="form-label">Utilizador</label>
@@ -38,17 +48,25 @@
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Entrar</button>
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary login-button">
+                                    Entrar <i class="fas fa-sign-in-alt"></i>
+                                </button>
+                                </button>
+                            </div>
+
+                            <div class="alert alert-danger text-center mt-4 login-alert" role="alert">
+                                Erro: Utilizador não registado
                             </div>
 
                         </form>
 
+                        <div class="text-center mt-3">
+                            <a href="../frontend/index.html">Voltar ao site</a>
+                        </div>
+
                     </div>
 
-                    <div class="card-footer text-center">
-                        <a href="../frontend/index.html">Voltar ao site</a>
-                    </div>
                 </div>
 
             </div>

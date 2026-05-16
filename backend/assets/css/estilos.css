@@ -164,3 +164,66 @@ form {
     color: #2c3e50;
 }
 
+/* Página de login */
+.login-page {
+    background-color: #f5f9fc;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* Caixa principal do login */
+.login-box {
+    border: 1px solid #d7e6f2;
+    border-radius: 12px;
+    padding: 35px 25px;
+    box-shadow: 0 8px 20px rgba(31, 78, 121, 0.10);
+}
+
+/* Cabeçalho com logótipo e nome */
+.login-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+/* Logótipo do login */
+.login-logo {
+    height: 90px;
+}
+
+/* Título do login */
+.login-brand h2 {
+    color: #1f4e79;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Botão do login */
+.login-button {
+    padding: 8px 35px;
+    background-color: #a9cbe6;
+    border-color: #8fb9d9;
+    color: #1f4e79;
+    font-weight: bold;
+}
+
+.login-button:hover {
+    background-color: #8fb9d9;
+    border-color: #8fb9d9;
+    color: white;
+}
+
+/* Mensagem de erro */
+.login-alert {
+    background-color: #f8d7da;
+    color: #842029;
+    border-color: #f5c2c7;
+}
+
+/* Ícone do botão de login */
+.login-button i {
+    margin-left: 8px;
+}
