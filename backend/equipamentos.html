@@ -54,7 +54,7 @@
             <h2>Gestão de Equipamentos</h2>
             <p>Aqui poderá consultar, adicionar, editar e remover equipamentos médicos.</p>
 
-            <table>
+            <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -88,17 +88,17 @@
             <form action="#" method="post">
                 <div class="form-group">
                     <label for="codigo">Código interno:</label>
-                    <input type="text" id="codigo" name="codigo" required>
+                    <input type="text" class="form-control" id="codigo" name="codigo" required>
                 </div>
 
                 <div class="form-group">
                     <label for="nome">Nome do equipamento:</label>
-                    <input type="text" id="nome" name="nome" required>
+                    <input type="text" class="form-control" id="nome" name="nome" required>
                 </div>
 
                 <div class="form-group">
                     <label for="localizacao">Localização:</label>
-                    <select id="localizacao" name="localizacao" required>
+                    <select class="form-select" id="localizacao" name="localizacao" required>
                         <option value="">Selecione uma localização</option>
                         <option value="uci">UCI</option>
                         <option value="bloco">Bloco Operatório</option>
@@ -108,7 +108,7 @@
 
                 <div class="form-group">
                     <label for="estado">Estado:</label>
-                    <select id="estado" name="estado" required>
+                    <select class="form-select" id="estado" name="estado" required>
                         <option value="">Selecione um estado</option>
                         <option value="ativo">Ativo</option>
                         <option value="manutencao">Em manutenção</option>
@@ -120,7 +120,7 @@
 
                 <div class="form-group">
                     <label for="criticidade">Criticidade:</label>
-                    <select id="criticidade" name="criticidade" required>
+                    <select class="form-select" id="criticidade" name="criticidade" required>
                         <option value="">Selecione a criticidade</option>
                         <option value="baixa">Baixa</option>
                         <option value="media">Média</option>
@@ -130,8 +130,8 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="reset" value="Limpar">
-                    <input type="submit" value="Guardar">
+                    <input class="btn btn-secondary" type="reset" value="Limpar">
+                    <input class="btn btn-primary" type="submit" value="Guardar">
                 </div>
             </form>
             <p id="mensagem-formulario"></p>

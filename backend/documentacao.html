@@ -54,7 +54,7 @@
             <h2>Documentação Técnica</h2>
             <p>Aqui poderá consultar documentos técnicos e administrativos associados aos equipamentos.</p>
 
-            <table>
+            <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Documento</th>
@@ -79,12 +79,12 @@
             <form action="#" method="post">
                 <div class="form-group">
                     <label for="nome_documento">Nome do documento:</label>
-                    <input type="text" id="nome_documento" name="nome_documento" required>
+                    <input type="text" class="form-control" id="nome_documento" name="nome_documento" required>
                 </div>
 
                 <div class="form-group">
                     <label for="tipo_documento">Tipo:</label>
-                    <select id="tipo_documento" name="tipo_documento" required>
+                    <select class="form-select" id="tipo_documento" name="tipo_documento" required>
                         <option value="">Selecione o tipo</option>
                         <option value="manual-utilizador">Manual de utilizador</option>
                         <option value="manual-servico">Manual de serviço</option>
@@ -96,17 +96,18 @@
 
                 <div class="form-group">
                     <label for="equipamento_documento">Equipamento associado:</label>
-                    <input type="text" id="equipamento_documento" name="equipamento_documento" required>
+                    <input type="text" class="form-control" id="equipamento_documento" name="equipamento_documento"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="link_documento">Link ou caminho do ficheiro:</label>
-                    <input type="url" id="link_documento" name="link_documento">
+                    <input type="url" class="form-control" id="link_documento" name="link_documento">
                 </div>
 
                 <div class="form-group">
-                    <input type="reset" value="Limpar">
-                    <input type="submit" value="Guardar">
+                    <input class="btn btn-secondary" type="reset" value="Limpar">
+                    <input class="btn btn-primary" type="submit" value="Guardar">
                 </div>
             </form>
             <p id="mensagem-formulario"></p>
