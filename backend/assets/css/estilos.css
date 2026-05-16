@@ -149,3 +149,18 @@ form {
     color: white;
 }
 
+/* Cards do dashboard */
+.card {
+    border: 1px solid #d7e6f2;
+}
+
+.card-title {
+    color: #1f4e79;
+}
+
+.card-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
