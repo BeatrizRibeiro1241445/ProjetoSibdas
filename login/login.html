@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Login</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../backend/assets/bootstrap/bootstrap.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../backend/assets/css/estilos.css">
+</head>
+
+<body>
+
+    <main class="container mt-5">
+        <section class="row justify-content-center">
+            <div class="col-md-5">
+
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3>MedInventário</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form action="area_pessoal.html" method="get">
+
+                            <div class="mb-3">
+                                <label for="utilizador" class="form-label">Utilizador</label>
+                                <input type="text" class="form-control" id="utilizador" name="utilizador" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Palavra-passe</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Entrar</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <a href="../frontend/index.html">Voltar ao site</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../backend/assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
