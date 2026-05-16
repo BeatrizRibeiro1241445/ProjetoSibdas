@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Área Pessoal</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/images/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../assets/bootstrap/bootstrap.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../../assets/css/estilos.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="bng-navbar-menu">
+
+        <div>
+            <!-- Logo e Nome -->
+            <a href="../../area_pessoal.html">
+                <img src="../../../assets/images/logo.png" alt="Logo da MedInventário" height="50">
+            </a>
+            <h3>MedInventário</h3>
+        </div>
+
+        <div>
+            <button id="btn-utilizador">Utilizador</button>
+        </div>
+
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <nav>
+            <a href="lista.html"><i class="fas fa-laptop-medical"></i> &ensp; Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> &ensp; Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> &ensp; Localizações</a>
+            <a href="../documentacao/lista.html"><i class="fas fa-file-medical"></i> &ensp; Documentação</a>
+            <a href="../garantias-contratos/lista.html"><i class="fas fa-file-contract"></i> &ensp; Garantias e
+                Contratos</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> &ensp; Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> &ensp; Dashboard</a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="content">
+        <section>
+            <h2><strong><i class="fas fa-plus"></i> Inserir novo equipamento</strong></h2>
+            <br>
+
+            <form action="#" method="post">
+                <div class="mb-3">
+                    <label for="codigo" class="form-label">Código interno</label>
+                    <input type="text" class="form-control" id="codigo" name="codigo" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="designacao" class="form-label">Designação do equipamento</label>
+                    <input type="text" class="form-control" id="designacao" name="designacao" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="marca" class="form-label">Marca</label>
+                    <input type="text" class="form-control" id="marca" name="marca">
+                </div>
+
+                <div class="mb-3">
+                    <label for="modelo" class="form-label">Modelo</label>
+                    <input type="text" class="form-control" id="modelo" name="modelo">
+                </div>
+
+                <div class="mb-3">
+                    <label for="numero_serie" class="form-label">Número de série</label>
+                    <input type="text" class="form-control" id="numero_serie" name="numero_serie">
+                </div>
+
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-select" id="estado" name="estado" required>
+                        <option value="">Selecione um estado</option>
+                        <option value="ativo">Ativo</option>
+                        <option value="manutencao">Em manutenção</option>
+                        <option value="inativo">Inativo</option>
+                        <option value="calibracao">Em calibração</option>
+                        <option value="quarentena">Em quarentena</option>
+                        <option value="abatido">Abatido</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="criticidade" class="form-label">Criticidade</label>
+                    <select class="form-select" id="criticidade" name="criticidade" required>
+                        <option value="">Selecione a criticidade</option>
+                        <option value="baixa">Baixa</option>
+                        <option value="media">Média</option>
+                        <option value="alta">Alta</option>
+                        <option value="suporte_vida">Suporte de vida</option>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="lista.html" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+
+            <p id="mensagem-formulario"></p>
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script src="../../assets/js/script.js"></script>
+
+</body>
+
+</html>
