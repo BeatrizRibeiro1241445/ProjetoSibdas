@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Área Pessoal</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/images/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../assets/bootstrap/bootstrap.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../../assets/css/estilos.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="bng-navbar-menu">
+
+        <div>
+            <!-- Logo e Nome -->
+            <a href="../../area_pessoal.html">
+                <img src="../../../assets/images/logo.png" alt="Logo da MedInventário" height="50">
+            </a>
+            <h3>MedInventário</h3>
+        </div>
+
+        <div>
+            <button id="btn-utilizador">Utilizador</button>
+        </div>
+
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <nav>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> &ensp; Equipamentos</a>
+            <a href="lista.html"><i class="fas fa-truck-medical"></i> &ensp; Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> &ensp; Localizações</a>
+            <a href="../documentacao/lista.html"><i class="fas fa-file-medical"></i> &ensp; Documentação</a>
+            <a href="../garantias-contratos/lista.html"><i class="fas fa-file-contract"></i> &ensp; Garantias e
+                Contratos</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> &ensp; Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> &ensp; Dashboard</a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="content">
+        <section>
+            <h2><strong><i class="fas fa-pen"></i> Editar fornecedor</strong></h2>
+            <br>
+
+            <form action="#" method="post">
+                <div class="mb-3">
+                    <label for="nome_empresa" class="form-label">Nome da empresa</label>
+                    <input type="text" class="form-control" id="nome_empresa" name="nome_empresa"
+                        value="MedTech Portugal" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nif" class="form-label">NIF</label>
+                    <input type="text" class="form-control" id="nif" name="nif" value="509000000">
+                </div>
+
+                <div class="mb-3">
+                    <label for="tipo_fornecedor" class="form-label">Tipo de fornecedor</label>
+                    <select class="form-select" id="tipo_fornecedor" name="tipo_fornecedor" required>
+                        <option value="">Selecione o tipo</option>
+                        <option value="fabricante">Fabricante</option>
+                        <option value="distribuidor">Distribuidor / fornecedor comercial</option>
+                        <option value="assistencia" selected>Empresa de assistência técnica</option>
+                        <option value="consumiveis">Fornecedor de consumíveis ou acessórios</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="geral@medtech.pt" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="text" class="form-control" id="telefone" name="telefone" value="+351 220 000 000">
+                </div>
+
+                <div class="mb-3">
+                    <label for="morada" class="form-label">Morada</label>
+                    <input type="text" class="form-control" id="morada" name="morada" value="Porto, Portugal">
+                </div>
+
+                <div class="mb-3">
+                    <label for="website" class="form-label">Website</label>
+                    <input type="url" class="form-control" id="website" name="website" value="https://www.medtech.pt">
+                </div>
+
+                <div class="mb-3">
+                    <label for="pessoa_contacto" class="form-label">Pessoa de contacto</label>
+                    <input type="text" class="form-control" id="pessoa_contacto" name="pessoa_contacto"
+                        value="Ana Martins">
+                </div>
+
+                <div class="mb-3">
+                    <label for="telefone_contacto" class="form-label">Telefone da pessoa de contacto</label>
+                    <input type="text" class="form-control" id="telefone_contacto" name="telefone_contacto"
+                        value="+351 910 000 000">
+                </div>
+
+                <div class="mb-3">
+                    <label for="observacoes" class="form-label">Observações</label>
+                    <textarea class="form-control" id="observacoes" name="observacoes"
+                        rows="3">Fornecedor responsável por assistência técnica de equipamentos críticos.</textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="lista.html" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar alterações</button>
+                </div>
+            </form>
+
+            <p id="mensagem-formulario"></p>
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script src="../../assets/js/script.js"></script>
+
+</body>
+
+</html>

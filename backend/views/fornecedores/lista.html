@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Área Pessoal</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/images/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../assets/bootstrap/bootstrap.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../../assets/css/estilos.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="bng-navbar-menu">
+
+        <div>
+            <!-- Logo e Nome -->
+            <a href="../../area_pessoal.html">
+                <img src="../../../assets/images/logo.png" alt="Logo da MedInventário" height="50">
+            </a>
+            <h3>MedInventário</h3>
+        </div>
+
+        <div>
+            <button id="btn-utilizador">Utilizador</button>
+        </div>
+
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <nav>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> &ensp; Equipamentos</a>
+            <a href="lista.html"><i class="fas fa-truck-medical"></i> &ensp; Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> &ensp; Localizações</a>
+            <a href="../documentacao/lista.html"><i class="fas fa-file-medical"></i> &ensp; Documentação</a>
+            <a href="../garantias-contratos/lista.html"><i class="fas fa-file-contract"></i> &ensp; Garantias e
+                Contratos</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> &ensp; Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> &ensp; Dashboard</a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="content">
+        <section>
+            <div class="actions-top">
+                <h2><strong><i class="fas fa-truck-medical"></i> Listagem de Fornecedores</strong></h2>
+
+                <a href="novo.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Novo fornecedor
+                </a>
+            </div>
+
+            <br>
+            <hr>
+
+            <p>Lista de fornecedores registados no sistema.</p>
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Tipo</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Pessoa de contacto</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>MedTech Portugal</td>
+                        <td>Assistência técnica</td>
+                        <td>geral@medtech.pt</td>
+                        <td>+351 220 000 000</td>
+                        <td>Ana Martins</td>
+                        <td>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
+                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Hospital Devices S.A.</td>
+                        <td>Distribuidor</td>
+                        <td>info@hospitaldevices.pt</td>
+                        <td>+351 210 000 000</td>
+                        <td>João Ribeiro</td>
+                        <td>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
+                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script src="../../assets/js/script.js"></script>
+
+</body>
+
+</html>

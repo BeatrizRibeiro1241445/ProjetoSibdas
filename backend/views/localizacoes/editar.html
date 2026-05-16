@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Área Pessoal</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/images/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../assets/bootstrap/bootstrap.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../../assets/css/estilos.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="bng-navbar-menu">
+
+        <div>
+            <!-- Logo e Nome -->
+            <a href="../../area_pessoal.html">
+                <img src="../../../assets/images/logo.png" alt="Logo da MedInventário" height="50">
+            </a>
+            <h3>MedInventário</h3>
+        </div>
+
+        <div>
+            <button id="btn-utilizador">Utilizador</button>
+        </div>
+
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <nav>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> &ensp; Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> &ensp; Fornecedores</a>
+            <a href="lista.html"><i class="fas fa-location-dot"></i> &ensp; Localizações</a>
+            <a href="../documentacao/lista.html"><i class="fas fa-file-medical"></i> &ensp; Documentação</a>
+            <a href="../garantias-contratos/lista.html"><i class="fas fa-file-contract"></i> &ensp; Garantias e
+                Contratos</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> &ensp; Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> &ensp; Dashboard</a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="content">
+        <section>
+            <h2><strong><i class="fas fa-pen"></i> Editar localização</strong></h2>
+            <br>
+
+            <form action="#" method="post">
+                <div class="mb-3">
+                    <label for="edificio" class="form-label">Edifício</label>
+                    <input type="text" class="form-control" id="edificio" name="edificio" value="Hospital Central"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="piso" class="form-label">Piso</label>
+                    <input type="number" class="form-control" id="piso" name="piso" value="2" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="servico" class="form-label">Serviço / Departamento</label>
+                    <input type="text" class="form-control" id="servico" name="servico"
+                        value="Unidade de Cuidados Intensivos" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="sala" class="form-label">Sala / Gabinete</label>
+                    <input type="text" class="form-control" id="sala" name="sala" value="Sala 1" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="observacoes" class="form-label">Observações</label>
+                    <textarea class="form-control" id="observacoes" name="observacoes"
+                        rows="3">Localização destinada a equipamentos críticos e de suporte de vida.</textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="lista.html" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar alterações</button>
+                </div>
+            </form>
+
+            <p id="mensagem-formulario"></p>
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script src="../../assets/js/script.js"></script>
+
+</body>
+
+</html>

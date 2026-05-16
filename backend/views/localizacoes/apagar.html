@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Área Pessoal</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/images/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../assets/bootstrap/bootstrap.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../../assets/css/estilos.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="bng-navbar-menu">
+
+        <div>
+            <!-- Logo e Nome -->
+            <a href="../../area_pessoal.html">
+                <img src="../../../assets/images/logo.png" alt="Logo da MedInventário" height="50">
+            </a>
+            <h3>MedInventário</h3>
+        </div>
+
+        <div>
+            <button id="btn-utilizador">Utilizador</button>
+        </div>
+
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <nav>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> &ensp; Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> &ensp; Fornecedores</a>
+            <a href="lista.html"><i class="fas fa-location-dot"></i> &ensp; Localizações</a>
+            <a href="../documentacao/lista.html"><i class="fas fa-file-medical"></i> &ensp; Documentação</a>
+            <a href="../garantias-contratos/lista.html"><i class="fas fa-file-contract"></i> &ensp; Garantias e
+                Contratos</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> &ensp; Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> &ensp; Dashboard</a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="content">
+        <section>
+            <div class="d-flex justify-content-center mt-4">
+                <div class="card w-100 shadow rounded text-center p-4" style="max-width: 700px;">
+
+                    <div class="text-warning display-4 mb-3">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+
+                    <p class="mb-2 fs-5">Deseja remover a localização?</p>
+
+                    <h4 class="mb-4"><strong>Unidade de Cuidados Intensivos - Sala 1</strong></h4>
+
+                    <div class="mb-4">
+                        <span class="d-block mb-1">
+                            <i class="fas fa-building me-2"></i><strong>Hospital Central</strong>
+                        </span>
+                        <span class="d-block">
+                            <i class="fas fa-location-dot me-2"></i><strong>Piso 2</strong>
+                        </span>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="lista.html" class="btn btn-outline-secondary px-4">
+                            <i class="fas fa-times me-2"></i>Não
+                        </a>
+
+                        <a href="#" class="btn btn-danger px-4">
+                            <i class="fas fa-check me-2"></i>Sim
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script src="../../assets/js/script.js"></script>
+
+</body>
+
+</html>
