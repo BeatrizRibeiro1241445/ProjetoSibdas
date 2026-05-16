@@ -52,8 +52,38 @@
     <main class="content">
         <section>
             <h2>Pesquisa e Filtragem</h2>
-            <p>Aqui poderá pesquisar equipamentos por código, designação, marca, modelo, estado, localização e
-                criticidade.</p>
+            <p>Aqui poderá pesquisar equipamentos por diferentes critérios.</p>
+
+            <form action="#" method="get" class="row g-3 mt-4">
+
+                <div class="col-md-4">
+                    <label for="codigo" class="form-label">Código interno</label>
+                    <input type="text" class="form-control" id="codigo" name="codigo">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="designacao" class="form-label">Designação</label>
+                    <input type="text" class="form-control" id="designacao" name="designacao">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-select" id="estado" name="estado">
+                        <option value="">Todos</option>
+                        <option value="ativo">Ativo</option>
+                        <option value="manutencao">Em manutenção</option>
+                        <option value="inativo">Inativo</option>
+                        <option value="calibracao">Em calibração</option>
+                        <option value="abatido">Abatido</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Pesquisar</button>
+                    <button class="btn btn-secondary" type="reset">Limpar</button>
+                </div>
+
+            </form>
         </section>
     </main>
 
