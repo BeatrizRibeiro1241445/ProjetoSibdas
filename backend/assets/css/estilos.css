@@ -227,3 +227,53 @@ form {
 .login-button i {
     margin-left: 8px;
 }
+
+/* Menu de ferramentas JS */
+.home-wrapper {
+    max-width: 1000px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.home-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.home-option {
+    background-color: #d7e6f2;
+    width: 200px;
+    height: 120px;
+    border-radius: 10px;
+    padding: 20px;
+    transition: background-color 0.3s;
+    border: 1px solid #8fb9d9;
+}
+
+.home-option:hover {
+    background-color: #8fb9d9;
+}
+
+.home-option h3 {
+    margin-bottom: 10px;
+    color: #1f4e79;
+}
+
+.home-option p {
+    color: #1f4e79;
+    margin: 0;
+}
+
+.unlink,
+.unlink:hover {
+    color: #1f4e79;
+    text-decoration: none;
+}
+
+/* Resultado das funcionalidades JS */
+.resultado-ferramenta {
+    margin-top: 20px;
+}

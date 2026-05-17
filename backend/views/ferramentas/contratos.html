@@ -56,60 +56,35 @@
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2>Ferramentas</h2>
-            <p>Escolha uma opção para testar funcionalidades com JavaScript.</p>
+            <h2>Contratos</h2>
+            <p>Passe o rato no botão ou clique para simular uma mensagem sobre contratos.</p>
+
+            <button type="button" class="btn btn-secondary" onmouseover="mostrarAvisoContrato()"
+                onclick="confirmarContrato()">
+                Verificar contrato
+            </button>
+
+            <a href="ferramentas.html" class="btn btn-secondary">Voltar</a>
+
+            <div id="indicadorContrato" class="resultado-ferramenta"></div>
         </section>
-
-        <div class="home-wrapper">
-
-            <div class="home-row">
-                <a href="calculoCriticidade.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-triangle-exclamation"></i></h3>
-                        <p>Cálculo de Criticidade</p>
-                    </div>
-                </a>
-
-                <a href="avaliacaoGarantia.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-file-contract"></i></h3>
-                        <p>Avaliação de Garantia</p>
-                    </div>
-                </a>
-
-                <a href="verificacaoDocumental.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-file-medical"></i></h3>
-                        <p>Documentação</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="home-row">
-                <a href="contratos.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-upload"></i></h3>
-                        <p>Contratos</p>
-                    </div>
-                </a>
-
-                <a href="resumoInventario.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-chart-bar"></i></h3>
-                        <p>Resumo</p>
-                    </div>
-                </a>
-
-                <a href="../dashboard/dashboard.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-user-gear"></i></h3>
-                        <p>Dashboard</p>
-                    </div>
-                </a>
-            </div>
-
-        </div>
     </main>
+
+    <script>
+        function mostrarAvisoContrato() {
+            const indicadorContrato = document.getElementById("indicadorContrato");
+
+            indicadorContrato.textContent = "Verifique sempre a entidade responsável e a data de fim do contrato.";
+            indicadorContrato.className = "alert alert-warning p-2 text-center resultado-ferramenta";
+        }
+
+        function confirmarContrato() {
+            const indicadorContrato = document.getElementById("indicadorContrato");
+
+            indicadorContrato.textContent = "Contrato consultado em modo de teste.";
+            indicadorContrato.className = "alert alert-info p-2 text-center resultado-ferramenta";
+        }
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>

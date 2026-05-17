@@ -56,60 +56,58 @@
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2>Ferramentas</h2>
-            <p>Escolha uma opção para testar funcionalidades com JavaScript.</p>
+            <h2>Resumo do Inventário</h2>
+            <p>Introduza valores para calcular o total de equipamentos.</p>
+
+            <form action="#" method="post">
+                <div class="mb-3">
+                    <label for="ativos" class="form-label">Equipamentos ativos</label>
+                    <input type="number" class="form-control" id="ativos" name="ativos">
+                </div>
+
+                <div class="mb-3">
+                    <label for="manutencao" class="form-label">Equipamentos em manutenção</label>
+                    <input type="number" class="form-control" id="manutencao" name="manutencao">
+                </div>
+
+                <div class="mb-3">
+                    <label for="inativos" class="form-label">Equipamentos inativos</label>
+                    <input type="number" class="form-control" id="inativos" name="inativos">
+                </div>
+
+                <button type="button" class="btn btn-secondary" onclick="calcularResumo()">
+                    Calcular
+                </button>
+
+                <a href="ferramentas.html" class="btn btn-secondary">Voltar</a>
+            </form>
+
+            <div id="indicadorResumo" class="resultado-ferramenta"></div>
         </section>
-
-        <div class="home-wrapper">
-
-            <div class="home-row">
-                <a href="calculoCriticidade.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-triangle-exclamation"></i></h3>
-                        <p>Cálculo de Criticidade</p>
-                    </div>
-                </a>
-
-                <a href="avaliacaoGarantia.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-file-contract"></i></h3>
-                        <p>Avaliação de Garantia</p>
-                    </div>
-                </a>
-
-                <a href="verificacaoDocumental.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-file-medical"></i></h3>
-                        <p>Documentação</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="home-row">
-                <a href="contratos.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-upload"></i></h3>
-                        <p>Contratos</p>
-                    </div>
-                </a>
-
-                <a href="resumoInventario.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-chart-bar"></i></h3>
-                        <p>Resumo</p>
-                    </div>
-                </a>
-
-                <a href="../dashboard/dashboard.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-user-gear"></i></h3>
-                        <p>Dashboard</p>
-                    </div>
-                </a>
-            </div>
-
-        </div>
     </main>
+
+    <script>
+        function calcularResumo() {
+            const ativos = Number(document.getElementById("ativos").value);
+            const manutencao = Number(document.getElementById("manutencao").value);
+            const inativos = Number(document.getElementById("inativos").value);
+            const indicadorResumo = document.getElementById("indicadorResumo");
+
+            const total = ativos + manutencao + inativos;
+
+            if (total === 0) {
+                indicadorResumo.textContent = "Erro: introduza pelo menos um valor.";
+                indicadorResumo.className = "alert alert-danger p-2 text-center resultado-ferramenta";
+            } else {
+                indicadorResumo.textContent = "Total de equipamentos: " + total +
+                    " | Ativos: " + ativos +
+                    " | Em manutenção: " + manutencao +
+                    " | Inativos: " + inativos;
+
+                indicadorResumo.className = "alert alert-info p-2 text-center resultado-ferramenta";
+            }
+        }
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>

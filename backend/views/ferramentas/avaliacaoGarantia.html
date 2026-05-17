@@ -56,60 +56,46 @@
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2>Ferramentas</h2>
-            <p>Escolha uma opção para testar funcionalidades com JavaScript.</p>
+            <h2>Avaliação de Garantia</h2>
+            <p>Introduza os dias restantes de garantia para verificar o estado.</p>
+
+            <form action="#" method="post">
+                <div class="mb-3">
+                    <label for="diasGarantia" class="form-label">Dias restantes de garantia</label>
+                    <input type="number" class="form-control" id="diasGarantia" name="diasGarantia">
+                </div>
+
+                <button type="button" class="btn btn-secondary" onclick="avaliarGarantia()">
+                    Avaliar
+                </button>
+
+                <a href="ferramentas.html" class="btn btn-secondary">Voltar</a>
+            </form>
+
+            <div id="indicadorGarantia" class="resultado-ferramenta"></div>
         </section>
-
-        <div class="home-wrapper">
-
-            <div class="home-row">
-                <a href="calculoCriticidade.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-triangle-exclamation"></i></h3>
-                        <p>Cálculo de Criticidade</p>
-                    </div>
-                </a>
-
-                <a href="avaliacaoGarantia.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-file-contract"></i></h3>
-                        <p>Avaliação de Garantia</p>
-                    </div>
-                </a>
-
-                <a href="verificacaoDocumental.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-file-medical"></i></h3>
-                        <p>Documentação</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="home-row">
-                <a href="contratos.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-upload"></i></h3>
-                        <p>Contratos</p>
-                    </div>
-                </a>
-
-                <a href="resumoInventario.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-chart-bar"></i></h3>
-                        <p>Resumo</p>
-                    </div>
-                </a>
-
-                <a href="../dashboard/dashboard.html" class="unlink">
-                    <div class="home-option">
-                        <h3><i class="fas fa-user-gear"></i></h3>
-                        <p>Dashboard</p>
-                    </div>
-                </a>
-            </div>
-
-        </div>
     </main>
+
+    <script>
+        function avaliarGarantia() {
+            const diasGarantia = Number(document.getElementById("diasGarantia").value);
+            const indicadorGarantia = document.getElementById("indicadorGarantia");
+
+            if (document.getElementById("diasGarantia").value === "") {
+                indicadorGarantia.textContent = "Erro: introduza os dias restantes.";
+                indicadorGarantia.className = "alert alert-danger p-2 text-center resultado-ferramenta";
+            } else if (diasGarantia < 0) {
+                indicadorGarantia.textContent = "Garantia expirada.";
+                indicadorGarantia.className = "alert alert-danger p-2 text-center resultado-ferramenta";
+            } else if (diasGarantia <= 30) {
+                indicadorGarantia.textContent = "Atenção: garantia a terminar nos próximos 30 dias.";
+                indicadorGarantia.className = "alert alert-warning p-2 text-center resultado-ferramenta";
+            } else {
+                indicadorGarantia.textContent = "Garantia válida.";
+                indicadorGarantia.className = "alert alert-success p-2 text-center resultado-ferramenta";
+            }
+        }
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="../../assets/bootstrap/bootstrap.bundle.min.js"></script>
