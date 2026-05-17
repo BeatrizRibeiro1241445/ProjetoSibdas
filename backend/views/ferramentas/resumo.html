@@ -55,48 +55,59 @@
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2>Dashboard</h2>
-            <p>Aqui poderá consultar os principais indicadores do sistema MedInventário.</p>
+            <div class="actions-top">
+                <h2><strong><i class="fas fa-laptop-medical"></i> Listagem de Equipamentos</strong></h2>
 
-            <div class="row mt-4">
-
-                <div class="col-md-3 mb-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Total</h5>
-                            <p class="card-text">1500</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Ativos</h5>
-                            <p class="card-text">1280</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Manutenção</h5>
-                            <p class="card-text">145</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Inativos</h5>
-                            <p class="card-text">75</p>
-                        </div>
-                    </div>
-                </div>
-
+                <a href="novo.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Novo equipamento
+                </a>
             </div>
+
+            <br>
+            <hr>
+
+            <p>Lista de equipamentos registados no sistema.</p>
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Equipamento</th>
+                        <th>Localização</th>
+                        <th>Estado</th>
+                        <th>Criticidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>EQ001</td>
+                        <td>Monitor Multiparamétrico</td>
+                        <td>UCI - Sala 1</td>
+                        <td>Ativo</td>
+                        <td>Alta</td>
+                        <td>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
+                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>EQ002</td>
+                        <td>Bomba de Infusão</td>
+                        <td>Bloco Operatório</td>
+                        <td>Em manutenção</td>
+                        <td>Média</td>
+                        <td>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
+                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </main>
 
