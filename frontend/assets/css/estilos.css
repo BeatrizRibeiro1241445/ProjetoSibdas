@@ -11,10 +11,13 @@
     background-color: #a9cbe6;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
+    justify-content: center;
+    height: 90px;
+    padding: 0 20px;
     position: sticky;
     top: 0;
+    border-bottom: 2px solid #8fb9d9;
+    z-index: 1000;
 }
 
 /* Estilo para os div internos da barra de navegação */
@@ -25,14 +28,20 @@
 
 /* Estilo do logótipo na barra de navegação */
 .bng-navbar img {
-    height: 50px;
-    margin-right: 10px;
+    height: 85px;
+    margin-right: 0;
+    position: relative;
+    top: 2px;
+    left: -20px;
 }
-
 /* Estilo do texto com o nome do site */
 .bng-navbar h3 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #1f4e79;
+    font-weight: bold;
+    margin: 0;
+    position: relative;
+    left: -40px;
 }
 
 /* Estilos para os links centrais da navegação */
@@ -181,4 +190,3 @@
     margin-right: 8px;
     color: #1f4e79;
 }
-
