@@ -25,7 +25,7 @@
 }
 
 .bng-navbar-menu img {
-    height: 90px;
+    height: 85px;
     margin-right: 0;
     position: relative;
     top: 2px;
@@ -38,7 +38,7 @@
     font-weight: bold;
     margin: 0;
     position: relative;
-    left: -25px;
+    left: -30px;
 }
 
 /* Estilos para o menu lateral fixo (sidebar) */
@@ -47,11 +47,19 @@
     height: 100vh;
     background-color: #a9cbe6;
     color: #1f4e79;
-    padding: 100px 20px 20px;
+    padding: 80px 20px 20px;
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
+}
+
+.sidebar h4 {
+    padding-left: 12px;
+    font-weight: bold;
+    color: #1f4e79;
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 /* Estilos para os links dentro da sidebar */
