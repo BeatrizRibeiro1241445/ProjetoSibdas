@@ -11,7 +11,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
+    height: 60px;
+    padding: 0 20px 0 0;
     position: sticky;
     top: 0;
     border-bottom: 2px solid #8fb9d9;
@@ -24,13 +25,20 @@
 }
 
 .bng-navbar-menu img {
-    height: 50px;
-    margin-right: 10px;
+    height: 90px;
+    margin-right: 0;
+    position: relative;
+    top: 2px;
+    left: -5px;
 }
 
 .bng-navbar-menu h3 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #1f4e79;
+    font-weight: bold;
+    margin: 0;
+    position: relative;
+    left: -25px;
 }
 
 /* Estilos para o menu lateral fixo (sidebar) */
@@ -276,4 +284,33 @@ form {
 /* Resultado das funcionalidades JS */
 .resultado-ferramenta {
     margin-top: 20px;
+}
+
+.sidebar a i {
+    width: 22px;
+    text-align: center;
+    margin-right: 8px;
+}
+
+.formulario-registo {
+    margin-top: 20px;
+    max-width: 600px;
+}
+
+
+#btn-utilizador {
+    background-color: #d7e6f2;
+    color: #1f4e79;
+    border: 1px solid #8fb9d9;
+    border-radius: 5px;
+    padding: 8px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+#btn-utilizador:hover {
+    background-color: #8fb9d9;
+    color: white;
+    border-color: #1f4e79;
 }

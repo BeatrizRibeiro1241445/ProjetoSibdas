@@ -7,7 +7,7 @@
     <title>MedInventário - Ferramentas</title>
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="../../assets/img/logo.png" type="image/png">
+    <link rel="shortcut icon" href="../../../assets/images/logo.png" type="image/png">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../../assets/bootstrap/bootstrap.min.css">
@@ -26,13 +26,13 @@
         <div>
             <!-- Logo e Nome -->
             <a href="../../area_pessoal.html">
-                <img src="../../../assets/images/logo.png" alt="Logo da MedInventário" height="50">
+                <img src="../../../assets/images/logo.png" alt="Logo da MedInventário">
             </a>
             <h3>MedInventário</h3>
         </div>
 
         <div>
-            <button id="btn-utilizador">Utilizador</button>
+            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
         </div>
 
     </header>
@@ -55,7 +55,7 @@
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2>Documentação Técnica</h2>
+            <h2><strong><i class="fas fa-file-medical"></i> Documentação Técnica</strong></h2>
             <p>Aqui poderá consultar documentos técnicos e administrativos associados aos equipamentos.</p>
 
             <table class="table table-bordered table-hover">
@@ -73,47 +73,71 @@
                         <td>Manual Técnico</td>
                         <td>Monitor Multiparamétrico</td>
                         <td>Manual</td>
-                        <td><a href="#">Consultar</a></td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-info">
+                                Consultar
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
-            <h3>Adicionar Documento</h3>
+            <h2 class="mt-5"><strong><i class="fas fa-plus"></i> Adicionar Documento</strong></h2>
 
-            <form action="#" method="post">
-                <div class="form-group">
-                    <label for="nome_documento">Nome do documento:</label>
+            <form action="#" method="post" class="formulario-registo">
+
+                <div class="mb-3">
+                    <label for="nome_documento" class="form-label">Nome do documento</label>
                     <input type="text" class="form-control" id="nome_documento" name="nome_documento" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="tipo_documento">Tipo:</label>
+                <div class="mb-3">
+                    <label for="tipo_documento" class="form-label">Tipo</label>
                     <select class="form-select" id="tipo_documento" name="tipo_documento" required>
                         <option value="">Selecione o tipo</option>
-                        <option value="manual-utilizador">Manual de utilizador</option>
-                        <option value="manual-servico">Manual de serviço</option>
-                        <option value="certificado-calibracao">Certificado de calibração</option>
-                        <option value="contrato-manutencao">Contrato de manutenção</option>
-                        <option value="relatorio-tecnico">Relatório técnico</option>
+                        <option value="manual_utilizador">Manual de utilizador</option>
+                        <option value="manual_servico">Manual de serviço</option>
+                        <option value="certificado_calibracao">Certificado de calibração</option>
+                        <option value="contrato_manutencao">Contrato de manutenção</option>
+                        <option value="fatura">Fatura ou guia de aquisição</option>
+                        <option value="declaracao_conformidade">Declaração de conformidade</option>
+                        <option value="relatorio_tecnico">Relatório técnico</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="equipamento_documento">Equipamento associado:</label>
+                <div class="mb-3">
+                    <label for="equipamento_documento" class="form-label">Equipamento associado</label>
                     <input type="text" class="form-control" id="equipamento_documento" name="equipamento_documento"
                         required>
                 </div>
 
-                <div class="form-group">
-                    <label for="link_documento">Link ou caminho do ficheiro:</label>
-                    <input type="url" class="form-control" id="link_documento" name="link_documento">
+                <div class="mb-3">
+                    <label for="data_documento" class="form-label">Data do documento</label>
+                    <input type="date" class="form-control" id="data_documento" name="data_documento">
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
+                    <label for="data_validade" class="form-label">Data de validade</label>
+                    <input type="date" class="form-control" id="data_validade" name="data_validade">
+                </div>
+
+                <div class="mb-3">
+                    <label for="fornecedor_documento" class="form-label">Fornecedor associado</label>
+                    <input type="text" class="form-control" id="fornecedor_documento" name="fornecedor_documento">
+                </div>
+
+                <div class="mb-3">
+                    <label for="link_documento" class="form-label">Link ou caminho do ficheiro</label>
+                    <input type="text" class="form-control" id="link_documento" name="link_documento">
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
                     <input class="btn btn-secondary" type="reset" value="Limpar">
                     <input class="btn btn-primary" type="submit" value="Guardar">
                 </div>
+
             </form>
+
             <p id="mensagem-formulario"></p>
         </section>
     </main>
