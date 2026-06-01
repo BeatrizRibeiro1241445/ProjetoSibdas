@@ -45,7 +45,8 @@
             <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
             <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
             <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i>Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e Contratos</a>
+            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e
+                Contratos</a>
             <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i>Pesquisa</a>
             <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
             <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i>Ferramentas</a>
@@ -55,8 +56,9 @@
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
+
             <div class="actions-top">
-                <h2><strong><i class="fas fa-laptop-medical"></i> Listagem de Equipamentos</strong></h2>
+                <h2><strong><i class="fas fa-laptop-medical"></i> Gestão de Equipamentos</strong></h2>
 
                 <a href="novo.html" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Novo equipamento
@@ -66,13 +68,141 @@
             <br>
             <hr>
 
-            <p>Lista de equipamentos registados no sistema.</p>
+            <div class="accordion mb-4" id="accordionPesquisaEquipamentos">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingPesquisaEquipamentos">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapsePesquisaEquipamentos" aria-expanded="false"
+                            aria-controls="collapsePesquisaEquipamentos">
+                            <strong><i class="fas fa-magnifying-glass"></i> Pesquisa, filtros e ordenação</strong>
+                        </button>
+                    </h2>
+
+                    <div id="collapsePesquisaEquipamentos" class="accordion-collapse collapse"
+                        aria-labelledby="headingPesquisaEquipamentos" data-bs-parent="#accordionPesquisaEquipamentos">
+
+                        <div class="accordion-body">
+
+                            <p>
+                                Utilize os campos abaixo para pesquisar equipamentos por identificação, características
+                                técnicas, localização, estado ou criticidade.
+                            </p>
+
+                            <form action="#" method="get" class="row g-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="pesquisa_codigo" class="form-label">Código interno</label>
+                                    <input type="text" class="form-control" id="pesquisa_codigo" name="pesquisa_codigo"
+                                        placeholder="Ex.: EQ001">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="pesquisa_designacao" class="form-label">Designação</label>
+                                    <input type="text" class="form-control" id="pesquisa_designacao"
+                                        name="pesquisa_designacao" placeholder="Ex.: Monitor Multiparamétrico">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="pesquisa_marca" class="form-label">Marca</label>
+                                    <input type="text" class="form-control" id="pesquisa_marca" name="pesquisa_marca"
+                                        placeholder="Ex.: Philips">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="pesquisa_serie" class="form-label">Número de série</label>
+                                    <input type="text" class="form-control" id="pesquisa_serie" name="pesquisa_serie"
+                                        placeholder="Ex.: MP5-2022-45873">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_estado" class="form-label">Estado</label>
+                                    <select class="form-select" id="filtro_estado" name="filtro_estado">
+                                        <option value="">Todos</option>
+                                        <option value="ativo">Ativo</option>
+                                        <option value="manutencao">Em manutenção</option>
+                                        <option value="inativo">Inativo</option>
+                                        <option value="calibracao">Em calibração</option>
+                                        <option value="quarentena">Em quarentena</option>
+                                        <option value="abatido">Abatido</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_criticidade" class="form-label">Criticidade</label>
+                                    <select class="form-select" id="filtro_criticidade" name="filtro_criticidade">
+                                        <option value="">Todas</option>
+                                        <option value="suporte_vida">Suporte de vida</option>
+                                        <option value="alta">Alta</option>
+                                        <option value="media">Média</option>
+                                        <option value="baixa">Baixa</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_categoria" class="form-label">Categoria / Grupo</label>
+                                    <input type="text" class="form-control" id="filtro_categoria"
+                                        name="filtro_categoria"
+                                        placeholder="Ex.: Monitorização, Terapia, Suporte de vida">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_localizacao" class="form-label">Localização / Serviço</label>
+                                    <input type="text" class="form-control" id="filtro_localizacao"
+                                        name="filtro_localizacao" placeholder="Ex.: UCI, Urgência, Sala 1">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="ordenar_por" class="form-label">Ordenar por</label>
+                                    <select class="form-select" id="ordenar_por" name="ordenar_por">
+                                        <option value="">Sem ordenação</option>
+                                        <option value="codigo_crescente">Código interno crescente</option>
+                                        <option value="codigo_decrescente">Código interno decrescente</option>
+                                        <option value="designacao_az">Designação A-Z</option>
+                                        <option value="designacao_za">Designação Z-A</option>
+                                        <option value="criticidade_alta_baixa">Criticidade alta para baixa</option>
+                                        <option value="criticidade_baixa_alta">Criticidade baixa para alta</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="tipo_vista" class="form-label">Tipo de vista</label>
+                                    <select class="form-select" id="tipo_vista" name="tipo_vista">
+                                        <option value="resumida">Vista resumida</option>
+                                        <option value="detalhada">Vista detalhada</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-magnifying-glass"></i> Pesquisar
+                                    </button>
+
+                                    <button type="reset" class="btn btn-secondary">
+                                        Limpar
+                                    </button>
+                                </div>
+
+                            </form>
+
+                            <p class="mt-3">
+                                Nesta fase, os filtros, a ordenação e o tipo de vista representam a estrutura da
+                                funcionalidade. A aplicação dinâmica será implementada posteriormente com PHP e MySQL.
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Vista resumida</h3>
 
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Equipamento</th>
+                        <th>Designação</th>
+                        <th>Categoria / Grupo</th>
                         <th>Localização</th>
                         <th>Estado</th>
                         <th>Criticidade</th>
@@ -84,12 +214,14 @@
                     <tr>
                         <td>EQ001</td>
                         <td>Monitor Multiparamétrico</td>
+                        <td>Monitorização</td>
                         <td>UCI - Sala 1</td>
                         <td>Ativo</td>
-                        <td>Alta</td>
+                        <td>Suporte de vida</td>
                         <td>
                             <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
                             <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
                             <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
                         </td>
                     </tr>
@@ -97,17 +229,76 @@
                     <tr>
                         <td>EQ002</td>
                         <td>Bomba de Infusão</td>
+                        <td>Terapia</td>
                         <td>Bloco Operatório</td>
                         <td>Em manutenção</td>
                         <td>Média</td>
                         <td>
                             <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
                             <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>EQ003</td>
+                        <td>Ventilador Pulmonar</td>
+                        <td>Suporte de vida</td>
+                        <td>UCI - Sala 2</td>
+                        <td>Ativo</td>
+                        <td>Alta</td>
+                        <td>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
+                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
                             <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <h3 class="mt-5">Vista detalhada</h3>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4>EQ001 - Monitor Multiparamétrico</h4>
+
+                    <p><strong>Família:</strong> 04 - Monitores de sinais vitais</p>
+                    <p><strong>Categoria / Grupo:</strong> Monitorização</p>
+                    <p><strong>Marca:</strong> Philips</p>
+                    <p><strong>Modelo:</strong> IntelliVue MP5</p>
+                    <p><strong>Número de série:</strong> MP5-2022-45873</p>
+                    <p><strong>Localização:</strong> UCI - Sala 1</p>
+                    <p><strong>Estado:</strong> Ativo</p>
+                    <p><strong>Criticidade:</strong> Suporte de vida</p>
+                    <p><strong>Utilização:</strong> Monitorização contínua de sinais vitais em contexto de cuidados
+                        intensivos.</p>
+
+                    <a href="detalhes.html" class="btn btn-sm btn-info">Consultar ficha</a>
+                    <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4>EQ002 - Bomba de Infusão</h4>
+
+                    <p><strong>Família:</strong> 07 - Bombas e sistemas de infusão</p>
+                    <p><strong>Categoria / Grupo:</strong> Terapia</p>
+                    <p><strong>Marca:</strong> B. Braun</p>
+                    <p><strong>Modelo:</strong> Infusomat Space</p>
+                    <p><strong>Número de série:</strong> INF-2020-88321</p>
+                    <p><strong>Localização:</strong> Bloco Operatório</p>
+                    <p><strong>Estado:</strong> Em manutenção</p>
+                    <p><strong>Criticidade:</strong> Média</p>
+                    <p><strong>Utilização:</strong> Administração controlada de medicamentos e fluidos.</p>
+
+                    <a href="detalhes.html" class="btn btn-sm btn-info">Consultar ficha</a>
+                    <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
+                </div>
+            </div>
+
         </section>
     </main>
 

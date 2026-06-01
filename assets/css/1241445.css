@@ -16,6 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 80px;
     padding: 10px 20px;
     position: sticky;
     top: 0;
@@ -31,16 +32,22 @@
 
 /* Estilo do logótipo na barra de navegação */
 .bng-navbar img {
-    height: 50px;
-    margin-right: 10px;
+    height: 100px;
+    margin-right: 0px;
+    position: relative;
+    top: 2px;
+    left: -15px;
 }
 
 /* Estilo do texto com o nome do site */
 .bng-navbar h3 {
-    font-size: 1.5em;
+    font-size: 1.8em;
+    margin-right: 0;
+    position: relative;
+    top: 5px;
+    left: -45px;
     color: #1f4e79;
     font-weight: bold;
-    margin: 0;
 }
 
 /* Estilos para os links centrais da navegação */
