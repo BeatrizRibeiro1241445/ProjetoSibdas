@@ -6,6 +6,186 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* =========================
+   FRONTEND - ÁREA PÚBLICA
+   ========================= */
+
+/* Estilo da barra de navegação principal */
+.bng-navbar {
+    background-color: #a9cbe6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid #8fb9d9;
+    z-index: 1000;
+}
+
+/* Estilo para os div internos da barra de navegação */
+.bng-navbar div {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo do logótipo na barra de navegação */
+.bng-navbar img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+/* Estilo do texto com o nome do site */
+.bng-navbar h3 {
+    font-size: 1.5em;
+    color: #1f4e79;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Estilos para os links centrais da navegação */
+.container-navegacao {
+    text-align: center;
+    padding: 20px;
+}
+
+.container-navegacao a {
+    font-size: 1.5em;
+    margin: 0 35px;
+    text-decoration: none;
+    color: #1f4e79;
+}
+
+.container-navegacao a:hover {
+    color: white;
+}
+
+/* Estilos para o botão da Área Restrita */
+.nav-cliente a {
+    color: #1f4e79;
+    text-decoration: none;
+    font-size: 1.5em;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+/* Efeito ao passar o rato */
+.nav-cliente a:hover {
+    background-color: #8fb9d9;
+    color: white;
+}
+
+/* Texto Genérico */
+.container-texto-generico {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 100px 40px;
+    text-align: center;
+    min-height: 100vh;
+    background-color: white;
+    border-bottom: 1px solid #d7e6f2;
+}
+
+/* Texto da secção com imagem */
+.texto-seccao {
+    max-width: 600px;
+}
+
+/* Imagem da secção */
+.imagem-seccao img {
+    max-width: 350px;
+    border-radius: 8px;
+}
+
+/* Botão principal */
+.botao-principal {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #a9cbe6;
+    color: #1f4e79;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.botao-principal:hover {
+    background-color: #8fb9d9;
+    color: white;
+}
+
+/* Títulos das secções */
+.container-texto-generico h1,
+.container-texto-generico h2 {
+    color: #1f4e79;
+    margin-bottom: 15px;
+}
+
+/* Parágrafos */
+.container-texto-generico p {
+    margin-top: 10px;
+    color: #2c3e50;
+}
+
+/* Lista de funcionalidades */
+.container-texto-generico ul {
+    margin-top: 15px;
+    list-style-position: inside;
+}
+
+/* Lista com ícones */
+.lista-funcionalidades {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-funcionalidades li {
+    margin: 10px 0;
+}
+
+.lista-funcionalidades i {
+    margin-right: 8px;
+    color: #1f4e79;
+}
+
+/* Rodapé */
+.footer-container {
+    display: flex;
+    background-color: #a9cbe6;
+    color: #1f4e79;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* Estilos de cada secção do rodapé */
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px;
+    text-align: center;
+}
+
+.footer-section strong {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 10px;
+    color: #1f4e79;
+}
+
+.footer-section p {
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+/* =========================
+   BACKEND - ÁREA PRIVADA
+   ========================= */
+
 .bng-navbar-menu {
     background-color: #a9cbe6;
     display: flex;
@@ -78,6 +258,12 @@
     color: white;
 }
 
+.sidebar a i {
+    width: 22px;
+    text-align: center;
+    margin-right: 8px;
+}
+
 /* Ajuste do conteúdo para não ficar sob a navbar */
 .content {
     margin-left: 250px;
@@ -107,6 +293,11 @@ th {
 
 /* Estilos para formulários */
 form {
+    margin-top: 20px;
+    max-width: 600px;
+}
+
+.formulario-registo {
     margin-top: 20px;
     max-width: 600px;
 }
@@ -163,6 +354,24 @@ form {
     background-color: #8fb9d9;
     border-color: #8fb9d9;
     color: white;
+}
+
+/* Botão Utilizador */
+#btn-utilizador {
+    background-color: #d7e6f2;
+    color: #1f4e79;
+    border: 1px solid #8fb9d9;
+    border-radius: 5px;
+    padding: 8px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+#btn-utilizador:hover {
+    background-color: #8fb9d9;
+    color: white;
+    border-color: #1f4e79;
 }
 
 /* Cards do dashboard */
@@ -292,33 +501,4 @@ form {
 /* Resultado das funcionalidades JS */
 .resultado-ferramenta {
     margin-top: 20px;
-}
-
-.sidebar a i {
-    width: 22px;
-    text-align: center;
-    margin-right: 8px;
-}
-
-.formulario-registo {
-    margin-top: 20px;
-    max-width: 600px;
-}
-
-
-#btn-utilizador {
-    background-color: #d7e6f2;
-    color: #1f4e79;
-    border: 1px solid #8fb9d9;
-    border-radius: 5px;
-    padding: 8px 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-}
-
-#btn-utilizador:hover {
-    background-color: #8fb9d9;
-    color: white;
-    border-color: #1f4e79;
 }
