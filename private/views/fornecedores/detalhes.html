@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Área Pessoal</title>
+    <title>MedInventário - Detalhes do Fornecedor</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,6 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <!-- Logo e Nome -->
             <a href="../../area_pessoal.html">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
@@ -34,52 +33,170 @@
         <div>
             <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
         </div>
+
     </header>
 
     <!-- Sidebar -->
     <aside class="sidebar">
         <h4>Menu</h4>
+
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i>Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i>Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e Contratos</a>
-            
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
-            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i>Ferramentas</a>
+            <a href="../equipamentos/lista.html">
+                <i class="fas fa-laptop-medical"></i> Equipamentos
+            </a>
+
+            <a href="../fornecedores/lista.html">
+                <i class="fas fa-truck-medical"></i> Fornecedores
+            </a>
+
+            <a href="../localizacoes/lista.html">
+                <i class="fas fa-location-dot"></i> Localizações
+            </a>
+
+            <a href="../documentacao/documentacao.html">
+                <i class="fas fa-file-medical"></i> Documentação
+            </a>
+
+            <a href="../garantias-contratos/garantias_contratos.html">
+                <i class="fas fa-file-contract"></i> Garantias e Contratos
+            </a>
+
+            <a href="../dashboard/dashboard.html">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+
+            <a href="../ferramentas/ferramentas.html">
+                <i class="fas fa-tools"></i> Ferramentas
+            </a>
         </nav>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2><strong><i class="fas fa-circle-info"></i> Detalhes do fornecedor</strong></h2>
-            <br>
 
-            <div class="card shadow rounded">
+            <h2>
+                <strong>
+                    <i class="fas fa-circle-info"></i> Detalhes do Fornecedor
+                </strong>
+            </h2>
+
+            <p>Consulta dos dados do fornecedor e dos equipamentos associados.</p>
+
+            <div class="card shadow rounded mt-4">
                 <div class="card-body">
-                    <p><strong>Empresa:</strong> MedTech Portugal</p>
+
+                    <h3>Identificação do fornecedor</h3>
+
+                    <p><strong>Nome da empresa:</strong> MedTech Portugal</p>
                     <p><strong>NIF:</strong> 509000000</p>
-                    <p><strong>Tipo:</strong> Empresa de assistência técnica</p>
+                    <p><strong>Tipo de fornecedor:</strong> Empresa de assistência técnica</p>
+
+                    <hr>
+
+                    <h3>Contactos gerais</h3>
+
+                    <p><strong>Contacto telefónico:</strong> +351 220 000 000</p>
                     <p><strong>Email:</strong> geral@medtech.pt</p>
-                    <p><strong>Telefone:</strong> +351 220 000 000</p>
                     <p><strong>Morada:</strong> Porto, Portugal</p>
                     <p><strong>Website:</strong> https://www.medtech.pt</p>
-                    <p><strong>Pessoa de contacto:</strong> Ana Martins</p>
-                    <p><strong>Telefone da pessoa de contacto:</strong> +351 910 000 000</p>
-                    <p><strong>Observações:</strong> Fornecedor responsável por assistência técnica de equipamentos
-                        críticos.</p>
 
-                    <a href="lista.html" class="btn btn-secondary">Voltar</a>
+                    <hr>
+
+                    <h3>Pessoas de contacto</h3>
+
+                    <table class="table table-bordered table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>Pessoa de contacto</th>
+                                <th>Telefone</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Ana Martins</td>
+                                <td>+351 910 000 000</td>
+                            </tr>
+
+                            <tr>
+                                <td>Pedro Costa</td>
+                                <td>+351 911 111 111</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <hr>
+
+                    <h3>Equipamentos associados</h3>
+
+                    <table class="table table-bordered table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>Código interno</th>
+                                <th>Equipamento</th>
+                                <th>Tipo de associação</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>004.002.00</td>
+                                <td>Monitor Multiparamétrico</td>
+                                <td>Assistência técnica</td>
+                                <td>
+                                    <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-info">
+                                        Consultar
+                                    </a>
+
+                                    <a href="remover_associacao.html" class="btn btn-sm btn-danger">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>003.001.00</td>
+                                <td>Ventilador Pulmonar</td>
+                                <td>Manutenção preventiva</td>
+                                <td>
+                                    <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-info">
+                                        Consultar
+                                    </a>
+
+                                    <a href="remover_associacao.html" class="btn btn-sm btn-danger">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <hr>
+
+                    <h3>Observações</h3>
+
+                    <p>Fornecedor responsável por assistência técnica de equipamentos críticos.</p>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="lista.html" class="btn btn-secondary">Voltar</a>
+                    </div>
+
                 </div>
             </div>
+
         </section>
     </main>
 
     <!-- Bootstrap JS -->
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 
+    <!-- JavaScript -->
     <script src="../../../assets/js/1241445.js"></script>
 
 </body>

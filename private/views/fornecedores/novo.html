@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Área Pessoal</title>
+    <title>MedInventário - Novo Fornecedor</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,6 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <!-- Logo e Nome -->
             <a href="../../area_pessoal.html">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
@@ -41,93 +40,160 @@
     <aside class="sidebar">
         <h4>Menu</h4>
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i>Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i>Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e Contratos</a>
-            
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
-            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i>Ferramentas</a>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
+            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
+            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
+                Contratos</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i> Ferramentas</a>
         </nav>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2><strong><i class="fas fa-plus"></i> Inserir novo fornecedor</strong></h2>
-            <br>
 
-            <form action="#" method="post">
-                <div class="mb-3">
-                    <label for="nome_empresa" class="form-label">Nome da empresa</label>
-                    <input type="text" class="form-control" id="nome_empresa" name="nome_empresa" required>
+            <h2><strong><i class="fas fa-plus"></i> Registar Fornecedor</strong></h2>
+            <p>Registe os dados principais do fornecedor.</p>
+
+            <form action="#" method="post" class="formulario-equipamento" onsubmit="validarFornecedor(); return false;">
+
+                <h3>Identificação do fornecedor</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="empresa" class="form-label">Nome da empresa *</label>
+                        <input type="text" class="form-control" id="empresa" name="empresa"
+                            placeholder="Ex.: MedTech Portugal" required>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="nif" class="form-label">NIF *</label>
+                        <input type="text" class="form-control" id="nif" name="nif" placeholder="Ex.: 509000000"
+                            required>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="nif" class="form-label">NIF</label>
-                    <input type="text" class="form-control" id="nif" name="nif">
-                </div>
-
-                <div class="mb-3">
-                    <label for="tipo_fornecedor" class="form-label">Tipo de fornecedor</label>
+                    <label for="tipo_fornecedor" class="form-label">Tipo de fornecedor *</label>
                     <select class="form-select" id="tipo_fornecedor" name="tipo_fornecedor" required>
-                        <option value="">Selecione o tipo</option>
+                        <option value="">Selecione o tipo de fornecedor</option>
                         <option value="fabricante">Fabricante</option>
-                        <option value="distribuidor">Distribuidor / fornecedor comercial</option>
-                        <option value="assistencia">Empresa de assistência técnica</option>
-                        <option value="consumiveis">Fornecedor de consumíveis ou acessórios</option>
+                        <option value="fornecedor_comercial">Fornecedor comercial</option>
+                        <option value="assistencia_tecnica">Empresa de assistência técnica</option>
+                        <option value="consumiveis_acessorios">Fornecedor de consumíveis/acessórios</option>
                     </select>
                 </div>
 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
+                <h3>Contactos gerais</h3>
 
-                <div class="mb-3">
-                    <label for="telefone" class="form-label">Telefone</label>
-                    <input type="text" class="form-control" id="telefone" name="telefone">
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="telefone" class="form-label">Contacto telefónico</label>
+                        <input type="text" class="form-control" id="telefone" name="telefone"
+                            placeholder="Ex.: +351 220 000 000">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            placeholder="Ex.: geral@medtech.pt" required>
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="morada" class="form-label">Morada</label>
-                    <input type="text" class="form-control" id="morada" name="morada">
+                    <input type="text" class="form-control" id="morada" name="morada"
+                        placeholder="Ex.: Porto, Portugal">
                 </div>
 
                 <div class="mb-3">
                     <label for="website" class="form-label">Website</label>
-                    <input type="url" class="form-control" id="website" name="website">
+                    <input type="text" class="form-control" id="website" name="website"
+                        placeholder="Ex.: https://www.medtech.pt">
                 </div>
 
-                <div class="mb-3">
-                    <label for="pessoa_contacto" class="form-label">Pessoa de contacto</label>
-                    <input type="text" class="form-control" id="pessoa_contacto" name="pessoa_contacto">
+                <h3>Pessoas de contacto</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="contacto1" class="form-label">Pessoa de contacto 1</label>
+                        <input type="text" class="form-control" id="contacto1" name="contacto1"
+                            placeholder="Ex.: Ana Martins">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="telefone_contacto1" class="form-label">Telefone da pessoa de contacto 1</label>
+                        <input type="text" class="form-control" id="telefone_contacto1" name="telefone_contacto1"
+                            placeholder="Ex.: +351 910 000 000">
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="telefone_contacto" class="form-label">Telefone da pessoa de contacto</label>
-                    <input type="text" class="form-control" id="telefone_contacto" name="telefone_contacto">
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="contacto2" class="form-label">Pessoa de contacto 2</label>
+                        <input type="text" class="form-control" id="contacto2" name="contacto2">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="telefone_contacto2" class="form-label">Telefone da pessoa de contacto 2</label>
+                        <input type="text" class="form-control" id="telefone_contacto2" name="telefone_contacto2">
+                    </div>
                 </div>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="contacto3" class="form-label">Pessoa de contacto 3</label>
+                        <input type="text" class="form-control" id="contacto3" name="contacto3">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="telefone_contacto3" class="form-label">Telefone da pessoa de contacto 3</label>
+                        <input type="text" class="form-control" id="telefone_contacto3" name="telefone_contacto3">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="contacto4" class="form-label">Pessoa de contacto 4</label>
+                        <input type="text" class="form-control" id="contacto4" name="contacto4">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="telefone_contacto4" class="form-label">Telefone da pessoa de contacto 4</label>
+                        <input type="text" class="form-control" id="telefone_contacto4" name="telefone_contacto4">
+                    </div>
+                </div>
+
+                <h3>Observações</h3>
 
                 <div class="mb-3">
                     <label for="observacoes" class="form-label">Observações</label>
-                    <textarea class="form-control" id="observacoes" name="observacoes" rows="3"></textarea>
+                    <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
+                        placeholder="Indique informação adicional relevante sobre o fornecedor."></textarea>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2">
                     <a href="lista.html" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Guardar fornecedor
+                    </button>
                 </div>
+
             </form>
 
             <p id="mensagem-formulario"></p>
+
         </section>
     </main>
 
     <!-- Bootstrap JS -->
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 
+    <!-- JavaScript -->
     <script src="../../../assets/js/1241445.js"></script>
 
 </body>
