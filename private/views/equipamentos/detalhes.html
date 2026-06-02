@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Ferramentas</title>
+    <title>MedInventário - Detalhes do Equipamento</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,6 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <!-- Logo e Nome -->
             <a href="../../area_pessoal.html">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
@@ -41,45 +40,146 @@
     <aside class="sidebar">
         <h4>Menu</h4>
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i>Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i>Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e Contratos</a>
-            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i>Pesquisa</a>
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
-            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i>Ferramentas</a>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
+            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
+            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
+                Contratos</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i> Ferramentas</a>
         </nav>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2><strong><i class="fas fa-circle-info"></i> Detalhes do equipamento</strong></h2>
-            <br>
 
-            <div class="card shadow rounded">
+            <h2><strong><i class="fas fa-circle-info"></i> Detalhes do Equipamento</strong></h2>
+            <p>Ficha detalhada do equipamento médico registado no sistema.</p>
+
+            <div class="card shadow rounded mt-4">
                 <div class="card-body">
+
+                    <h3>Identificação do equipamento</h3>
+
                     <p><strong>Código interno:</strong> EQ001</p>
                     <p><strong>Designação:</strong> Monitor Multiparamétrico</p>
-                    <p><strong>Marca:</strong> Philips</p>
-                    <p><strong>Modelo:</strong> IntelliVue</p>
-                    <p><strong>Número de série:</strong> SN12345</p>
-                    <p><strong>Localização:</strong> UCI - Sala 1</p>
-                    <p><strong>Estado:</strong> Ativo</p>
-                    <p><strong>Criticidade:</strong> Alta</p>
-                    <p><strong>Fornecedor:</strong> MedTech Portugal</p>
-                    <p><strong>Documentação:</strong> Manual técnico e certificado de calibração</p>
+                    <p><strong>Categoria / Grupo:</strong> Monitorização</p>
 
-                    <a href="lista.html" class="btn btn-secondary">Voltar</a>
+                    <hr>
+
+                    <h3>Dados técnicos</h3>
+
+                    <p><strong>Marca:</strong> Philips</p>
+                    <p><strong>Modelo:</strong> IntelliVue MP5</p>
+                    <p><strong>Número de série:</strong> MP5-2022-45873</p>
+                    <p><strong>Ano de fabrico:</strong> 2022</p>
+
+                    <hr>
+
+                    <h3>Entidades associadas</h3>
+
+                    <p><strong>Fabricante(s):</strong> Philips</p>
+                    <p><strong>Fornecedor(es):</strong> MedTech Portugal; Hospital Devices S.A.</p>
+                    <p><strong>Prestador(es) de assistência técnica:</strong> MedTech Portugal</p>
+
+                    <hr>
+
+                    <h3>Localização e estado</h3>
+
+                    <p><strong>Localização atual:</strong> UCI - Sala 1</p>
+                    <p><strong>Estado atual:</strong> Ativo</p>
+                    <p><strong>Criticidade:</strong> Suporte de vida</p>
+
+                    <hr>
+
+                    <h3>Aquisição, garantia e contrato</h3>
+
+                    <p><strong>Data de aquisição:</strong> 2024-01-15</p>
+                    <p><strong>Custo de aquisição:</strong> 2500 €</p>
+                    <p><strong>Tipo de entrada:</strong> Compra</p>
+                    <p><strong>Fim da garantia:</strong> 2027-01-15</p>
+                    <p><strong>Contrato / informação de garantia:</strong> Manutenção preventiva com MedTech Portugal
+                        até 2027.</p>
+
+                    <hr>
+
+                    <h3>Utilização e observações</h3>
+
+                    <p>
+                        <strong>Observações / utilização do equipamento:</strong>
+                        Equipamento utilizado para monitorização contínua de sinais vitais em contexto de cuidados
+                        intensivos.
+                    </p>
+
+                    <hr>
+
+                    <h3>Documentação associada</h3>
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Tipo</th>
+                                <th>Data</th>
+                                <th>Validade</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Manual Técnico IntelliVue MP5</td>
+                                <td>Manual de serviço</td>
+                                <td>2024-01-15</td>
+                                <td>Sem validade</td>
+                                <td>
+                                    <a href="../documentacao/documentacao.html" class="btn btn-sm btn-info">
+                                        Consultar
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Certificado de Calibração</td>
+                                <td>Certificado de calibração</td>
+                                <td>2025-01-10</td>
+                                <td>2026-01-10</td>
+                                <td>
+                                    <a href="../documentacao/documentacao.html" class="btn btn-sm btn-info">
+                                        Consultar
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="lista.html" class="btn btn-secondary">
+                            Voltar
+                        </a>
+
+                        <a href="editar.html" class="btn btn-warning">
+                            Editar
+                        </a>
+
+                        <a href="../documentacao/documentacao.html" class="btn btn-primary">
+                            Documentação do equipamento
+                        </a>
+                    </div>
+
                 </div>
             </div>
+
         </section>
     </main>
 
     <!-- Bootstrap JS -->
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 
+    <!-- JavaScript -->
     <script src="../../../assets/js/1241445.js"></script>
 
 </body>

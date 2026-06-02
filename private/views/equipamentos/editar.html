@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Área Pessoal</title>
+    <title>MedInventário - Editar Equipamento</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,6 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <!-- Logo e Nome -->
             <a href="../../area_pessoal.html">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
@@ -41,88 +40,199 @@
     <aside class="sidebar">
         <h4>Menu</h4>
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i>Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i>Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e Contratos</a>
-            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i>Pesquisa</a>
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
-            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i>Ferramentas</a>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
+            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
+            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
+                Contratos</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i> Ferramentas</a>
         </nav>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
-            <h2><strong><i class="fas fa-pen"></i> Editar equipamento</strong></h2>
-            <br>
 
-            <form action="#" method="post">
-                <div class="mb-3">
-                    <label for="codigo" class="form-label">Código interno</label>
-                    <input type="text" class="form-control" id="codigo" name="codigo" value="EQ001" required>
+            <h2><strong><i class="fas fa-pen"></i> Editar Equipamento</strong></h2>
+            <p>Atualize os dados do equipamento médico selecionado.</p>
+
+            <form action="#" method="post" class="formulario-equipamento">
+
+                <h3>Identificação do equipamento</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="codigo" class="form-label">Código interno *</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo" value="EQ001" required>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="designacao" class="form-label">Designação *</label>
+                        <input type="text" class="form-control" id="designacao" name="designacao"
+                            value="Monitor Multiparamétrico" required>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="designacao" class="form-label">Designação do equipamento</label>
-                    <input type="text" class="form-control" id="designacao" name="designacao"
-                        value="Monitor Multiparamétrico" required>
+                    <label for="categoria" class="form-label">Categoria / Grupo *</label>
+                    <input type="text" class="form-control" id="categoria" name="categoria" value="Monitorização"
+                        required>
+                </div>
+
+                <h3>Dados técnicos</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="marca" class="form-label">Marca *</label>
+                        <input type="text" class="form-control" id="marca" name="marca" value="Philips" required>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="modelo" class="form-label">Modelo *</label>
+                        <input type="text" class="form-control" id="modelo" name="modelo" value="IntelliVue MP5"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="numero_serie" class="form-label">Número de série *</label>
+                        <input type="text" class="form-control" id="numero_serie" name="numero_serie"
+                            value="MP5-2022-45873" required>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="ano_fabrico" class="form-label">Ano de fabrico</label>
+                        <input type="number" class="form-control" id="ano_fabrico" name="ano_fabrico" value="2022">
+                    </div>
+                </div>
+
+                <h3>Entidades associadas</h3>
+
+                <div class="mb-3">
+                    <label for="fabricantes" class="form-label">Fabricante(s)</label>
+                    <textarea class="form-control" id="fabricantes" name="fabricantes" rows="2">Philips</textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label for="marca" class="form-label">Marca</label>
-                    <input type="text" class="form-control" id="marca" name="marca" value="Philips">
+                    <label for="fornecedores" class="form-label">Fornecedor(es)</label>
+                    <textarea class="form-control" id="fornecedores" name="fornecedores"
+                        rows="2">MedTech Portugal; Hospital Devices S.A.</textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label for="modelo" class="form-label">Modelo</label>
-                    <input type="text" class="form-control" id="modelo" name="modelo" value="IntelliVue">
+                    <label for="assistencia" class="form-label">Prestador(es) de assistência técnica</label>
+                    <textarea class="form-control" id="assistencia" name="assistencia"
+                        rows="2">MedTech Portugal</textarea>
+                </div>
+
+                <h3>Localização e estado</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="localizacao" class="form-label">Localização atual *</label>
+                        <input type="text" class="form-control" id="localizacao" name="localizacao" value="UCI - Sala 1"
+                            required>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="estado" class="form-label">Estado atual *</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="">Selecione o estado</option>
+                            <option value="ativo" selected>Ativo</option>
+                            <option value="manutencao">Em manutenção</option>
+                            <option value="inativo">Inativo</option>
+                            <option value="calibracao">Em calibração</option>
+                            <option value="quarentena">Em quarentena</option>
+                            <option value="abatido">Abatido</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="numero_serie" class="form-label">Número de série</label>
-                    <input type="text" class="form-control" id="numero_serie" name="numero_serie" value="SN12345">
-                </div>
-
-                <div class="mb-3">
-                    <label for="estado" class="form-label">Estado</label>
-                    <select class="form-select" id="estado" name="estado" required>
-                        <option value="">Selecione um estado</option>
-                        <option value="ativo" selected>Ativo</option>
-                        <option value="manutencao">Em manutenção</option>
-                        <option value="inativo">Inativo</option>
-                        <option value="calibracao">Em calibração</option>
-                        <option value="quarentena">Em quarentena</option>
-                        <option value="abatido">Abatido</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="criticidade" class="form-label">Criticidade</label>
+                    <label for="criticidade" class="form-label">Criticidade *</label>
                     <select class="form-select" id="criticidade" name="criticidade" required>
                         <option value="">Selecione a criticidade</option>
                         <option value="baixa">Baixa</option>
                         <option value="media">Média</option>
-                        <option value="alta" selected>Alta</option>
-                        <option value="suporte_vida">Suporte de vida</option>
+                        <option value="alta">Alta</option>
+                        <option value="suporte_vida" selected>Suporte de vida</option>
                     </select>
+                </div>
+
+                <h3>Aquisição, garantia e contrato</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="data_aquisicao" class="form-label">Data de aquisição</label>
+                        <input type="date" class="form-control" id="data_aquisicao" name="data_aquisicao"
+                            value="2024-01-15">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="custo_aquisicao" class="form-label">Custo de aquisição</label>
+                        <input type="number" class="form-control" id="custo_aquisicao" name="custo_aquisicao"
+                            value="2500">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="tipo_entrada" class="form-label">Tipo de entrada</label>
+                        <select class="form-select" id="tipo_entrada" name="tipo_entrada">
+                            <option value="">Selecione o tipo de entrada</option>
+                            <option value="compra" selected>Compra</option>
+                            <option value="aluguer">Aluguer</option>
+                            <option value="doacao">Doação</option>
+                            <option value="emprestimo">Empréstimo</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="fim_garantia" class="form-label">Fim da garantia</label>
+                        <input type="date" class="form-control" id="fim_garantia" name="fim_garantia"
+                            value="2027-01-15">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="contrato" class="form-label">Contrato / informação de garantia</label>
+                    <textarea class="form-control" id="contrato" name="contrato"
+                        rows="2">Manutenção preventiva com MedTech Portugal até 2027.</textarea>
+                </div>
+
+                <h3>Utilização e observações</h3>
+
+                <div class="mb-3">
+                    <label for="observacoes" class="form-label">Observações / utilização do equipamento</label>
+                    <textarea class="form-control" id="observacoes" name="observacoes"
+                        rows="4">Equipamento utilizado para monitorização contínua de sinais vitais em contexto de cuidados intensivos.</textarea>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2">
                     <a href="lista.html" class="btn btn-secondary">Cancelar</a>
-                    <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">Guardar
-                        alterações</button>
+
+                    <button type="submit" class="btn btn-primary">Guardar alterações</button>
+
+                    <a href="../documentacao/documentacao.html" class="btn btn-primary">
+                        Documentação
+                    </a>
                 </div>
+
             </form>
 
             <p id="mensagem-formulario"></p>
+
         </section>
     </main>
 
     <!-- Bootstrap JS -->
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 
+    <!-- JavaScript -->
     <script src="../../../assets/js/1241445.js"></script>
 
 </body>

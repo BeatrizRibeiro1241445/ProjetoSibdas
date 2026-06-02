@@ -509,3 +509,25 @@ form {
 .resultado-ferramenta {
     margin-top: 20px;
 }
+
+.actions-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.formulario-equipamento {
+    margin-top: 20px;
+    max-width: 1000px;
+}
+
+.accordion-button {
+    color: #1f4e79;
+    font-weight: bold;
+}
+
+.accordion-body {
+    background-color: white;
+}
