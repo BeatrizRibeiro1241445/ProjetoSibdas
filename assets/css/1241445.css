@@ -531,3 +531,8 @@ form {
 .accordion-body {
     background-color: white;
 }
+
+.formulario-garantia {
+    margin-top: 20px;
+    max-width: 1000px;
+}

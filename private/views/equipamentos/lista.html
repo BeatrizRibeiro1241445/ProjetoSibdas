@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Área Pessoal</title>
+    <title>MedInventário - Equipamentos</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,6 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <!-- Logo e Nome -->
             <a href="../../area_pessoal.html">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
@@ -41,15 +40,15 @@
     <aside class="sidebar">
         <h4>Menu</h4>
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i>Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i>Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
+            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
+            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
                 Contratos</a>
-            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i>Pesquisa</a>
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
-            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i>Ferramentas</a>
+            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i> Pesquisa</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i> Ferramentas</a>
         </nav>
     </aside>
 
@@ -60,9 +59,15 @@
             <div class="actions-top">
                 <h2><strong><i class="fas fa-laptop-medical"></i> Gestão de Equipamentos</strong></h2>
 
-                <a href="novo.html" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Novo equipamento
-                </a>
+                <div>
+                    <a href="arquivados.html" class="btn btn-secondary">
+                        <i class="fas fa-archive"></i> Arquivados
+                    </a>
+
+                    <a href="novo.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Novo equipamento
+                    </a>
+                </div>
             </div>
 
             <br>
@@ -85,8 +90,8 @@
                         <div class="accordion-body">
 
                             <p>
-                                Utilize os campos abaixo para pesquisar equipamentos por identificação, características
-                                técnicas, localização, estado ou criticidade.
+                                Utilize os campos abaixo para pesquisar equipamentos por identificação,
+                                características técnicas, localização, estado ou criticidade.
                             </p>
 
                             <form action="#" method="get" class="row g-3">
@@ -94,7 +99,7 @@
                                 <div class="col-12 col-md-4">
                                     <label for="pesquisa_codigo" class="form-label">Código interno</label>
                                     <input type="text" class="form-control" id="pesquisa_codigo" name="pesquisa_codigo"
-                                        placeholder="Ex.: EQ001">
+                                        placeholder="Ex.: 004.002.00">
                                 </div>
 
                                 <div class="col-12 col-md-4">
@@ -212,7 +217,7 @@
 
                 <tbody>
                     <tr>
-                        <td>EQ001</td>
+                        <td>004.002.00</td>
                         <td>Monitor Multiparamétrico</td>
                         <td>Monitorização</td>
                         <td>UCI - Sala 1</td>
@@ -222,12 +227,13 @@
                             <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
                             <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
                             <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                            <a href="arquivar.html" class="btn btn-sm btn-secondary">Arquivar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td>EQ002</td>
+                        <td>007.001.00</td>
                         <td>Bomba de Infusão</td>
                         <td>Terapia</td>
                         <td>Bloco Operatório</td>
@@ -237,12 +243,13 @@
                             <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
                             <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
                             <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                            <a href="arquivar.html" class="btn btn-sm btn-secondary">Arquivar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td>EQ003</td>
+                        <td>003.001.00</td>
                         <td>Ventilador Pulmonar</td>
                         <td>Suporte de vida</td>
                         <td>UCI - Sala 2</td>
@@ -252,7 +259,8 @@
                             <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
                             <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
                             <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                            <a href="arquivar.html" class="btn btn-sm btn-secondary">Arquivar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
                         </td>
                     </tr>
                 </tbody>
@@ -262,9 +270,8 @@
 
             <div class="card mb-3">
                 <div class="card-body">
-                    <h4>EQ001 - Monitor Multiparamétrico</h4>
+                    <h4>004.002.00 - Monitor Multiparamétrico</h4>
 
-                    <p><strong>Família:</strong> 04 - Monitores de sinais vitais</p>
                     <p><strong>Categoria / Grupo:</strong> Monitorização</p>
                     <p><strong>Marca:</strong> Philips</p>
                     <p><strong>Modelo:</strong> IntelliVue MP5</p>
@@ -277,25 +284,8 @@
 
                     <a href="detalhes.html" class="btn btn-sm btn-info">Consultar ficha</a>
                     <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
-                </div>
-            </div>
-
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h4>EQ002 - Bomba de Infusão</h4>
-
-                    <p><strong>Família:</strong> 07 - Bombas e sistemas de infusão</p>
-                    <p><strong>Categoria / Grupo:</strong> Terapia</p>
-                    <p><strong>Marca:</strong> B. Braun</p>
-                    <p><strong>Modelo:</strong> Infusomat Space</p>
-                    <p><strong>Número de série:</strong> INF-2020-88321</p>
-                    <p><strong>Localização:</strong> Bloco Operatório</p>
-                    <p><strong>Estado:</strong> Em manutenção</p>
-                    <p><strong>Criticidade:</strong> Média</p>
-                    <p><strong>Utilização:</strong> Administração controlada de medicamentos e fluidos.</p>
-
-                    <a href="detalhes.html" class="btn btn-sm btn-info">Consultar ficha</a>
-                    <a href="../documentacao/documentacao.html" class="btn btn-sm btn-primary">Documentação</a>
+                    <a href="arquivar.html" class="btn btn-sm btn-secondary">Arquivar</a>
+                    <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
                 </div>
             </div>
 
@@ -305,6 +295,7 @@
     <!-- Bootstrap JS -->
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 
+    <!-- JavaScript -->
     <script src="../../../assets/js/1241445.js"></script>
 
 </body>

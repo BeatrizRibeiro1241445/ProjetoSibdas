@@ -12,3 +12,38 @@ function mostrarMensagemFormulario() {
 function mostrarAreaUtilizador() {
     alert("Área reservada do MedInventário");
 }
+
+function validarEquipamento() {
+    const codigo = document.getElementById("codigo").value;
+    const designacao = document.getElementById("designacao").value;
+    const numeroSerie = document.getElementById("numero_serie").value;
+    const mensagem = document.getElementById("mensagem-formulario");
+
+    if (codigo === "" || designacao === "" || numeroSerie === "") {
+        mensagem.textContent = "Erro: preencha os campos obrigatórios.";
+        mensagem.className = "alert alert-danger mt-3";
+    } else if (
+        codigo === "004.002.00" ||
+        codigo === "007.001.00" ||
+        codigo === "003.001.00" ||
+        designacao === "Monitor Multiparamétrico" ||
+        designacao === "Bomba de Infusão" ||
+        designacao === "Ventilador Pulmonar" ||
+        numeroSerie === "MP5-2022-45873" ||
+        numeroSerie === "INF-2020-88321" ||
+        numeroSerie === "EV500-2021-55210"
+    ) {
+        mensagem.textContent = "Erro: equipamento já existente.";
+        mensagem.className = "alert alert-danger mt-3";
+    } else {
+        mensagem.textContent = "Equipamento guardado com sucesso.";
+        mensagem.className = "alert alert-success mt-3";
+    }
+}
+
+function atualizarGarantiaContrato() {
+    const mensagem = document.getElementById("mensagem-formulario");
+
+    mensagem.textContent = "Garantia e contrato atualizados localmente para teste.";
+    mensagem.className = "alert alert-success mt-3";
+}
