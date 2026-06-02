@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Movimentar Equipamento</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../../../assets/css/1241445.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="bng-navbar-menu">
+
+        <div>
+            <a href="../../area_pessoal.html">
+                <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
+            </a>
+            <h3>MedInventário</h3>
+        </div>
+
+        <div>
+            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
+        </div>
+
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <nav>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
+            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
+            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
+                Contratos</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i> Ferramentas</a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="content">
+        <section>
+
+            <h2><strong><i class="fas fa-right-left"></i> Movimentar Equipamento</strong></h2>
+            <p>Atualize a localização física do equipamento selecionado.</p>
+
+            <form action="#" method="post" class="formulario-equipamento">
+
+                <h3>Equipamento</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="codigo" class="form-label">Código interno</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo" value="004.002.00" readonly>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="designacao" class="form-label">Designação</label>
+                        <input type="text" class="form-control" id="designacao" name="designacao"
+                            value="Monitor Multiparamétrico" readonly>
+                    </div>
+                </div>
+
+                <h3>Localização atual</h3>
+
+                <div class="row mb-3">
+                    <div class="col-12 col-md-4">
+                        <label for="edificio_atual" class="form-label">Edifício atual</label>
+                        <input type="text" class="form-control" id="edificio_atual" name="edificio_atual"
+                            value="Hospital Central" readonly>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label for="servico_atual" class="form-label">Serviço atual</label>
+                        <input type="text" class="form-control" id="servico_atual" name="servico_atual"
+                            value="Unidade de Cuidados Intensivos" readonly>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label for="sala_atual" class="form-label">Sala atual</label>
+                        <input type="text" class="form-control" id="sala_atual" name="sala_atual" value="Sala 1"
+                            readonly>
+                    </div>
+                </div>
+
+                <h3>Nova localização</h3>
+
+                <div class="mb-3">
+                    <label for="nova_categoria" class="form-label">Nova categoria *</label>
+                    <input type="text" class="form-control" id="nova_categoria" name="nova_categoria"
+                        placeholder="Ex.: Área cirúrgica" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="novo_edificio" class="form-label">Novo edifício *</label>
+                    <input type="text" class="form-control" id="novo_edificio" name="novo_edificio"
+                        placeholder="Ex.: Hospital Central" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="novo_piso" class="form-label">Novo piso *</label>
+                    <input type="text" class="form-control" id="novo_piso" name="novo_piso" placeholder="Ex.: Piso 1"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="novo_servico" class="form-label">Novo serviço / departamento *</label>
+                    <input type="text" class="form-control" id="novo_servico" name="novo_servico"
+                        placeholder="Ex.: Bloco Operatório" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nova_sala" class="form-label">Nova sala / gabinete *</label>
+                    <input type="text" class="form-control" id="nova_sala" name="nova_sala" placeholder="Ex.: Sala 2"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="motivo" class="form-label">Motivo da movimentação</label>
+                    <textarea class="form-control" id="motivo" name="motivo" rows="3"
+                        placeholder="Indique o motivo da alteração de localização."></textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="detalhes.html" class="btn btn-secondary">Cancelar</a>
+
+                    <button type="submit" class="btn btn-primary">
+                        Guardar movimentação
+                    </button>
+                </div>
+
+            </form>
+
+            <p id="mensagem-formulario"></p>
+
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="../../../assets/js/1241445.js"></script>
+
+</body>
+
+</html>

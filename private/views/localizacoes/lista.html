@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Área Pessoal</title>
+    <title>MedInventário - Localizações</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,6 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <!-- Logo e Nome -->
             <a href="../../area_pessoal.html">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
@@ -41,22 +40,23 @@
     <aside class="sidebar">
         <h4>Menu</h4>
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i>Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i>Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i>Garantias e Contratos</a>
-            <a href="../pesquisa/pesquisa.html"><i class="fas fa-magnifying-glass"></i>Pesquisa</a>
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
-            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i>Ferramentas</a>
+            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
+            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
+            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
+            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
+            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
+                Contratos</a>
+            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../ferramentas/ferramentas.html"><i class="fas fa-tools"></i> Ferramentas</a>
         </nav>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
+
             <div class="actions-top">
-                <h2><strong><i class="fas fa-location-dot"></i> Listagem de Localizações</strong></h2>
+                <h2><strong><i class="fas fa-location-dot"></i> Gestão de Localizações</strong></h2>
 
                 <a href="novo.html" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Nova localização
@@ -66,11 +66,100 @@
             <br>
             <hr>
 
-            <p>Lista de localizações hospitalares registadas no sistema.</p>
+            <div class="accordion mb-4" id="accordionPesquisaLocalizacoes">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingPesquisaLocalizacoes">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapsePesquisaLocalizacoes" aria-expanded="false"
+                            aria-controls="collapsePesquisaLocalizacoes">
+                            <strong><i class="fas fa-magnifying-glass"></i> Pesquisa e filtros</strong>
+                        </button>
+                    </h2>
+
+                    <div id="collapsePesquisaLocalizacoes" class="accordion-collapse collapse"
+                        aria-labelledby="headingPesquisaLocalizacoes" data-bs-parent="#accordionPesquisaLocalizacoes">
+
+                        <div class="accordion-body">
+
+                            <p>
+                                Utilize os campos abaixo para pesquisar localizações ou procurar em que localização
+                                está um equipamento através do código interno ou da designação.
+                            </p>
+
+                            <form action="#" method="get" class="row g-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_codigo_equipamento" class="form-label">Código do
+                                        equipamento</label>
+                                    <input type="text" class="form-control" id="filtro_codigo_equipamento"
+                                        name="filtro_codigo_equipamento" placeholder="Ex.: 004.002.00">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_nome_equipamento" class="form-label">Nome do equipamento</label>
+                                    <input type="text" class="form-control" id="filtro_nome_equipamento"
+                                        name="filtro_nome_equipamento" placeholder="Ex.: Monitor Multiparamétrico">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_categoria" class="form-label">Categoria</label>
+                                    <input type="text" class="form-control" id="filtro_categoria"
+                                        name="filtro_categoria" placeholder="Ex.: Área clínica crítica">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_edificio" class="form-label">Edifício</label>
+                                    <input type="text" class="form-control" id="filtro_edificio" name="filtro_edificio"
+                                        placeholder="Ex.: Hospital Central">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_piso" class="form-label">Piso</label>
+                                    <input type="text" class="form-control" id="filtro_piso" name="filtro_piso"
+                                        placeholder="Ex.: Piso 2">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_servico" class="form-label">Serviço / Departamento</label>
+                                    <input type="text" class="form-control" id="filtro_servico" name="filtro_servico"
+                                        placeholder="Ex.: UCI">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="filtro_sala" class="form-label">Sala / Gabinete</label>
+                                    <input type="text" class="form-control" id="filtro_sala" name="filtro_sala"
+                                        placeholder="Ex.: Sala 1">
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-magnifying-glass"></i> Pesquisar
+                                    </button>
+
+                                    <button type="reset" class="btn btn-secondary">
+                                        Limpar
+                                    </button>
+                                </div>
+
+                            </form>
+
+                            <p class="mt-3">
+                                Nesta fase, os filtros representam a estrutura da funcionalidade.
+                                A aplicação dinâmica será implementada posteriormente com PHP e MySQL.
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Localizações existentes</h3>
 
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th>Categoria</th>
                         <th>Edifício</th>
                         <th>Piso</th>
                         <th>Serviço / Departamento</th>
@@ -81,36 +170,53 @@
 
                 <tbody>
                     <tr>
+                        <td>Área clínica crítica</td>
                         <td>Hospital Central</td>
-                        <td>0</td>
-                        <td>Urgência</td>
-                        <td>Sala 3</td>
+                        <td>Piso 2</td>
+                        <td>Unidade de Cuidados Intensivos</td>
+                        <td>Sala 1</td>
                         <td>
-                            <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Equipamentos</a>
                             <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
                         </td>
                     </tr>
 
                     <tr>
+                        <td>Área cirúrgica</td>
                         <td>Hospital Central</td>
-                        <td>2</td>
-                        <td>Unidade de Cuidados Intensivos</td>
-                        <td>Sala 1</td>
+                        <td>Piso 1</td>
+                        <td>Bloco Operatório</td>
+                        <td>Sala 2</td>
                         <td>
-                            <a href="detalhes.html" class="btn btn-sm btn-info">Consultar</a>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Equipamentos</a>
                             <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Apagar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Área de urgência</td>
+                        <td>Hospital Central</td>
+                        <td>Piso 0</td>
+                        <td>Urgência</td>
+                        <td>Sala 3</td>
+                        <td>
+                            <a href="detalhes.html" class="btn btn-sm btn-info">Equipamentos</a>
+                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
         </section>
     </main>
 
     <!-- Bootstrap JS -->
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 
+    <!-- JavaScript -->
     <script src="../../../assets/js/1241445.js"></script>
 
 </body>
