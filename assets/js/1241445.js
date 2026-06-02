@@ -13,6 +13,7 @@ function mostrarAreaUtilizador() {
     alert("Área reservada do MedInventário");
 }
 
+// Validação simples de teste para o formulário de equipamentos
 function validarEquipamento() {
     const codigo = document.getElementById("codigo").value;
     const designacao = document.getElementById("designacao").value;
@@ -41,9 +42,25 @@ function validarEquipamento() {
     }
 }
 
+// Mensagem de teste para edição de garantias e contratos
 function atualizarGarantiaContrato() {
     const mensagem = document.getElementById("mensagem-formulario");
 
-    mensagem.textContent = "Garantia e contrato atualizados localmente para teste.";
-    mensagem.className = "alert alert-success mt-3";
+    if (mensagem) {
+        mensagem.textContent = "Garantia e contrato atualizados localmente para teste.";
+        mensagem.className = "alert alert-success mt-3";
+    }
+}
+
+function abrirSecaoDashboard(idSecao, idCollapse) {
+    const secao = document.getElementById(idSecao);
+    const caixa = document.getElementById(idCollapse);
+
+    if (caixa) {
+        caixa.classList.add("show");
+    }
+
+    if (secao) {
+        secao.scrollIntoView();
+    }
 }
