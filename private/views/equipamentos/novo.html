@@ -301,78 +301,6 @@
                                         placeholder="Ex.: entidade responsável pela manutenção preventiva deste equipamento."></textarea>
                                 </div>
 
-                                <h3 class="mt-4">
-                                    <i class="fas fa-users"></i> Pessoas de contacto para este equipamento
-                                </h3>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_1_nome" class="form-label">Pessoa de contacto 1</label>
-                                        <input type="text" class="form-control" id="contacto_1_nome"
-                                            name="contacto_1_nome" placeholder="Ex.: Ana Martins">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_1_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 1</label>
-                                        <input type="text" class="form-control" id="contacto_1_telefone"
-                                            name="contacto_1_telefone" placeholder="Ex.: +351 910 000 000">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_2_nome" class="form-label">Pessoa de contacto 2</label>
-                                        <input type="text" class="form-control" id="contacto_2_nome"
-                                            name="contacto_2_nome">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_2_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 2</label>
-                                        <input type="text" class="form-control" id="contacto_2_telefone"
-                                            name="contacto_2_telefone">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_3_nome" class="form-label">Pessoa de contacto 3</label>
-                                        <input type="text" class="form-control" id="contacto_3_nome"
-                                            name="contacto_3_nome">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_3_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 3</label>
-                                        <input type="text" class="form-control" id="contacto_3_telefone"
-                                            name="contacto_3_telefone">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_4_nome" class="form-label">Pessoa de contacto 4</label>
-                                        <input type="text" class="form-control" id="contacto_4_nome"
-                                            name="contacto_4_nome">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_4_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 4</label>
-                                        <input type="text" class="form-control" id="contacto_4_telefone"
-                                            name="contacto_4_telefone">
-                                    </div>
-
-                                </div>
-
                                 <button type="button" class="btn btn-primary" onclick="associarFornecedor()">
                                     Associar fornecedor
                                 </button>
@@ -490,15 +418,14 @@
                                 <table class="table table-bordered table-hover align-middle text-center">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Localização</th>
-                                            <th>Data</th>
-                                            <th>Responsável</th>
-                                            <th>Motivo / observação</th>
+                                            <th>Fornecedor</th>
+                                            <th>Tipo de associação</th>
+                                            <th>Observações</th>
                                             <th>Ações</th>
                                         </tr>
                                     </thead>
 
-                                    <tbody id="tabela_localizacoes_associadas">
+                                    <tbody id="tabela_fornecedores_associados">
                                     </tbody>
                                 </table>
 
@@ -723,7 +650,7 @@
                                         Página anterior
                                     </button>
 
-                                    <button type="button" class="btn btn-primary" onclick="guardarEquipamentoNovo()">
+                                    <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
                                         Guardar equipamento
                                     </button>
                                 </div>

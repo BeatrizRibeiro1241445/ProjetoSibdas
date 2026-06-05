@@ -3,7 +3,7 @@ function mostrarMensagemFormulario() {
     const mensagem = document.getElementById("mensagem-formulario");
 
     if (mensagem) {
-        mensagem.textContent = "Ação registada localmente para teste.";
+        mensagem.textContent = "Guardado com sucesso.";
         mensagem.className = "alert alert-info p-2 text-center resultado-ferramenta";
     }
 }
@@ -144,38 +144,13 @@ function associarFornecedor() {
     const tipoAssociacao = document.getElementById("tipo_associacao").value;
     const observacoes = document.getElementById("observacoes_associacao").value;
 
-    const contacto1Nome = document.getElementById("contacto_1_nome").value;
-    const contacto1Telefone = document.getElementById("contacto_1_telefone").value;
-    const contacto2Nome = document.getElementById("contacto_2_nome").value;
-    const contacto2Telefone = document.getElementById("contacto_2_telefone").value;
-    const contacto3Nome = document.getElementById("contacto_3_nome").value;
-    const contacto3Telefone = document.getElementById("contacto_3_telefone").value;
-    const contacto4Nome = document.getElementById("contacto_4_nome").value;
-    const contacto4Telefone = document.getElementById("contacto_4_telefone").value;
-
     if (
         fornecedor === "" ||
         tipoAssociacao === "" ||
-        observacoes === "" ||
-        contacto1Nome === "" ||
-        contacto1Telefone === ""
+        observacoes === ""
     ) {
-        mostrarErroEtapa("Preencha o fornecedor, tipo de associação, observações e pelo menos a primeira pessoa de contacto.");
+        mostrarErroEtapa("Preencha o fornecedor, o tipo de associação e as observações antes de associar.");
         return;
-    }
-
-    let contactos = contacto1Nome + " - " + contacto1Telefone;
-
-    if (contacto2Nome !== "" && contacto2Telefone !== "") {
-        contactos += "<br>" + contacto2Nome + " - " + contacto2Telefone;
-    }
-
-    if (contacto3Nome !== "" && contacto3Telefone !== "") {
-        contactos += "<br>" + contacto3Nome + " - " + contacto3Telefone;
-    }
-
-    if (contacto4Nome !== "" && contacto4Telefone !== "") {
-        contactos += "<br>" + contacto4Nome + " - " + contacto4Telefone;
     }
 
     const tabela = document.getElementById("tabela_fornecedores_associados");
@@ -184,7 +159,7 @@ function associarFornecedor() {
         "<tr>" +
         "<td>" + fornecedor + "</td>" +
         "<td>" + tipoAssociacao + "</td>" +
-        "<td class='text-start'>" + contactos + "</td>" +
+        "<td>" + observacoes + "</td>" +
         "<td>" +
         "<button type='button' class='btn btn-sm btn-danger' title='Eliminar' onclick='removerLinha(this)'>" +
         "<i class='fas fa-trash'></i>" +
@@ -317,10 +292,6 @@ function voltarParaDocumentacao() {
     abrirSeparador("documentacao", "documentacao-tab");
 }
 
-function guardarEquipamentoNovo() {
-    alert("Equipamento adicionado com sucesso.");
-    window.location.href = "lista.html";
-}
 
 function removerLinha(botao) {
     const linha = botao.parentNode.parentNode;

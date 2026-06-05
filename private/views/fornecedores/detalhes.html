@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Detalhes do Fornecedor</title>
+    <title>MedInventário - Consultar Fornecedor</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -64,128 +64,160 @@
             <a href="../dashboard/dashboard.html">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
-
-            </a>
         </nav>
     </aside>
-
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
 
-            <h2>
-                <strong>
-                    <i class="fas fa-circle-info"></i> Detalhes do Fornecedor
-                </strong>
-            </h2>
+            <div class="actions-top">
+                <h2>
+                    <strong>
+                        <i class="fas fa-eye"></i> Consultar Fornecedor
+                    </strong>
+                </h2>
 
-            <p>Consulta dos dados do fornecedor e dos equipamentos associados.</p>
+                <a href="lista.html" class="btn btn-secondary" title="Voltar à lista">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
 
-            <div class="card shadow rounded mt-4">
+            <hr>
+
+            <div class="card mb-4">
                 <div class="card-body">
 
-                    <h3>Identificação do fornecedor</h3>
+                    <h3>
+                        <i class="fas fa-building"></i> Identificação do fornecedor
+                    </h3>
 
-                    <p><strong>Nome da empresa:</strong> MedTech Portugal</p>
-                    <p><strong>NIF:</strong> 509000000</p>
-                    <p><strong>Tipo de fornecedor:</strong> Empresa de assistência técnica</p>
-
-                    <hr>
-
-                    <h3>Contactos gerais</h3>
-
-                    <p><strong>Contacto telefónico:</strong> +351 220 000 000</p>
-                    <p><strong>Email:</strong> geral@medtech.pt</p>
-                    <p><strong>Morada:</strong> Porto, Portugal</p>
-                    <p><strong>Website:</strong> https://www.medtech.pt</p>
-
-                    <hr>
-
-                    <h3>Pessoas de contacto</h3>
-
-                    <table class="table table-bordered table-hover">
-
-                        <thead>
-                            <tr>
-                                <th>Pessoa de contacto</th>
-                                <th>Telefone</th>
-                            </tr>
-                        </thead>
-
+                    <table class="table table-bordered table-hover align-middle">
                         <tbody>
                             <tr>
-                                <td>Ana Martins</td>
-                                <td>+351 910 000 000</td>
+                                <th>Nome da empresa</th>
+                                <td>MedTech Portugal</td>
                             </tr>
 
                             <tr>
-                                <td>Pedro Costa</td>
-                                <td>+351 911 111 111</td>
+                                <th>NIF</th>
+                                <td>509000000</td>
                             </tr>
                         </tbody>
-
                     </table>
 
-                    <hr>
+                </div>
+            </div>
 
-                    <h3>Equipamentos associados</h3>
+            <div class="card mb-4">
+                <div class="card-body">
 
-                    <table class="table table-bordered table-hover">
+                    <h3>
+                        <i class="fas fa-phone"></i> Contactos gerais
+                    </h3>
 
-                        <thead>
-                            <tr>
-                                <th>Código interno</th>
-                                <th>Equipamento</th>
-                                <th>Tipo de associação</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-
+                    <table class="table table-bordered table-hover align-middle">
                         <tbody>
                             <tr>
-                                <td>004.002.00</td>
-                                <td>Monitor Multiparamétrico</td>
-                                <td>Assistência técnica</td>
-                                <td>
-                                    <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-info">
-                                        Consultar
-                                    </a>
-
-                                    <a href="remover_associacao.html" class="btn btn-sm btn-danger">
-                                        Eliminar
-                                    </a>
-                                </td>
+                                <th>Contacto telefónico</th>
+                                <td>+351 220 000 000</td>
                             </tr>
 
                             <tr>
-                                <td>003.001.00</td>
-                                <td>Ventilador Pulmonar</td>
-                                <td>Manutenção preventiva</td>
-                                <td>
-                                    <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-info">
-                                        Consultar
-                                    </a>
+                                <th>Email</th>
+                                <td>geral@medtech.pt</td>
+                            </tr>
 
-                                    <a href="remover_associacao.html" class="btn btn-sm btn-danger">
-                                        Eliminar
-                                    </a>
-                                </td>
+                            <tr>
+                                <th>Morada</th>
+                                <td>Rua da Saúde, Porto, Portugal</td>
+                            </tr>
+
+                            <tr>
+                                <th>Website</th>
+                                <td>https://www.medtech.pt</td>
                             </tr>
                         </tbody>
-
                     </table>
 
-                    <hr>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
 
-                    <h3>Observações</h3>
+                    <h3>
+                        <i class="fas fa-laptop-medical"></i> Equipamentos associados
+                    </h3>
 
-                    <p>Fornecedor responsável por assistência técnica de equipamentos críticos.</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle text-center">
 
-                    <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="lista.html" class="btn btn-secondary">Voltar</a>
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Código interno</th>
+                                    <th>Equipamento</th>
+                                    <th>Número de série</th>
+                                    <th>Tipo de associação</th>
+                                    <th>Observações da associação</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>004.002.00</td>
+
+                                    <td>
+                                        <strong>Monitor Multiparamétrico</strong>
+                                    </td>
+
+                                    <td>MP5-2022-45873</td>
+
+                                    <td>Empresa de assistência técnica</td>
+
+                                    <td>Responsável pela manutenção preventiva deste equipamento.</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>003.001.00</td>
+
+                                    <td>
+                                        <strong>Ventilador Pulmonar</strong>
+                                    </td>
+
+                                    <td>EV500-2021-55210</td>
+
+                                    <td>Manutenção preventiva</td>
+
+                                    <td>Entidade responsável pela manutenção anual.</td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
                     </div>
 
                 </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <h3>
+                        <i class="fas fa-circle-info"></i> Observações
+                    </h3>
+
+                    <p class="mb-0">
+                        Fornecedor responsável por assistência técnica de equipamentos críticos.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+
+                <a href="lista.html" class="btn btn-secondary">
+                    Voltar
+                </a>
+
             </div>
 
         </section>

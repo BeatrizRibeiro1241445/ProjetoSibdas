@@ -391,7 +391,7 @@
                                         <tr>
                                             <th>Fornecedor</th>
                                             <th>Tipo de associação</th>
-                                            <th>Pessoas de contacto</th>
+                                            <th>Observações</th>
                                             <th>Ações</th>
                                         </tr>
                                     </thead>
@@ -400,10 +400,7 @@
                                         <tr>
                                             <td>MedTech Portugal</td>
                                             <td>Empresa de assistência técnica</td>
-                                            <td class="text-start">
-                                                Ana Martins - +351 910 000 000<br>
-                                                Pedro Costa - +351 911 111 111
-                                            </td>
+                                            <td>Responsável pela manutenção preventiva deste equipamento.</td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-danger" title="Eliminar"
                                                     onclick="removerLinha(this)">
@@ -415,9 +412,7 @@
                                         <tr>
                                             <td>Philips Medical Systems</td>
                                             <td>Fabricante</td>
-                                            <td class="text-start">
-                                                Carla Sousa - +351 912 222 333
-                                            </td>
+                                            <td>Fornecedor fabricante do equipamento.</td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-danger" title="Eliminar"
                                                     onclick="removerLinha(this)">
@@ -798,7 +793,7 @@
                                         Página anterior
                                     </button>
 
-                                    <button type="button" class="btn btn-primary" onclick="guardarEquipamentoNovo()">
+                                    <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
                                         Guardar alterações
                                     </button>
                                 </div>
