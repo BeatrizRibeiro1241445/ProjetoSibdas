@@ -43,9 +43,6 @@
             <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
             <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
             <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
-                Contratos</a>
             <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
         </nav>
     </aside>
@@ -155,59 +152,87 @@
 
             <h3>Localizações existentes</h3>
 
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Categoria</th>
-                        <th>Edifício</th>
-                        <th>Piso</th>
-                        <th>Serviço / Departamento</th>
-                        <th>Sala / Gabinete</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle text-center">
 
-                <tbody>
-                    <tr>
-                        <td>Área clínica crítica</td>
-                        <td>Hospital Central</td>
-                        <td>Piso 2</td>
-                        <td>Unidade de Cuidados Intensivos</td>
-                        <td>Sala 1</td>
-                        <td>
-                            <a href="detalhes.html" class="btn btn-sm btn-info">Equipamentos</a>
-                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
+                    <thead class="table-light">
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Edifício</th>
+                            <th>Piso</th>
+                            <th>Serviço / Departamento</th>
+                            <th>Sala / Gabinete</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-                    <tr>
-                        <td>Área cirúrgica</td>
-                        <td>Hospital Central</td>
-                        <td>Piso 1</td>
-                        <td>Bloco Operatório</td>
-                        <td>Sala 2</td>
-                        <td>
-                            <a href="detalhes.html" class="btn btn-sm btn-info">Equipamentos</a>
-                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>Área clínica crítica</td>
+                            <td>Hospital Central</td>
+                            <td>Piso 2</td>
+                            <td>Unidade de Cuidados Intensivos</td>
+                            <td>Sala 1</td>
+                            <td>
+                                <a href="detalhes.html" class="btn btn-sm btn-info" title="Consultar">
+                                    <i class="fas fa-eye"></i>
+                                </a>
 
-                    <tr>
-                        <td>Área de urgência</td>
-                        <td>Hospital Central</td>
-                        <td>Piso 0</td>
-                        <td>Urgência</td>
-                        <td>Sala 3</td>
-                        <td>
-                            <a href="detalhes.html" class="btn btn-sm btn-info">Equipamentos</a>
-                            <a href="editar.html" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="apagar.html" class="btn btn-sm btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <a href="editar.html" class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
+                                <a href="apagar.html" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Área cirúrgica</td>
+                            <td>Hospital Central</td>
+                            <td>Piso 1</td>
+                            <td>Bloco Operatório</td>
+                            <td>Sala 2</td>
+                            <td>
+                                <a href="detalhes.html" class="btn btn-sm btn-info" title="Consultar">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+
+                                <a href="editar.html" class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
+                                <a href="apagar.html" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Área de urgência</td>
+                            <td>Hospital Central</td>
+                            <td>Piso 0</td>
+                            <td>Urgência</td>
+                            <td>Sala 3</td>
+                            <td>
+                                <a href="detalhes.html" class="btn btn-sm btn-info" title="Consultar">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+
+                                <a href="editar.html" class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
+                                <a href="apagar.html" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
 
         </section>
     </main>

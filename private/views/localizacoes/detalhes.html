@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Equipamentos da Localização</title>
+    <title>MedInventário - Consultar Localização</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -39,80 +39,166 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h4>Menu</h4>
+
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
-                Contratos</a>
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../equipamentos/lista.html">
+                <i class="fas fa-laptop-medical"></i> Equipamentos
+            </a>
+
+            <a href="../fornecedores/lista.html">
+                <i class="fas fa-truck-medical"></i> Fornecedores
+            </a>
+
+            <a href="../localizacoes/lista.html">
+                <i class="fas fa-location-dot"></i> Localizações
+            </a>
+
+            <a href="../dashboard/dashboard.html">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
         </nav>
     </aside>
-
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
 
-            <h2><strong><i class="fas fa-laptop-medical"></i> Equipamentos da Localização</strong></h2>
-            <p>Consulta dos equipamentos presentes nesta localização.</p>
+            <div class="actions-top">
+                <h2>
+                    <strong>
+                        <i class="fas fa-eye"></i> Consultar Localização
+                    </strong>
+                </h2>
 
-            <div class="card shadow rounded mt-4">
+                <a href="lista.html" class="btn btn-secondary" title="Voltar à lista">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+
+            <hr>
+
+            <div class="card mb-4">
                 <div class="card-body">
 
-                    <h3>Localização</h3>
+                    <h3>
+                        <i class="fas fa-location-dot"></i> Dados da localização
+                    </h3>
 
-                    <p><strong>Categoria:</strong> Área clínica crítica</p>
-                    <p><strong>Edifício:</strong> Hospital Central</p>
-                    <p><strong>Piso:</strong> Piso 2</p>
-                    <p><strong>Serviço / Departamento:</strong> Unidade de Cuidados Intensivos</p>
-                    <p><strong>Sala / Gabinete:</strong> Sala 1</p>
-
-                    <hr>
-
-                    <h3>Equipamentos presentes nesta localização</h3>
-
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Código interno</th>
-                                <th>Equipamento</th>
-                                <th>Estado</th>
-                                <th>Criticidade</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-
+                    <table class="table table-bordered table-hover align-middle">
                         <tbody>
                             <tr>
-                                <td>004.002.00</td>
-                                <td>Monitor Multiparamétrico</td>
-                                <td>Ativo</td>
-                                <td>Suporte de vida</td>
-                                <td>
-                                    <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-info">Consultar</a>
-                                    <a href="movimentar.html" class="btn btn-sm btn-warning">Movimentar</a>
-                                </td>
+                                <th>Categoria</th>
+                                <td>Área clínica crítica</td>
                             </tr>
 
                             <tr>
-                                <td>003.001.00</td>
-                                <td>Ventilador Pulmonar</td>
-                                <td>Ativo</td>
-                                <td>Alta</td>
+                                <th>Edifício</th>
+                                <td>Hospital Central</td>
+                            </tr>
+
+                            <tr>
+                                <th>Piso</th>
+                                <td>Piso 2</td>
+                            </tr>
+
+                            <tr>
+                                <th>Serviço / Departamento</th>
+                                <td>Unidade de Cuidados Intensivos</td>
+                            </tr>
+
+                            <tr>
+                                <th>Sala / Gabinete</th>
+                                <td>Sala 1</td>
+                            </tr>
+
+                            <tr>
+                                <th>Observações</th>
                                 <td>
-                                    <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-info">Consultar</a>
-                                    <a href="movimentar.html" class="btn btn-sm btn-warning">Movimentar</a>
+                                    Localização destinada a equipamentos críticos e de suporte de vida.
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="lista.html" class="btn btn-secondary">Voltar</a>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <h3>
+                        <i class="fas fa-laptop-medical"></i> Equipamentos presentes nesta localização
+                    </h3>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle text-center">
+
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Código interno</th>
+                                    <th>Equipamento</th>
+                                    <th>Número de série</th>
+                                    <th>Estado</th>
+                                    <th>Criticidade</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>004.002.00</td>
+
+                                    <td>
+                                        <strong>Monitor Multiparamétrico</strong>
+                                    </td>
+
+                                    <td>MP5-2022-45873</td>
+
+                                    <td class="table-success fw-bold">Ativo</td>
+
+                                    <td class="table-danger fw-bold">Suporte de vida</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>003.001.00</td>
+
+                                    <td>
+                                        <strong>Ventilador Pulmonar</strong>
+                                    </td>
+
+                                    <td>EV500-2021-55210</td>
+
+                                    <td class="table-success fw-bold">Ativo</td>
+
+                                    <td class="table-warning fw-bold">Alta</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>007.001.00</td>
+
+                                    <td>
+                                        <strong>Bomba de Infusão</strong>
+                                    </td>
+
+                                    <td>INF-2020-88321</td>
+
+                                    <td class="table-warning fw-bold">Em manutenção</td>
+
+                                    <td class="table-warning fw-bold">Alta</td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
                     </div>
 
                 </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+
+                <a href="lista.html" class="btn btn-secondary">
+                    Voltar
+                </a>
+
             </div>
 
         </section>

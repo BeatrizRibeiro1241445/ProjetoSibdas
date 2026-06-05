@@ -39,68 +39,116 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h4>Menu</h4>
+
         <nav>
-            <a href="../equipamentos/lista.html"><i class="fas fa-laptop-medical"></i> Equipamentos</a>
-            <a href="../fornecedores/lista.html"><i class="fas fa-truck-medical"></i> Fornecedores</a>
-            <a href="../localizacoes/lista.html"><i class="fas fa-location-dot"></i> Localizações</a>
-            <a href="../documentacao/documentacao.html"><i class="fas fa-file-medical"></i> Documentação</a>
-            <a href="../garantias-contratos/garantias_contratos.html"><i class="fas fa-file-contract"></i> Garantias e
-                Contratos</a>
-            <a href="../dashboard/dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="../equipamentos/lista.html">
+                <i class="fas fa-laptop-medical"></i> Equipamentos
+            </a>
+
+            <a href="../fornecedores/lista.html">
+                <i class="fas fa-truck-medical"></i> Fornecedores
+            </a>
+
+            <a href="../localizacoes/lista.html">
+                <i class="fas fa-location-dot"></i> Localizações
+            </a>
+
+            <a href="../dashboard/dashboard.html">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
         </nav>
     </aside>
-
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
 
-            <h2><strong><i class="fas fa-plus"></i> Inserir Nova Localização</strong></h2>
-            <p>Registe uma nova localização física onde podem estar associados equipamentos.</p>
+            <div class="actions-top">
+                <h2>
+                    <strong>
+                        <i class="fas fa-plus"></i> Inserir Nova Localização
+                    </strong>
+                </h2>
+
+                <a href="lista.html" class="btn btn-secondary" title="Voltar à lista">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+
+            <hr>
 
             <form action="#" method="post" class="formulario-equipamento">
 
-                <h3>Dados da localização</h3>
+                <div class="card mb-4">
+                    <div class="card-body">
 
-                <div class="mb-3">
-                    <label for="categoria" class="form-label">Categoria *</label>
-                    <input type="text" class="form-control" id="categoria" name="categoria"
-                        placeholder="Ex.: Área clínica crítica, Área cirúrgica, Área técnica" required>
+                        <h3>
+                            <i class="fas fa-location-dot"></i> Dados da localização
+                        </h3>
+
+                        <div class="row mb-3">
+
+                            <div class="col-12 col-md-6">
+                                <label for="categoria" class="form-label">Categoria</label>
+                                <input type="text" class="form-control" id="categoria" name="categoria"
+                                    placeholder="Ex.: Área clínica crítica, Área cirúrgica, Área técnica">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="edificio" class="form-label">Edifício</label>
+                                <input type="text" class="form-control" id="edificio" name="edificio"
+                                    placeholder="Ex.: Hospital Central">
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-12 col-md-4">
+                                <label for="piso" class="form-label">Piso</label>
+                                <input type="text" class="form-control" id="piso" name="piso" placeholder="Ex.: Piso 2">
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="servico" class="form-label">Serviço / Departamento</label>
+                                <input type="text" class="form-control" id="servico" name="servico"
+                                    placeholder="Ex.: Unidade de Cuidados Intensivos">
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="sala" class="form-label">Sala / Gabinete</label>
+                                <input type="text" class="form-control" id="sala" name="sala" placeholder="Ex.: Sala 1">
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-body">
 
-                <div class="mb-3">
-                    <label for="edificio" class="form-label">Edifício *</label>
-                    <input type="text" class="form-control" id="edificio" name="edificio"
-                        placeholder="Ex.: Hospital Central" required>
-                </div>
+                        <h3>
+                            <i class="fas fa-circle-info"></i> Observações
+                        </h3>
 
-                <div class="mb-3">
-                    <label for="piso" class="form-label">Piso *</label>
-                    <input type="text" class="form-control" id="piso" name="piso" placeholder="Ex.: Piso 2" required>
-                </div>
+                        <div class="mb-3">
+                            <label for="observacoes" class="form-label">Observações</label>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
+                                placeholder="Observações adicionais sobre esta localização."></textarea>
+                        </div>
 
-                <div class="mb-3">
-                    <label for="servico" class="form-label">Serviço / Departamento *</label>
-                    <input type="text" class="form-control" id="servico" name="servico"
-                        placeholder="Ex.: Unidade de Cuidados Intensivos" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="sala" class="form-label">Sala / Gabinete *</label>
-                    <input type="text" class="form-control" id="sala" name="sala" placeholder="Ex.: Sala 1" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="observacoes" class="form-label">Observações</label>
-                    <textarea class="form-control" id="observacoes" name="observacoes" rows="3"
-                        placeholder="Observações adicionais sobre esta localização."></textarea>
+                    </div>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="lista.html" class="btn btn-secondary">Cancelar</a>
 
-                    <button type="submit" class="btn btn-primary">
+                    <a href="lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                    <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
                         Guardar localização
                     </button>
+
                 </div>
 
             </form>
