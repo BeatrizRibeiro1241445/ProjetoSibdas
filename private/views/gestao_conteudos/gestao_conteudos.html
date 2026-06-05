@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInventário - Gestão de Conteúdos</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+
+    <!-- folha de estilos CSS -->
+    <link rel="stylesheet" href="../../../assets/css/1241445.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="bng-navbar-menu">
+
+        <div>
+            <a href="../../area_pessoal.html">
+                <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
+            </a>
+            <h3>MedInventário</h3>
+        </div>
+
+        <div>
+            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
+        </div>
+
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+
+        <nav>
+            <a href="../equipamentos/lista.html">
+                <i class="fas fa-laptop-medical"></i> Equipamentos
+            </a>
+
+            <a href="../fornecedores/lista.html">
+                <i class="fas fa-truck-medical"></i> Fornecedores
+            </a>
+
+            <a href="../localizacoes/lista.html">
+                <i class="fas fa-location-dot"></i> Localizações
+            </a>
+
+            <a href="gestao_conteudos.html" class="active">
+                <i class="fas fa-pen-to-square"></i> Conteúdos do site
+            </a>
+
+            <a href="../dashboard/dashboard.html">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="content">
+        <section>
+
+            <div class="actions-top">
+                <h2>
+                    <strong>
+                        <i class="fas fa-pen-to-square"></i> Gestão de Conteúdos do Site Público
+                    </strong>
+                </h2>
+
+                <a href="../../../public/index.html" class="btn btn-secondary" title="Ver site público">
+                    <i class="fas fa-eye"></i> Ver site
+                </a>
+            </div>
+
+            <hr>
+
+            <form action="#" method="post" class="formulario-equipamento">
+
+                <!-- Secção Início -->
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <h3>
+                            <i class="fas fa-house"></i> Secção Início
+                        </h3>
+
+                        <div class="mb-3">
+                            <label for="titulo_inicio" class="form-label">Título principal</label>
+                            <input type="text" class="form-control" id="titulo_inicio" name="titulo_inicio"
+                                value="Sistema de Apoio ao Inventário Hospitalar">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="texto_inicio" class="form-label">Texto de apresentação</label>
+                            <textarea class="form-control" id="texto_inicio" name="texto_inicio"
+                                rows="4">A MedInventário desenvolve soluções digitais para a organização, controlo e consulta do inventário hospitalar de equipamentos médicos.</textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Secção Quem Somos -->
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <h3>
+                            <i class="fas fa-users"></i> Secção Quem Somos
+                        </h3>
+
+                        <div class="mb-3">
+                            <label for="titulo_quem_somos" class="form-label">Título da secção</label>
+                            <input type="text" class="form-control" id="titulo_quem_somos" name="titulo_quem_somos"
+                                value="Quem Somos">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="texto_quem_somos_1" class="form-label">Texto 1</label>
+                            <textarea class="form-control" id="texto_quem_somos_1" name="texto_quem_somos_1"
+                                rows="4">A MedInventário é uma solução digital criada para apoiar instituições de saúde na organização, consulta e controlo do inventário hospitalar de equipamentos médicos.</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="texto_quem_somos_2" class="form-label">Texto 2</label>
+                            <textarea class="form-control" id="texto_quem_somos_2" name="texto_quem_somos_2"
+                                rows="4">O objetivo é centralizar informação sobre equipamentos, localizações, fornecedores, documentação, garantias e contratos.</textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Secção Solução -->
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <h3>
+                            <i class="fas fa-lightbulb"></i> Secção Solução
+                        </h3>
+
+                        <div class="mb-3">
+                            <label for="titulo_solucao" class="form-label">Título da secção</label>
+                            <input type="text" class="form-control" id="titulo_solucao" name="titulo_solucao"
+                                value="A Nossa Solução">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="texto_solucao" class="form-label">Texto da solução</label>
+                            <textarea class="form-control" id="texto_solucao" name="texto_solucao"
+                                rows="4">O sistema permite centralizar dados sobre equipamentos, localizações, fornecedores, documentos, garantias e contratos num único local.</textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Secção Funcionalidades -->
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <h3>
+                            <i class="fas fa-list-check"></i> Secção Funcionalidades
+                        </h3>
+
+                        <div class="row mb-3">
+
+                            <div class="col-12 col-md-6">
+                                <label for="funcionalidade_1" class="form-label">Funcionalidade 1</label>
+                                <input type="text" class="form-control" id="funcionalidade_1" name="funcionalidade_1"
+                                    value="Gestão de equipamentos médicos">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="funcionalidade_2" class="form-label">Funcionalidade 2</label>
+                                <input type="text" class="form-control" id="funcionalidade_2" name="funcionalidade_2"
+                                    value="Gestão de localizações">
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-12 col-md-6">
+                                <label for="funcionalidade_3" class="form-label">Funcionalidade 3</label>
+                                <input type="text" class="form-control" id="funcionalidade_3" name="funcionalidade_3"
+                                    value="Gestão de fornecedores">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="funcionalidade_4" class="form-label">Funcionalidade 4</label>
+                                <input type="text" class="form-control" id="funcionalidade_4" name="funcionalidade_4"
+                                    value="Documentação técnica">
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-12 col-md-6">
+                                <label for="funcionalidade_5" class="form-label">Funcionalidade 5</label>
+                                <input type="text" class="form-control" id="funcionalidade_5" name="funcionalidade_5"
+                                    value="Garantias e contratos">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="funcionalidade_6" class="form-label">Funcionalidade 6</label>
+                                <input type="text" class="form-control" id="funcionalidade_6" name="funcionalidade_6"
+                                    value="Pesquisa e filtragem">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="funcionalidade_7" class="form-label">Funcionalidade 7</label>
+                            <input type="text" class="form-control" id="funcionalidade_7" name="funcionalidade_7"
+                                value="Dashboard com indicadores">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Contactos -->
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <h3>
+                            <i class="fas fa-address-book"></i> Contactos
+                        </h3>
+
+                        <div class="row mb-3">
+
+                            <div class="col-12 col-md-6">
+                                <label for="email_contacto" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email_contacto" name="email_contacto"
+                                    value="geral@medinventario.pt">
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="telefone_contacto" class="form-label">Telefone</label>
+                                <input type="text" class="form-control" id="telefone_contacto" name="telefone_contacto"
+                                    value="+351 220 000 000">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="localizacao_contacto" class="form-label">Localização</label>
+                            <input type="text" class="form-control" id="localizacao_contacto"
+                                name="localizacao_contacto" value="Porto, Portugal">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Rodapé -->
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <h3>
+                            <i class="fas fa-window-minimize"></i> Rodapé
+                        </h3>
+
+                        <div class="mb-3">
+                            <label for="morada_rodape" class="form-label">Morada</label>
+                            <input type="text" class="form-control" id="morada_rodape" name="morada_rodape"
+                                value="Rua ************ 000, 4249-000, Porto, Portugal">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="horario_rodape" class="form-label">Horário</label>
+                            <textarea class="form-control" id="horario_rodape" name="horario_rodape" rows="3">Segunda a sexta-feira, das 09:00 às 18:00
+Sábado, das 09:00 às 13:00
+Domingo: encerrado</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="solucao_rodape" class="form-label">Resumo da solução</label>
+                            <textarea class="form-control" id="solucao_rodape" name="solucao_rodape" rows="3">Inventário hospitalar
+Gestão documental
+Rastreabilidade</textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="d-flex justify-content-end gap-2 mb-4">
+
+                    <a href="../../area_pessoal.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                    <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
+                        Guardar conteúdos
+                    </button>
+
+                </div>
+
+            </form>
+
+            <p id="mensagem-formulario"></p>
+
+        </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="../../../assets/js/1241445.js"></script>
+
+</body>
+
+</html>

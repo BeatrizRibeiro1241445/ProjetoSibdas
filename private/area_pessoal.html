@@ -41,21 +41,129 @@
     <aside class="sidebar">
         <h4>Menu</h4>
         <nav>
-            <a href="views/equipamentos/lista.html"><i class="fas fa-laptop-medical"></i>Equipamentos</a>
-            <a href="views/fornecedores/lista.html"><i class="fas fa-truck-medical"></i>Fornecedores</a>
-            <a href="views/localizacoes/lista.html"><i class="fas fa-location-dot"></i>Localizações</a>
-            <a href="views/dashboard/dashboard.html"><i class="fas fa-chart-bar"></i>Dashboard</a>
+            <a href="views/equipamentos/lista.html">
+                <i class="fas fa-laptop-medical"></i> Equipamentos
+            </a>
+
+            <a href="views/fornecedores/lista.html">
+                <i class="fas fa-truck-medical"></i> Fornecedores
+            </a>
+
+            <a href="views/localizacoes/lista.html">
+                <i class="fas fa-location-dot"></i> Localizações
+            </a>
+
+            <a href="views/gestao_conteudos/gestao_conteudos.html">
+                <i class="fas fa-pen-to-square"></i> Conteúdos do site
+            </a>
+
+            <a href="views/dashboard/dashboard.html">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
         </nav>
     </aside>
 
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
+
             <h2>Bem-vindo ao MedInventário</h2>
-            <p>Escolha uma opção do menu lateral para continuar.</p>
+            <p>Escolha uma opção do menu lateral ou utilize os atalhos abaixo para continuar.</p>
+
+            <div class="row mt-4">
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card text-center shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-laptop-medical"></i> Equipamentos
+                            </h5>
+                            <p class="card-text">Consultar e gerir equipamentos médicos.</p>
+                            <a href="views/equipamentos/lista.html" class="btn btn-primary">
+                                Abrir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card text-center shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-truck-medical"></i> Fornecedores
+                            </h5>
+                            <p class="card-text">Gerir fornecedores e contactos.</p>
+                            <a href="views/fornecedores/lista.html" class="btn btn-primary">
+                                Abrir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card text-center shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-location-dot"></i> Localizações
+                            </h5>
+                            <p class="card-text">Consultar espaços e localizações.</p>
+                            <a href="views/localizacoes/lista.html" class="btn btn-primary">
+                                Abrir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card text-center shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-pen-to-square"></i> Conteúdos
+                            </h5>
+                            <p class="card-text">Editar conteúdos do site público.</p>
+                            <a href="views/gestao_conteudos/gestao_conteudos.html" class="btn btn-primary">
+                                Abrir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+
+                <div class="col-12 col-md-6 mb-3">
+                    <div class="card text-center shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-plus"></i> Novo equipamento
+                            </h5>
+                            <p class="card-text">Registar um novo equipamento no inventário.</p>
+                            <a href="views/equipamentos/novo.html" class="btn btn-primary">
+                                Adicionar equipamento
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 mb-3">
+                    <div class="card text-center shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-chart-bar"></i> Dashboard
+                            </h5>
+                            <p class="card-text">Consultar indicadores e alertas de gestão.</p>
+                            <a href="views/dashboard/dashboard.html" class="btn btn-primary">
+                                Ver dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </section>
     </main>
-
     <!-- Bootstrap JS -->
     <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
 

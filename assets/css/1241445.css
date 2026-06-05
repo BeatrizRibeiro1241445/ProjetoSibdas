@@ -519,20 +519,16 @@ form {
 }
 
 .grafico-categoria {
-    background: conic-gradient(
-        #0d6efd 0% 28%,
-        #198754 28% 42%,
-        #ffc107 42% 63%,
-        #dc3545 63% 82%,
-        #6c757d 82% 100%
-    );
+    background: conic-gradient(#0d6efd 0% 28%,
+            #198754 28% 42%,
+            #ffc107 42% 63%,
+            #dc3545 63% 82%,
+            #6c757d 82% 100%);
 }
 
 .grafico-localizacao {
-    background: conic-gradient(
-        #0d6efd 0% 87%,
-        #198754 87% 100%
-    );
+    background: conic-gradient(#0d6efd 0% 87%,
+            #198754 87% 100%);
 }
 
 .legenda-grafico {
@@ -574,4 +570,11 @@ form {
         width: 200px;
         height: 200px;
     }
+}
+
+/* Link ativo na sidebar */
+.sidebar a.active {
+    background-color: #8fb9d9;
+    color: white;
+    font-weight: bold;
 }
