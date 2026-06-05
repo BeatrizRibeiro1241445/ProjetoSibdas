@@ -31,7 +31,7 @@
         </div>
 
         <div>
-            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
+            <button id="btn-utilizador" type="button">Utilizador</button>
         </div>
 
     </header>
@@ -53,12 +53,19 @@
                 <i class="fas fa-location-dot"></i> Localizações
             </a>
 
+            <a href="../documentacao/documentacao.html">
+                <i class="fas fa-file-medical"></i> Documentação
+            </a>
+
+            <a href="../garantias-contratos/garantias_contratos.html">
+                <i class="fas fa-file-contract"></i> Garantias e Contratos
+            </a>
+
             <a href="../dashboard/dashboard.html">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
         </nav>
     </aside>
-
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
@@ -71,11 +78,6 @@
                 </h2>
             </div>
 
-            <p>
-                Consulte os principais indicadores do sistema MedInventário.
-                Nesta fase, os valores são estáticos e servem para representar a estrutura da futura dashboard dinâmica.
-            </p>
-
             <hr>
 
             <h3>Métricas principais</h3>
@@ -83,7 +85,8 @@
             <div class="row mt-4">
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm">
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i class="fas fa-laptop-medical"></i> Total
@@ -95,7 +98,8 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm">
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i class="fas fa-circle-check"></i> Ativos
@@ -107,7 +111,8 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm">
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i class="fas fa-screwdriver-wrench"></i> Manutenção
@@ -119,7 +124,8 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm">
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i class="fas fa-circle-xmark"></i> Inativos
@@ -136,63 +142,55 @@
             <div class="row mt-4">
 
                 <div class="col-12 col-md-3 mb-3">
-                    <a href="#secGarantiasExpiradas" class="text-decoration-none"
-                        onclick="abrirSecaoDashboard('secGarantiasExpiradas', 'collapseGarantiasExpiradas')">
-                        <div class="card text-center shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-calendar-xmark"></i> Garantia expirada
-                                </h5>
-                                <p class="card-text">42</p>
-                                <p>Ver equipamentos</p>
-                            </div>
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secGarantiasExpiradas" data-collapse="collapseGarantiasExpiradas">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-calendar-xmark"></i> Garantia expirada
+                            </h5>
+                            <p class="card-text">42</p>
+                            <p>Equipamentos com garantia expirada</p>
                         </div>
-                    </a>
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <a href="#secGarantiasExpirar" class="text-decoration-none"
-                        onclick="abrirSecaoDashboard('secGarantiasExpirar', 'collapseGarantiasExpirar')">
-                        <div class="card text-center shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-calendar-days"></i> Garantia a expirar
-                                </h5>
-                                <p class="card-text">18</p>
-                                <p>Nos próximos 30 dias</p>
-                            </div>
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secGarantiasExpirar" data-collapse="collapseGarantiasExpirar">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-calendar-days"></i> Garantia a expirar
+                            </h5>
+                            <p class="card-text">18</p>
+                            <p>Nos próximos 30 dias</p>
                         </div>
-                    </a>
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <a href="#secSemDocumentacao" class="text-decoration-none"
-                        onclick="abrirSecaoDashboard('secSemDocumentacao', 'collapseSemDocumentacao')">
-                        <div class="card text-center shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-file-circle-exclamation"></i> Sem documentação
-                                </h5>
-                                <p class="card-text">63</p>
-                                <p>Ver equipamentos</p>
-                            </div>
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secSemDocumentacao" data-collapse="collapseSemDocumentacao">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-circle-exclamation"></i> Sem documentação
+                            </h5>
+                            <p class="card-text">63</p>
+                            <p>Equipamentos sem documentação associada</p>
                         </div>
-                    </a>
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <a href="#secCriticidadeElevada" class="text-decoration-none"
-                        onclick="abrirSecaoDashboard('secCriticidadeElevada', 'collapseCriticidadeElevada')">
-                        <div class="card text-center shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-triangle-exclamation"></i> Criticidade elevada
-                                </h5>
-                                <p class="card-text">96</p>
-                                <p>Ver equipamentos</p>
-                            </div>
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secCriticidadeElevada" data-collapse="collapseCriticidadeElevada">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-triangle-exclamation"></i> Criticidade elevada
+                            </h5>
+                            <p class="card-text">96</p>
+                            <p>Equipamentos críticos ou de suporte de vida</p>
                         </div>
-                    </a>
+                    </div>
                 </div>
 
             </div>
@@ -200,116 +198,108 @@
             <div class="row mt-2">
 
                 <div class="col-12 col-md-3 mb-3">
-                    <a href="#secDocumentosExpirar" class="text-decoration-none"
-                        onclick="abrirSecaoDashboard('secDocumentosExpirar', 'collapseDocumentosExpirar')">
-                        <div class="card text-center shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-file-circle-exclamation"></i> Documentos a expirar
-                                </h5>
-                                <p class="card-text">12</p>
-                                <p>Ver documentos</p>
-                            </div>
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secDocumentosExpirar" data-collapse="collapseDocumentosExpirar">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-circle-exclamation"></i> Documentos a expirar
+                            </h5>
+                            <p class="card-text">12</p>
+                            <p>Documentos com validade próxima</p>
                         </div>
-                    </a>
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <a href="#secDocumentosExpirados" class="text-decoration-none"
-                        onclick="abrirSecaoDashboard('secDocumentosExpirados', 'collapseDocumentosExpirados')">
-                        <div class="card text-center shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-file-circle-xmark"></i> Documentos expirados
-                                </h5>
-                                <p class="card-text">9</p>
-                                <p>Ver documentos</p>
-                            </div>
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                        data-secao="secDocumentosExpirados" data-collapse="collapseDocumentosExpirados">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-circle-xmark"></i> Documentos expirados
+                            </h5>
+                            <p class="card-text">9</p>
+                            <p>Documentos fora de validade</p>
                         </div>
-                    </a>
+                    </div>
                 </div>
 
             </div>
+            <h3 class="mt-5" id="secResumoServico">Resumo por serviço</h3>
 
-            <h3 class="mt-5">Resumo por serviço</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Serviço / Departamento</th>
+                            <th>Total de equipamentos</th>
+                            <th>Ativos</th>
+                            <th>Em manutenção</th>
+                            <th>Inativos</th>
+                            <th>Suporte de vida</th>
+                        </tr>
+                    </thead>
 
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Serviço / Departamento</th>
-                        <th>Total de equipamentos</th>
-                        <th>Ativos</th>
-                        <th>Em manutenção</th>
-                        <th>Inativos</th>
-                        <th>Suporte de vida</th>
-                    </tr>
-                </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unidade de Cuidados Intensivos</td>
+                            <td>320</td>
+                            <td>285</td>
+                            <td>25</td>
+                            <td>10</td>
+                            <td>85</td>
+                        </tr>
 
-                <tbody>
-                    <tr>
-                        <td>Unidade de Cuidados Intensivos</td>
-                        <td>320</td>
-                        <td>285</td>
-                        <td>25</td>
-                        <td>10</td>
-                        <td>85</td>
-                    </tr>
+                        <tr>
+                            <td>Bloco Operatório</td>
+                            <td>410</td>
+                            <td>360</td>
+                            <td>38</td>
+                            <td>12</td>
+                            <td>64</td>
+                        </tr>
 
-                    <tr>
-                        <td>Bloco Operatório</td>
-                        <td>410</td>
-                        <td>360</td>
-                        <td>38</td>
-                        <td>12</td>
-                        <td>64</td>
-                    </tr>
+                        <tr>
+                            <td>Urgência</td>
+                            <td>280</td>
+                            <td>240</td>
+                            <td>28</td>
+                            <td>12</td>
+                            <td>42</td>
+                        </tr>
 
-                    <tr>
-                        <td>Urgência</td>
-                        <td>280</td>
-                        <td>240</td>
-                        <td>28</td>
-                        <td>12</td>
-                        <td>42</td>
-                    </tr>
+                        <tr>
+                            <td>Consulta Externa</td>
+                            <td>190</td>
+                            <td>165</td>
+                            <td>15</td>
+                            <td>10</td>
+                            <td>8</td>
+                        </tr>
 
-                    <tr>
-                        <td>Consulta Externa</td>
-                        <td>190</td>
-                        <td>165</td>
-                        <td>15</td>
-                        <td>10</td>
-                        <td>8</td>
-                    </tr>
-
-                    <tr>
-                        <td>Imagiologia</td>
-                        <td>300</td>
-                        <td>230</td>
-                        <td>39</td>
-                        <td>31</td>
-                        <td>16</td>
-                    </tr>
-                </tbody>
-            </table>
+                        <tr>
+                            <td>Imagiologia</td>
+                            <td>300</td>
+                            <td>230</td>
+                            <td>39</td>
+                            <td>31</td>
+                            <td>16</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <h3 class="mt-5">Análise detalhada</h3>
 
-            <p>
-                Clique no título de cada secção para abrir ou fechar a respetiva tabela.
-            </p>
-
             <div class="accordion mb-4" id="accordionDashboard">
+
                 <div class="accordion-item" id="secGarantiasExpiradas">
                     <h2 class="accordion-header" id="headingGarantiasExpiradas">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseGarantiasExpiradas" aria-expanded="false"
                             aria-controls="collapseGarantiasExpiradas">
-
                             <strong>
                                 <i class="fas fa-calendar-xmark"></i> Equipamentos com garantia expirada
                             </strong>
-
                         </button>
                     </h2>
 
@@ -318,15 +308,14 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover">
-                                <thead>
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
                                         <th>Serviço</th>
                                         <th>Fim da garantia</th>
                                         <th>Fornecedor / Entidade</th>
-                                        <th>Ação</th>
                                     </tr>
                                 </thead>
 
@@ -337,12 +326,6 @@
                                         <td>Bloco Operatório</td>
                                         <td>2024-12-20</td>
                                         <td>Hospital Devices S.A.</td>
-                                        <td>
-                                            <a href="../garantias-contratos/garantias_contratos.html"
-                                                class="btn btn-sm btn-warning">
-                                                Ver garantia
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -351,12 +334,6 @@
                                         <td>Urgência</td>
                                         <td>2025-01-15</td>
                                         <td>MedTech Portugal</td>
-                                        <td>
-                                            <a href="../garantias-contratos/garantias_contratos.html"
-                                                class="btn btn-sm btn-warning">
-                                                Ver garantia
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -365,12 +342,6 @@
                                         <td>Consulta Externa</td>
                                         <td>2025-02-01</td>
                                         <td>MedTech Portugal</td>
-                                        <td>
-                                            <a href="../garantias-contratos/garantias_contratos.html"
-                                                class="btn btn-sm btn-warning">
-                                                Ver garantia
-                                            </a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -378,18 +349,15 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="accordion-item" id="secGarantiasExpirar">
                     <h2 class="accordion-header" id="headingGarantiasExpirar">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseGarantiasExpirar" aria-expanded="false"
                             aria-controls="collapseGarantiasExpirar">
-
                             <strong>
                                 <i class="fas fa-calendar-days"></i> Equipamentos com garantia a expirar nos próximos 30
                                 dias
                             </strong>
-
                         </button>
                     </h2>
 
@@ -398,15 +366,14 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover">
-                                <thead>
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
                                         <th>Serviço</th>
                                         <th>Fim da garantia</th>
                                         <th>Fornecedor / Entidade</th>
-                                        <th>Ação</th>
                                     </tr>
                                 </thead>
 
@@ -417,12 +384,6 @@
                                         <td>Bloco Operatório</td>
                                         <td>2025-06-10</td>
                                         <td>Hospital Devices S.A.</td>
-                                        <td>
-                                            <a href="../garantias-contratos/garantias_contratos.html"
-                                                class="btn btn-sm btn-warning">
-                                                Ver garantia
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -431,12 +392,6 @@
                                         <td>Urgência</td>
                                         <td>2025-06-18</td>
                                         <td>MedTech Portugal</td>
-                                        <td>
-                                            <a href="../garantias-contratos/garantias_contratos.html"
-                                                class="btn btn-sm btn-warning">
-                                                Ver garantia
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -445,12 +400,6 @@
                                         <td>Urgência</td>
                                         <td>2025-06-25</td>
                                         <td>MedTech Portugal</td>
-                                        <td>
-                                            <a href="../garantias-contratos/garantias_contratos.html"
-                                                class="btn btn-sm btn-warning">
-                                                Ver garantia
-                                            </a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -458,16 +407,15 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item" id="secSemDocumentacao">
                     <h2 class="accordion-header" id="headingSemDocumentacao">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseSemDocumentacao" aria-expanded="false"
                             aria-controls="collapseSemDocumentacao">
-
                             <strong>
                                 <i class="fas fa-file-circle-exclamation"></i> Equipamentos sem documentação associada
                             </strong>
-
                         </button>
                     </h2>
 
@@ -476,15 +424,14 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover">
-                                <thead>
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
                                         <th>Serviço</th>
                                         <th>Localização</th>
                                         <th>Estado</th>
-                                        <th>Ação</th>
                                     </tr>
                                 </thead>
 
@@ -495,11 +442,6 @@
                                         <td>Urgência</td>
                                         <td>Sala 3</td>
                                         <td>Ativo</td>
-                                        <td>
-                                            <a href="../documentacao/adicionar.html" class="btn btn-sm btn-primary">
-                                                Adicionar documento
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -508,11 +450,6 @@
                                         <td>Consulta Externa</td>
                                         <td>Gabinete 4</td>
                                         <td>Ativo</td>
-                                        <td>
-                                            <a href="../documentacao/adicionar.html" class="btn btn-sm btn-primary">
-                                                Adicionar documento
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -521,11 +458,6 @@
                                         <td>UCI</td>
                                         <td>Sala 1</td>
                                         <td>Ativo</td>
-                                        <td>
-                                            <a href="../documentacao/adicionar.html" class="btn btn-sm btn-primary">
-                                                Adicionar documento
-                                            </a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -533,17 +465,14 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="accordion-item" id="secCriticidadeElevada">
                     <h2 class="accordion-header" id="headingCriticidadeElevada">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseCriticidadeElevada" aria-expanded="false"
                             aria-controls="collapseCriticidadeElevada">
-
                             <strong>
                                 <i class="fas fa-triangle-exclamation"></i> Equipamentos de criticidade elevada
                             </strong>
-
                         </button>
                     </h2>
 
@@ -552,8 +481,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover">
-                                <thead>
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -597,16 +526,15 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item" id="secDocumentosExpirar">
                     <h2 class="accordion-header" id="headingDocumentosExpirar">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseDocumentosExpirar" aria-expanded="false"
                             aria-controls="collapseDocumentosExpirar">
-
                             <strong>
                                 <i class="fas fa-file-circle-exclamation"></i> Documentos a expirar
                             </strong>
-
                         </button>
                     </h2>
 
@@ -615,8 +543,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover">
-                                <thead>
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -624,7 +552,6 @@
                                         <th>Tipo de documento</th>
                                         <th>Data de validade</th>
                                         <th>Fornecedor associado</th>
-                                        <th>Ação</th>
                                     </tr>
                                 </thead>
 
@@ -636,11 +563,6 @@
                                         <td>Certificado</td>
                                         <td>2025-06-15</td>
                                         <td>MedTech Portugal</td>
-                                        <td>
-                                            <a href="../documentacao/documentacao.html" class="btn btn-sm btn-info">
-                                                Ver documento
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -650,11 +572,6 @@
                                         <td>Relatório técnico</td>
                                         <td>2025-06-20</td>
                                         <td>MedTech Portugal</td>
-                                        <td>
-                                            <a href="../documentacao/documentacao.html" class="btn btn-sm btn-info">
-                                                Ver documento
-                                            </a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -662,17 +579,14 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="accordion-item" id="secDocumentosExpirados">
                     <h2 class="accordion-header" id="headingDocumentosExpirados">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseDocumentosExpirados" aria-expanded="false"
                             aria-controls="collapseDocumentosExpirados">
-
                             <strong>
                                 <i class="fas fa-file-circle-xmark"></i> Documentos expirados
                             </strong>
-
                         </button>
                     </h2>
 
@@ -681,8 +595,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover">
-                                <thead>
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -690,7 +604,6 @@
                                         <th>Tipo de documento</th>
                                         <th>Data de validade</th>
                                         <th>Fornecedor associado</th>
-                                        <th>Ação</th>
                                     </tr>
                                 </thead>
 
@@ -702,11 +615,6 @@
                                         <td>Certificado</td>
                                         <td>2025-01-10</td>
                                         <td>Hospital Devices S.A.</td>
-                                        <td>
-                                            <a href="../documentacao/documentacao.html" class="btn btn-sm btn-info">
-                                                Ver documento
-                                            </a>
-                                        </td>
                                     </tr>
 
                                     <tr>
@@ -716,11 +624,6 @@
                                         <td>Relatório técnico</td>
                                         <td>2025-02-18</td>
                                         <td>MedTech Portugal</td>
-                                        <td>
-                                            <a href="../documentacao/documentacao.html" class="btn btn-sm btn-info">
-                                                Ver documento
-                                            </a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -728,134 +631,103 @@
                         </div>
                     </div>
                 </div>
+
             </div>
-            <h3 class="mt-5">Distribuição por categoria</h3>
+            <h3 class="mt-5">Distribuições gerais</h3>
 
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Categoria</th>
-                        <th>Número de equipamentos</th>
-                        <th>Representação simples</th>
-                    </tr>
-                </thead>
+            <div class="row mt-4">
 
-                <tbody>
-                    <tr>
-                        <td>Monitorização</td>
-                        <td>420</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 28%;">28%</div>
+                <div class="col-12 col-lg-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+
+                            <h4 id="secDistribuicaoCategoria" class="text-center">
+                                <i class="fas fa-chart-pie"></i> Distribuição por categoria
+                            </h4>
+
+                            <div class="row align-items-center mt-4">
+
+                                <div class="col-12 col-md-6 text-center">
+                                    <div class="grafico-pie grafico-categoria"></div>
+                                </div>
+
+                                <div class="col-12 col-md-6 mt-4 mt-md-0">
+
+                                    <p class="legenda-grafico">
+                                        <span class="cor-grafico azul"></span>
+                                        <strong>Monitorização</strong><br>
+                                        420 equipamentos — 28%
+                                    </p>
+
+                                    <p class="legenda-grafico">
+                                        <span class="cor-grafico verde"></span>
+                                        <strong>Suporte de vida</strong><br>
+                                        215 equipamentos — 14%
+                                    </p>
+
+                                    <p class="legenda-grafico">
+                                        <span class="cor-grafico amarelo"></span>
+                                        <strong>Infusão</strong><br>
+                                        310 equipamentos — 21%
+                                    </p>
+
+                                    <p class="legenda-grafico">
+                                        <span class="cor-grafico vermelho"></span>
+                                        <strong>Diagnóstico</strong><br>
+                                        280 equipamentos — 19%
+                                    </p>
+
+                                    <p class="legenda-grafico">
+                                        <span class="cor-grafico cinzento"></span>
+                                        <strong>Outros</strong><br>
+                                        275 equipamentos — 18%
+                                    </p>
+
+                                </div>
+
                             </div>
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td>Suporte de vida</td>
-                        <td>215</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 14%;">14%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+
+                            <h4 id="secDistribuicaoLocalizacao" class="text-center">
+                                <i class="fas fa-chart-pie"></i> Distribuição por localização
+                            </h4>
+
+                            <div class="row align-items-center mt-4">
+
+                                <div class="col-12 col-md-6 text-center">
+                                    <div class="grafico-pie grafico-localizacao"></div>
+                                </div>
+
+                                <div class="col-12 col-md-6 mt-4 mt-md-0">
+
+                                    <p class="legenda-grafico">
+                                        <span class="cor-grafico azul"></span>
+                                        <strong>Hospital Central</strong><br>
+                                        1310 equipamentos — 87%
+                                    </p>
+
+                                    <p class="legenda-grafico">
+                                        <span class="cor-grafico verde"></span>
+                                        <strong>Consulta Externa</strong><br>
+                                        190 equipamentos — 13%
+                                    </p>
+
+                                </div>
+
                             </div>
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td>Infusão</td>
-                        <td>310</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 21%;">21%</div>
-                            </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
+                </div>
 
-                    <tr>
-                        <td>Diagnóstico</td>
-                        <td>280</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 19%;">19%</div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Outros</td>
-                        <td>275</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 18%;">18%</div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3 class="mt-5">Distribuição por localização</h3>
-
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Localização</th>
-                        <th>Número de equipamentos</th>
-                        <th>Representação simples</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>Hospital Central - Piso 2 - UCI</td>
-                        <td>320</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 21%;">21%</div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Hospital Central - Piso 1 - Bloco Operatório</td>
-                        <td>410</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 27%;">27%</div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Hospital Central - Piso 0 - Urgência</td>
-                        <td>280</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 19%;">19%</div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Consulta Externa</td>
-                        <td>190</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 13%;">13%</div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Imagiologia</td>
-                        <td>300</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 20%;">20%</div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            </div>
 
         </section>
     </main>

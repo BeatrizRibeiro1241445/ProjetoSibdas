@@ -299,3 +299,24 @@ function removerLinha(botao) {
 
     tabela.removeChild(linha);
 }
+
+function prepararDashboard() {
+    const cartoes = document.getElementsByClassName("dashboard-link");
+
+    for (let i = 0; i < cartoes.length; i++) {
+        cartoes[i].onclick = function () {
+            const idSecao = this.getAttribute("data-secao");
+            const idCollapse = this.getAttribute("data-collapse");
+
+            abrirSecaoDashboard(idSecao, idCollapse);
+        };
+    }
+
+    const botaoUtilizador = document.getElementById("btn-utilizador");
+
+    if (botaoUtilizador && botaoUtilizador.getAttribute("onclick") === null) {
+        botaoUtilizador.onclick = mostrarAreaUtilizador;
+    }
+}
+
+window.addEventListener("load", prepararDashboard);

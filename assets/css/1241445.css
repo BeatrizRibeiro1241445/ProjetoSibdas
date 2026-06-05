@@ -493,3 +493,85 @@ form {
 .accordion-body {
     background-color: white;
 }
+
+.card-dashboard {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-dashboard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-text {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.grafico-pie {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    margin: auto;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.18);
+}
+
+.grafico-categoria {
+    background: conic-gradient(
+        #0d6efd 0% 28%,
+        #198754 28% 42%,
+        #ffc107 42% 63%,
+        #dc3545 63% 82%,
+        #6c757d 82% 100%
+    );
+}
+
+.grafico-localizacao {
+    background: conic-gradient(
+        #0d6efd 0% 87%,
+        #198754 87% 100%
+    );
+}
+
+.legenda-grafico {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+}
+
+.cor-grafico {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.cor-grafico.azul {
+    background-color: #0d6efd;
+}
+
+.cor-grafico.verde {
+    background-color: #198754;
+}
+
+.cor-grafico.amarelo {
+    background-color: #ffc107;
+}
+
+.cor-grafico.vermelho {
+    background-color: #dc3545;
+}
+
+.cor-grafico.cinzento {
+    background-color: #6c757d;
+}
+
+@media (max-width: 576px) {
+    .grafico-pie {
+        width: 200px;
+        height: 200px;
+    }
+}
