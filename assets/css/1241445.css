@@ -83,7 +83,7 @@ h5 {
 
 .nav-cliente a {
     color: #1f4e79;
-    background-color: #fff8d6;
+    background-color: #d7e6f2;
     border: 1px solid #8fb9d9;
     font-size: 1rem;
     font-weight: bold;
@@ -264,31 +264,6 @@ h5 {
     margin-right: 6px;
 }
 
-.footer-brand p {
-    max-width: 320px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.footer-logo-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 12px;
-}
-
-.footer-logo-area img {
-    height: 60px;
-}
-
-.footer-logo-area strong {
-    font-size: 1.4rem;
-    color: #1f4e79;
-    text-transform: none;
-    letter-spacing: 0;
-}
-
 /* =========================
    BACK OFFICE - ÁREA PRIVADA
    ========================= */
@@ -423,32 +398,9 @@ form {
     max-width: 600px;
 }
 
-.formulario-registo {
-    max-width: 600px;
-}
-
 .formulario-equipamento,
 .formulario-garantia {
     max-width: 1000px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #1f4e79;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #8fb9d9;
-    border-radius: 5px;
 }
 
 .btn-primary,
@@ -594,80 +546,6 @@ form {
     left: 18px;
     border-radius: 8px;
     padding: 8px 12px;
-}
-
-/* =========================
-   DASHBOARD
-   ========================= */
-
-.card-dashboard {
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card-dashboard:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.card-dashboard .card-text {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 0;
-}
-
-.grafico-pie {
-    width: 230px;
-    height: 230px;
-    border-radius: 50%;
-    margin: auto;
-    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.18);
-}
-
-.grafico-categoria {
-    background: conic-gradient(#0d6efd 0% 28%,
-            #198754 28% 42%,
-            #ffc107 42% 63%,
-            #dc3545 63% 82%,
-            #6c757d 82% 100%);
-}
-
-.grafico-localizacao {
-    background: conic-gradient(#0d6efd 0% 87%,
-            #198754 87% 100%);
-}
-
-.legenda-grafico {
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem;
-}
-
-.cor-grafico {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 6px;
-}
-
-.cor-grafico.azul {
-    background-color: #0d6efd;
-}
-
-.cor-grafico.verde {
-    background-color: #198754;
-}
-
-.cor-grafico.amarelo {
-    background-color: #ffc107;
-}
-
-.cor-grafico.vermelho {
-    background-color: #dc3545;
-}
-
-.cor-grafico.cinzento {
-    background-color: #6c757d;
 }
 
 /* =========================
@@ -991,7 +869,7 @@ form {
 }
 
 /* =========================
-   NOVO EQUIPAMENTO - SEPARADORES E TABELAS
+   NOVO / EDITAR - SEPARADORES E TABELAS
    ========================= */
 
 .pagina-novo-equipamento .nav-tabs .nav-link {
@@ -1043,64 +921,7 @@ form {
 }
 
 /* =========================
-   RESPONSIVIDADE
-   ========================= */
-
-@media (max-width: 1200px) {
-    .filtros-equipamentos {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 900px) {
-    .area-pessoal-grid,
-    .public-cards {
-        grid-template-columns: 1fr;
-    }
-
-    .container-texto-generico {
-        padding: 70px 25px;
-    }
-
-    .texto-seccao h1 {
-        font-size: 2rem;
-    }
-
-    .container-navegacao a {
-        margin: 0 10px;
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 800px) {
-    .filtros-equipamentos {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 650px) {
-    .area-card,
-    .area-dashboard-card {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .area-dashboard-arrow {
-        display: none;
-    }
-
-    .area-pessoal-intro h2 {
-        font-size: 1.6rem;
-    }
-
-    .grafico-pie {
-        width: 200px;
-        height: 200px;
-    }
-}
-
-/* =========================
-   DETALHES DO EQUIPAMENTO
+   DETALHES
    ========================= */
 
 .tabela-detalhes {
@@ -1135,4 +956,245 @@ form {
 .tabela-detalhes .table-danger {
     background-color: #f4b7c9;
     color: #7a1835;
+}
+
+/* =========================
+   DASHBOARD
+   ========================= */
+
+.pagina-dashboard .content {
+    background-color: #f3f6f9;
+}
+
+.dashboard-intro {
+    background: linear-gradient(135deg, #d7e6f2, #fff8d6);
+    border: 1px solid #b8d4e8;
+    border-radius: 18px;
+    padding: 22px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-intro h3 {
+    color: #1f4e79;
+    margin-bottom: 8px;
+}
+
+.dashboard-intro p {
+    margin-bottom: 0;
+    color: #40566b;
+}
+
+.dashboard-intro>i {
+    font-size: 48px;
+    color: #1f4e79;
+}
+
+.dashboard-titulo-seccao {
+    color: #1f4e79;
+    font-weight: bold;
+}
+
+.card-dashboard {
+    border: none;
+    border-radius: 18px;
+    transition: 0.2s;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.card-dashboard:hover {
+    transform: translateY(-4px);
+}
+
+.card-dashboard .card-title {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.card-dashboard .card-title i {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.card-dashboard .card-text {
+    font-size: 34px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.card-dashboard p {
+    margin-bottom: 0;
+}
+
+.dashboard-total {
+    background-color: #d7e6f2;
+    color: #1f4e79;
+}
+
+.dashboard-ativos {
+    background-color: #cfead6;
+    color: #145c2e;
+}
+
+.dashboard-manutencao {
+    background-color: #fff2a8;
+    color: #806000;
+}
+
+.dashboard-inativos {
+    background-color: #e3e6ea;
+    color: #374151;
+}
+
+.dashboard-alerta-vermelho {
+    background-color: #f8c7c7;
+    color: #842029;
+}
+
+.dashboard-accordion .accordion-item {
+    border: 1px solid #b8d4e8;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.dashboard-accordion .accordion-button {
+    background-color: #d7e6f2;
+    color: #1f4e79;
+}
+
+.dashboard-accordion .accordion-button:not(.collapsed) {
+    background-color: #1f4e79;
+    color: white;
+}
+
+.dashboard-accordion .accordion-body {
+    background-color: #f8fbfd;
+}
+
+.dashboard-grafico-card {
+    border: 1px solid #b8d4e8;
+    border-radius: 18px;
+}
+
+.dashboard-grafico-card h4 {
+    color: #1f4e79;
+    font-weight: bold;
+}
+
+.grafico-pie {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 0 auto;
+    border: 8px solid #f3f6f9;
+    box-shadow: 0 4px 12px rgba(31, 78, 121, 0.18);
+}
+
+.grafico-categoria {
+    background: conic-gradient(#1f4e79 0% 28%,
+            #8fd6c7 28% 42%,
+            #ffe28a 42% 63%,
+            #f4b7c9 63% 82%,
+            #c9d6df 82% 100%);
+}
+
+.grafico-localizacao {
+    background: conic-gradient(#1f4e79 0% 87%,
+            #8fd6c7 87% 100%);
+}
+
+.legenda-grafico {
+    margin-bottom: 14px;
+    color: #40566b;
+}
+
+.cor-grafico {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+.cor-grafico.azul {
+    background-color: #1f4e79;
+}
+
+.cor-grafico.verde {
+    background-color: #8fd6c7;
+}
+
+.cor-grafico.amarelo {
+    background-color: #ffe28a;
+}
+
+.cor-grafico.vermelho {
+    background-color: #f4b7c9;
+}
+
+.cor-grafico.cinzento {
+    background-color: #c9d6df;
+}
+
+/* =========================
+   RESPONSIVIDADE
+   ========================= */
+
+@media (max-width: 1200px) {
+    .filtros-equipamentos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+
+    .area-pessoal-grid,
+    .public-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .container-texto-generico {
+        padding: 70px 25px;
+    }
+
+    .texto-seccao h1 {
+        font-size: 2rem;
+    }
+
+    .container-navegacao a {
+        margin: 0 10px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .filtros-equipamentos {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .area-card,
+    .area-dashboard-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .area-dashboard-arrow {
+        display: none;
+    }
+
+    .area-pessoal-intro h2 {
+        font-size: 1.6rem;
+    }
+
+    .grafico-pie {
+        width: 200px;
+        height: 200px;
+    }
 }

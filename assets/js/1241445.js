@@ -13,45 +13,6 @@ function mostrarAreaUtilizador() {
     alert("Área reservada do MedInventário");
 }
 
-// Validação simples de teste para o formulário de equipamentos
-function validarEquipamento() {
-    const codigo = document.getElementById("codigo").value;
-    const designacao = document.getElementById("designacao").value;
-    const numeroSerie = document.getElementById("numero_serie").value;
-    const mensagem = document.getElementById("mensagem-formulario");
-
-    if (codigo === "" || designacao === "" || numeroSerie === "") {
-        mensagem.textContent = "Erro: preencha os campos obrigatórios.";
-        mensagem.className = "alert alert-danger mt-3";
-    } else if (
-        codigo === "004.002.00" ||
-        codigo === "007.001.00" ||
-        codigo === "003.001.00" ||
-        designacao === "Monitor Multiparamétrico" ||
-        designacao === "Bomba de Infusão" ||
-        designacao === "Ventilador Pulmonar" ||
-        numeroSerie === "MP5-2022-45873" ||
-        numeroSerie === "INF-2020-88321" ||
-        numeroSerie === "EV500-2021-55210"
-    ) {
-        mensagem.textContent = "Erro: equipamento já existente.";
-        mensagem.className = "alert alert-danger mt-3";
-    } else {
-        mensagem.textContent = "Equipamento guardado com sucesso.";
-        mensagem.className = "alert alert-success mt-3";
-    }
-}
-
-// Mensagem de teste para edição de garantias e contratos
-function atualizarGarantiaContrato() {
-    const mensagem = document.getElementById("mensagem-formulario");
-
-    if (mensagem) {
-        mensagem.textContent = "Garantia e contrato atualizados localmente para teste.";
-        mensagem.className = "alert alert-success mt-3";
-    }
-}
-
 // Abre secções da dashboard
 function abrirSecaoDashboard(idSecao, idCollapse) {
     const secao = document.getElementById(idSecao);
@@ -66,6 +27,7 @@ function abrirSecaoDashboard(idSecao, idCollapse) {
     }
 }
 
+// Verifica se um campo está preenchido
 function campoPreenchido(idCampo) {
     const campo = document.getElementById(idCampo);
 
@@ -76,6 +38,7 @@ function campoPreenchido(idCampo) {
     return campo.value.trim() !== "";
 }
 
+// Mostra erro nos formulários por etapas
 function mostrarErroEtapa(texto) {
     const mensagem = document.getElementById("mensagem-formulario");
 
@@ -85,6 +48,7 @@ function mostrarErroEtapa(texto) {
     }
 }
 
+// Limpa a mensagem dos formulários por etapas
 function limparMensagemEtapa() {
     const mensagem = document.getElementById("mensagem-formulario");
 
@@ -94,6 +58,7 @@ function limparMensagemEtapa() {
     }
 }
 
+// Abre separadores do formulário de equipamentos
 function abrirSeparador(idConteudo, idBotao) {
     document.getElementById("geral").className = "tab-pane fade";
     document.getElementById("fornecedores").className = "tab-pane fade";
@@ -112,6 +77,8 @@ function abrirSeparador(idConteudo, idBotao) {
 
     limparMensagemEtapa();
 }
+
+// Avança dos dados gerais para fornecedores
 function avancarParaFornecedores() {
     const camposDadosGerais = [
         "codigo",
@@ -139,16 +106,13 @@ function avancarParaFornecedores() {
     abrirSeparador("fornecedores", "fornecedores-tab");
 }
 
+// Associa fornecedor à tabela
 function associarFornecedor() {
     const fornecedor = document.getElementById("fornecedor_existente").value;
     const tipoAssociacao = document.getElementById("tipo_associacao").value;
     const observacoes = document.getElementById("observacoes_associacao").value;
 
-    if (
-        fornecedor === "" ||
-        tipoAssociacao === "" ||
-        observacoes === ""
-    ) {
+    if (fornecedor === "" || tipoAssociacao === "" || observacoes === "") {
         mostrarErroEtapa("Preencha o fornecedor, o tipo de associação e as observações antes de associar.");
         return;
     }
@@ -170,6 +134,7 @@ function associarFornecedor() {
     limparMensagemEtapa();
 }
 
+// Avança dos fornecedores para localização
 function avancarParaLocalizacao() {
     const tabela = document.getElementById("tabela_fornecedores_associados");
 
@@ -181,18 +146,14 @@ function avancarParaLocalizacao() {
     abrirSeparador("localizacao", "localizacao-tab");
 }
 
+// Associa localização à tabela
 function associarLocalizacao() {
     const localizacao = document.getElementById("localizacao_existente").value;
     const data = document.getElementById("data_localizacao").value;
     const responsavel = document.getElementById("responsavel_localizacao").value;
     const motivo = document.getElementById("motivo_localizacao").value;
 
-    if (
-        localizacao === "" ||
-        data === "" ||
-        responsavel === "" ||
-        motivo === ""
-    ) {
+    if (localizacao === "" || data === "" || responsavel === "" || motivo === "") {
         mostrarErroEtapa("Preencha todos os dados da localização antes de associar.");
         return;
     }
@@ -215,6 +176,7 @@ function associarLocalizacao() {
     limparMensagemEtapa();
 }
 
+// Avança da localização para documentação
 function avancarParaDocumentacao() {
     const tabela = document.getElementById("tabela_localizacoes_associadas");
 
@@ -225,6 +187,8 @@ function avancarParaDocumentacao() {
 
     abrirSeparador("documentacao", "documentacao-tab");
 }
+
+// Adiciona documento à tabela
 function adicionarDocumentoNovo() {
     const tipo = document.getElementById("tipo_documento").value;
     const nome = document.getElementById("nome_documento").value;
@@ -272,10 +236,12 @@ function adicionarDocumentoNovo() {
     limparMensagemEtapa();
 }
 
+// Avança para garantias
 function avancarParaGarantias() {
     abrirSeparador("garantias", "garantias-tab");
 }
 
+// Botões de página anterior dos equipamentos
 function voltarParaGeral() {
     abrirSeparador("geral", "geral-tab");
 }
@@ -292,7 +258,7 @@ function voltarParaDocumentacao() {
     abrirSeparador("documentacao", "documentacao-tab");
 }
 
-
+// Remove uma linha de tabela
 function removerLinha(botao) {
     const linha = botao.parentNode.parentNode;
     const tabela = linha.parentNode;
@@ -300,6 +266,7 @@ function removerLinha(botao) {
     tabela.removeChild(linha);
 }
 
+// Prepara os cartões clicáveis da dashboard
 function prepararDashboard() {
     const cartoes = document.getElementsByClassName("dashboard-link");
 

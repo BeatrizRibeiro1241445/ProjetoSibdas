@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../../../assets/css/1241445.css">
 </head>
 
-<body>
+<body class="pagina-dashboard">
     <!-- Navbar -->
     <header class="bng-navbar-menu">
 
@@ -31,7 +31,10 @@
         </div>
 
         <div>
-            <button id="btn-utilizador" type="button">Utilizador</button>
+            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">
+                <i class="fas fa-user-circle"></i>
+                Utilizador
+            </button>
         </div>
 
     </header>
@@ -57,7 +60,7 @@
                 <i class="fas fa-pen-to-square"></i> Conteúdos do site
             </a>
 
-            <a href="../dashboard/dashboard.html">
+            <a href="../dashboard/dashboard.html" class="active">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
         </nav>
@@ -77,12 +80,26 @@
 
             <hr>
 
-            <h3>Métricas principais</h3>
+            <div class="dashboard-intro mb-4">
+                <div>
+                    <h3>Resumo e indicadores</h3>
+                    <p>
+                        Consulta rápida dos principais números do inventário hospitalar,
+                        alertas de gestão e distribuição dos equipamentos.
+                    </p>
+                </div>
+
+                <i class="fas fa-chart-line"></i>
+            </div>
+
+            <h3 class="dashboard-titulo-seccao">
+                <i class="fas fa-chart-simple"></i> Métricas principais
+            </h3>
 
             <div class="row mt-4">
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-total"
                         data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -95,7 +112,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-ativos"
                         data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -108,7 +125,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-manutencao"
                         data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -121,7 +138,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-inativos"
                         data-secao="secResumoServico" data-collapse="">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -134,12 +151,15 @@
                 </div>
 
             </div>
-            <h3 class="mt-5">Alertas de gestão</h3>
+
+            <h3 class="dashboard-titulo-seccao mt-5">
+                <i class="fas fa-triangle-exclamation"></i> Alertas de gestão
+            </h3>
 
             <div class="row mt-4">
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-alerta-vermelho"
                         data-secao="secGarantiasExpiradas" data-collapse="collapseGarantiasExpiradas">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -152,7 +172,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-manutencao"
                         data-secao="secGarantiasExpirar" data-collapse="collapseGarantiasExpirar">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -165,7 +185,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-inativos"
                         data-secao="secSemDocumentacao" data-collapse="collapseSemDocumentacao">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -178,7 +198,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-alerta-vermelho"
                         data-secao="secCriticidadeElevada" data-collapse="collapseCriticidadeElevada">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -195,7 +215,7 @@
             <div class="row mt-2">
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-manutencao"
                         data-secao="secDocumentosExpirar" data-collapse="collapseDocumentosExpirar">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -208,7 +228,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 mb-3">
-                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link"
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-alerta-vermelho"
                         data-secao="secDocumentosExpirados" data-collapse="collapseDocumentosExpirados">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -220,12 +240,28 @@
                     </div>
                 </div>
 
-            </div>
-            <h3 class="mt-5" id="secResumoServico">Resumo por serviço</h3>
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-alerta-vermelho"
+                        data-secao="secAvariadosForaServico" data-collapse="collapseAvariadosForaServico">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-screwdriver-wrench"></i> Avariados / fora de serviço
+                            </h5>
+                            <p class="card-text">34</p>
+                            <p>Equipamentos avariados ou fora de serviço</p>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle text-center">
-                    <thead class="table-light">
+            </div>
+
+            <h3 class="dashboard-titulo-seccao mt-5" id="secResumoServico">
+                <i class="fas fa-hospital"></i> Resumo por serviço
+            </h3>
+
+            <div class="table-responsive tabela-lista-container">
+                <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                    <thead>
                         <tr>
                             <th>Serviço / Departamento</th>
                             <th>Total de equipamentos</th>
@@ -285,9 +321,11 @@
                 </table>
             </div>
 
-            <h3 class="mt-5">Análise detalhada</h3>
+            <h3 class="dashboard-titulo-seccao mt-5">
+                <i class="fas fa-list-check"></i> Análise detalhada
+            </h3>
 
-            <div class="accordion mb-4" id="accordionDashboard">
+            <div class="accordion mb-4 dashboard-accordion" id="accordionDashboard">
 
                 <div class="accordion-item" id="secGarantiasExpiradas">
                     <h2 class="accordion-header" id="headingGarantiasExpiradas">
@@ -305,8 +343,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover align-middle text-center">
-                                <thead class="table-light">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <thead>
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -346,6 +384,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item" id="secGarantiasExpirar">
                     <h2 class="accordion-header" id="headingGarantiasExpirar">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -363,8 +402,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover align-middle text-center">
-                                <thead class="table-light">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <thead>
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -421,8 +460,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover align-middle text-center">
-                                <thead class="table-light">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <thead>
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -462,6 +501,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item" id="secCriticidadeElevada">
                     <h2 class="accordion-header" id="headingCriticidadeElevada">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -478,8 +518,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover align-middle text-center">
-                                <thead class="table-light">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <thead>
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -540,8 +580,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover align-middle text-center">
-                                <thead class="table-light">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <thead>
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -576,6 +616,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item" id="secDocumentosExpirados">
                     <h2 class="accordion-header" id="headingDocumentosExpirados">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -592,8 +633,8 @@
 
                         <div class="accordion-body">
 
-                            <table class="table table-bordered table-hover align-middle text-center">
-                                <thead class="table-light">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <thead>
                                     <tr>
                                         <th>Código interno</th>
                                         <th>Equipamento</th>
@@ -629,13 +670,78 @@
                     </div>
                 </div>
 
+                <div class="accordion-item" id="secAvariadosForaServico">
+                    <h2 class="accordion-header" id="headingAvariadosForaServico">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseAvariadosForaServico" aria-expanded="false"
+                            aria-controls="collapseAvariadosForaServico">
+                            <strong>
+                                <i class="fas fa-screwdriver-wrench"></i> Equipamentos avariados ou fora de serviço
+                            </strong>
+                        </button>
+                    </h2>
+
+                    <div id="collapseAvariadosForaServico" class="accordion-collapse collapse"
+                        aria-labelledby="headingAvariadosForaServico" data-bs-parent="#accordionDashboard">
+
+                        <div class="accordion-body">
+
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <thead>
+                                    <tr>
+                                        <th>Código interno</th>
+                                        <th>Equipamento</th>
+                                        <th>Serviço</th>
+                                        <th>Localização</th>
+                                        <th>Estado</th>
+                                        <th>Observação</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>018.002.00</td>
+                                        <td>Monitor de Sinais Vitais</td>
+                                        <td>Urgência</td>
+                                        <td>Sala 3</td>
+                                        <td>Avariado</td>
+                                        <td>A aguardar avaliação técnica.</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>020.001.00</td>
+                                        <td>Bomba de Seringa</td>
+                                        <td>Unidade de Cuidados Intensivos</td>
+                                        <td>Sala 1</td>
+                                        <td>Fora de serviço</td>
+                                        <td>Equipamento retirado temporariamente da utilização.</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>021.004.00</td>
+                                        <td>Aspirador Portátil</td>
+                                        <td>Bloco Operatório</td>
+                                        <td>Sala 2</td>
+                                        <td>Avariado</td>
+                                        <td>Necessita de reparação.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <h3 class="mt-5">Distribuições gerais</h3>
+
+            <h3 class="dashboard-titulo-seccao mt-5">
+                <i class="fas fa-chart-pie"></i> Distribuições gerais
+            </h3>
 
             <div class="row mt-4">
 
                 <div class="col-12 col-lg-6 mb-4">
-                    <div class="card shadow-sm h-100">
+                    <div class="card shadow-sm h-100 dashboard-grafico-card">
                         <div class="card-body">
 
                             <h4 id="secDistribuicaoCategoria" class="text-center">
@@ -689,7 +795,7 @@
                 </div>
 
                 <div class="col-12 col-lg-6 mb-4">
-                    <div class="card shadow-sm h-100">
+                    <div class="card shadow-sm h-100 dashboard-grafico-card">
                         <div class="card-body">
 
                             <h4 id="secDistribuicaoLocalizacao" class="text-center">
