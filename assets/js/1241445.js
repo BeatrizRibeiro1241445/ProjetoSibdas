@@ -361,3 +361,22 @@ function avancarFornecedorContactos() {
 function voltarFornecedorGeral() {
     abrirSeparadorFornecedor("fornecedor-geral-tab");
 }
+
+// Valida os campos obrigatórios das localizações
+function validarLocalizacao() {
+    const campos = document.querySelectorAll(".campo-obrigatorio-localizacao");
+    const mensagem = document.getElementById("mensagem-formulario");
+
+    for (let i = 0; i < campos.length; i++) {
+        if (campos[i].value.trim() === "") {
+            mensagem.innerHTML = "Preencha todos os campos obrigatórios antes de guardar.";
+            mensagem.className = "alert alert-danger mt-3";
+            campos[i].focus();
+            return false;
+        }
+    }
+
+    mensagem.innerHTML = "";
+    mensagem.className = "";
+    mostrarMensagemFormulario();
+}

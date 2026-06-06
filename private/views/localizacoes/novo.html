@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../../../assets/css/1241445.css">
 </head>
 
-<body>
+<body class="pagina-novo-equipamento">
     <!-- Navbar -->
     <header class="bng-navbar-menu">
 
@@ -31,7 +31,10 @@
         </div>
 
         <div>
-            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
+            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">
+                <i class="fas fa-user-circle"></i>
+                Utilizador
+            </button>
         </div>
 
     </header>
@@ -49,7 +52,7 @@
                 <i class="fas fa-truck-medical"></i> Fornecedores
             </a>
 
-            <a href="../localizacoes/lista.html">
+            <a href="../localizacoes/lista.html" class="active">
                 <i class="fas fa-location-dot"></i> Localizações
             </a>
 
@@ -62,7 +65,7 @@
             </a>
         </nav>
     </aside>
-    
+
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
@@ -74,7 +77,7 @@
                     </strong>
                 </h2>
 
-                <a href="lista.html" class="btn btn-secondary" title="Voltar à lista">
+                <a href="lista.html" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
@@ -94,14 +97,15 @@
 
                             <div class="col-12 col-md-6">
                                 <label for="categoria" class="form-label">Categoria</label>
-                                <input type="text" class="form-control" id="categoria" name="categoria"
+                                <input type="text" class="form-control campo-obrigatorio-localizacao" id="categoria"
+                                    name="categoria"
                                     placeholder="Ex.: Área clínica crítica, Área cirúrgica, Área técnica">
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <label for="edificio" class="form-label">Edifício</label>
-                                <input type="text" class="form-control" id="edificio" name="edificio"
-                                    placeholder="Ex.: Hospital Central">
+                                <input type="text" class="form-control campo-obrigatorio-localizacao" id="edificio"
+                                    name="edificio" placeholder="Ex.: Hospital Central">
                             </div>
 
                         </div>
@@ -110,24 +114,27 @@
 
                             <div class="col-12 col-md-4">
                                 <label for="piso" class="form-label">Piso</label>
-                                <input type="text" class="form-control" id="piso" name="piso" placeholder="Ex.: Piso 2">
+                                <input type="text" class="form-control campo-obrigatorio-localizacao" id="piso"
+                                    name="piso" placeholder="Ex.: Piso 2">
                             </div>
 
                             <div class="col-12 col-md-4">
                                 <label for="servico" class="form-label">Serviço / Departamento</label>
-                                <input type="text" class="form-control" id="servico" name="servico"
-                                    placeholder="Ex.: Unidade de Cuidados Intensivos">
+                                <input type="text" class="form-control campo-obrigatorio-localizacao" id="servico"
+                                    name="servico" placeholder="Ex.: Unidade de Cuidados Intensivos">
                             </div>
 
                             <div class="col-12 col-md-4">
                                 <label for="sala" class="form-label">Sala / Gabinete</label>
-                                <input type="text" class="form-control" id="sala" name="sala" placeholder="Ex.: Sala 1">
+                                <input type="text" class="form-control campo-obrigatorio-localizacao" id="sala"
+                                    name="sala" placeholder="Ex.: Sala 1">
                             </div>
 
                         </div>
 
                     </div>
                 </div>
+
                 <div class="card mb-4">
                     <div class="card-body">
 
@@ -146,11 +153,11 @@
 
                 <div class="d-flex justify-content-end gap-2">
 
-                    <a href="lista.html" class="btn btn-secondary">
+                    <a href="lista.html" class="btn btn-outline-secondary botao-anterior">
                         Cancelar
                     </a>
 
-                    <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
+                    <button type="button" class="btn btn-primary" onclick="validarLocalizacao()">
                         Guardar localização
                     </button>
 
