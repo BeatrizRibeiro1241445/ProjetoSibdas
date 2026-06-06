@@ -23,49 +23,54 @@
 
     <main class="container">
         <section class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-12 col-md-7 col-lg-5">
 
                 <div class="card login-box">
+
+                    <a href="index.html" class="btn btn-outline-secondary login-voltar" title="Voltar ao site">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
 
                     <div class="card-body">
 
                         <!-- Cabeçalho do login -->
                         <div class="login-brand">
                             <img src="../assets/img/logo.png" alt="Logo MedInventário" class="login-logo">
-                            <h2>MedInventário</h2>
+
+                            <div>
+                                <h2>MedInventário</h2>
+                                <p>Acesso à área reservada</p>
+                            </div>
                         </div>
 
                         <!-- Formulário de login -->
                         <form action="../private/area_pessoal.html" method="post">
 
                             <div class="mb-3">
-                                <label for="utilizador" class="form-label">Utilizador</label>
-                                <input type="text" class="form-control" id="utilizador" name="utilizador" required>
+                                <label for="utilizador" class="form-label">
+                                    <i class="fas fa-user"></i> Utilizador
+                                </label>
+
+                                <input type="text" class="form-control" id="utilizador" name="utilizador"
+                                    placeholder="Introduza o utilizador" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="form-label">Palavra-passe</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock"></i> Palavra-passe
+                                </label>
+
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Introduza a palavra-passe" required>
                             </div>
 
                             <div class="text-center mt-4">
                                 <button type="submit" class="btn btn-primary login-button">
                                     Entrar <i class="fas fa-sign-in-alt"></i>
                                 </button>
-                                </button>
-                            </div>
-
-                            <div class="alert alert-danger text-center mt-4 login-alert" role="alert">
-                                Erro: Utilizador não registado
                             </div>
 
                         </form>
-
-                        <div class="text-center mt-3">
-                            <a href="index.html" class="btn btn-primary login-button">
-                                Voltar ao site
-                            </a>
-                        </div>
 
                     </div>
 
@@ -78,6 +83,7 @@
     <!-- Bootstrap JS -->
     <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
 
+    <!-- JavaScript -->
     <script src="../assets/js/1241445.js"></script>
 
 </body>
