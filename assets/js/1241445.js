@@ -320,3 +320,44 @@ function prepararDashboard() {
 }
 
 window.addEventListener("load", prepararDashboard);
+
+// Abre um separador das páginas de fornecedores
+function abrirSeparadorFornecedor(idSeparador) {
+    const botaoSeparador = document.getElementById(idSeparador);
+
+    if (botaoSeparador) {
+        const separador = new bootstrap.Tab(botaoSeparador);
+        separador.show();
+    }
+}
+
+// Valida os campos obrigatórios do primeiro separador de fornecedores
+function validarCamposFornecedor() {
+    const campos = document.querySelectorAll(".campo-obrigatorio-fornecedor");
+    const mensagem = document.getElementById("mensagem-formulario");
+
+    for (let i = 0; i < campos.length; i++) {
+        if (campos[i].value.trim() === "") {
+            mensagem.innerHTML = "Preencha todos os campos obrigatórios antes de avançar.";
+            mensagem.className = "alert alert-danger mt-3";
+            campos[i].focus();
+            return false;
+        }
+    }
+
+    mensagem.innerHTML = "";
+    mensagem.className = "";
+    return true;
+}
+
+// Avança para o segundo separador de fornecedores
+function avancarFornecedorContactos() {
+    if (validarCamposFornecedor()) {
+        abrirSeparadorFornecedor("fornecedor-contactos-tab");
+    }
+}
+
+// Volta para o primeiro separador de fornecedores
+function voltarFornecedorGeral() {
+    abrirSeparadorFornecedor("fornecedor-geral-tab");
+}
