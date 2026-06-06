@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../../../assets/css/1241445.css">
 </head>
 
-<body>
+<body class="pagina-novo-equipamento">
     <!-- Navbar -->
     <header class="bng-navbar-menu">
 
@@ -31,37 +31,41 @@
         </div>
 
         <div>
-            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
+            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">
+                <i class="fas fa-user-circle"></i>
+                Utilizador
+            </button>
         </div>
 
     </header>
 
     <!-- Sidebar -->
-<aside class="sidebar">
-    <h4>Menu</h4>
+    <aside class="sidebar">
+        <h4>Menu</h4>
 
-    <nav>
-        <a href="../equipamentos/lista.html">
-            <i class="fas fa-laptop-medical"></i> Equipamentos
-        </a>
+        <nav>
+            <a href="../equipamentos/lista.html" class="active">
+                <i class="fas fa-laptop-medical"></i> Equipamentos
+            </a>
 
-        <a href="../fornecedores/lista.html">
-            <i class="fas fa-truck-medical"></i> Fornecedores
-        </a>
+            <a href="../fornecedores/lista.html">
+                <i class="fas fa-truck-medical"></i> Fornecedores
+            </a>
 
-        <a href="../localizacoes/lista.html">
-            <i class="fas fa-location-dot"></i> Localizações
-        </a>
+            <a href="../localizacoes/lista.html">
+                <i class="fas fa-location-dot"></i> Localizações
+            </a>
 
-        <a href="../gestao_conteudos/gestao_conteudos.html">
-            <i class="fas fa-pen-to-square"></i> Conteúdos do site
-        </a>
+            <a href="../gestao_conteudos/gestao_conteudos.html">
+                <i class="fas fa-pen-to-square"></i> Conteúdos do site
+            </a>
 
-        <a href="../dashboard/dashboard.html">
-            <i class="fas fa-chart-bar"></i> Dashboard
-        </a>
-    </nav>
-</aside>
+            <a href="../dashboard/dashboard.html">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+        </nav>
+    </aside>
+
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
@@ -73,7 +77,7 @@
                     </strong>
                 </h2>
 
-                <a href="lista.html" class="btn btn-secondary" title="Voltar à lista">
+                <a href="lista.html" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
@@ -82,7 +86,7 @@
 
             <form action="#" method="post" class="formulario-equipamento" enctype="multipart/form-data">
 
-                <ul class="nav nav-tabs mb-4" id="separadoresNovoEquipamento" role="tablist">
+                <ul class="nav nav-tabs mb-4" id="separadoresEditarEquipamento" role="tablist">
 
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="geral-tab" type="button">
@@ -116,7 +120,8 @@
 
                 </ul>
 
-                <div class="tab-content" id="conteudoSeparadoresNovoEquipamento">
+                <div class="tab-content" id="conteudoSeparadoresEditarEquipamento">
+
                     <!-- Separador: Dados gerais -->
                     <div class="tab-pane fade show active" id="geral" role="tabpanel">
 
@@ -203,6 +208,7 @@
                                     </div>
 
                                 </div>
+
                                 <div class="row mb-3">
 
                                     <div class="col-12 col-md-4">
@@ -274,98 +280,31 @@
                                     </div>
 
                                     <div class="col-12 col-md-6">
-                                        <label for="tipo_associacao" class="form-label">Tipo de associação ao
-                                            equipamento</label>
+                                        <label for="tipo_associacao" class="form-label">
+                                            Tipo de associação ao equipamento
+                                        </label>
                                         <select class="form-select" id="tipo_associacao" name="tipo_associacao">
                                             <option value="">Selecione</option>
                                             <option value="Fabricante">Fabricante</option>
                                             <option value="Fornecedor comercial">Fornecedor comercial</option>
-                                            <option value="Empresa de assistência técnica">Empresa de assistência
-                                                técnica</option>
-                                            <option value="Fornecedor de consumíveis/acessórios">Fornecedor de
-                                                consumíveis/acessórios</option>
+                                            <option value="Empresa de assistência técnica">
+                                                Empresa de assistência técnica
+                                            </option>
+                                            <option value="Fornecedor de consumíveis/acessórios">
+                                                Fornecedor de consumíveis/acessórios
+                                            </option>
                                         </select>
                                     </div>
 
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="observacoes_associacao" class="form-label">Observações da
-                                        associação</label>
+                                    <label for="observacoes_associacao" class="form-label">
+                                        Observações da associação
+                                    </label>
                                     <textarea class="form-control" id="observacoes_associacao"
                                         name="observacoes_associacao" rows="3"
                                         placeholder="Ex.: entidade responsável pela manutenção preventiva deste equipamento."></textarea>
-                                </div>
-
-                                <h3 class="mt-4">
-                                    <i class="fas fa-users"></i> Pessoas de contacto para este equipamento
-                                </h3>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_1_nome" class="form-label">Pessoa de contacto 1</label>
-                                        <input type="text" class="form-control" id="contacto_1_nome"
-                                            name="contacto_1_nome" placeholder="Ex.: Ana Martins">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_1_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 1</label>
-                                        <input type="text" class="form-control" id="contacto_1_telefone"
-                                            name="contacto_1_telefone" placeholder="Ex.: +351 910 000 000">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_2_nome" class="form-label">Pessoa de contacto 2</label>
-                                        <input type="text" class="form-control" id="contacto_2_nome"
-                                            name="contacto_2_nome">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_2_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 2</label>
-                                        <input type="text" class="form-control" id="contacto_2_telefone"
-                                            name="contacto_2_telefone">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_3_nome" class="form-label">Pessoa de contacto 3</label>
-                                        <input type="text" class="form-control" id="contacto_3_nome"
-                                            name="contacto_3_nome">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_3_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 3</label>
-                                        <input type="text" class="form-control" id="contacto_3_telefone"
-                                            name="contacto_3_telefone">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_4_nome" class="form-label">Pessoa de contacto 4</label>
-                                        <input type="text" class="form-control" id="contacto_4_nome"
-                                            name="contacto_4_nome">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="contacto_4_telefone" class="form-label">Telefone da pessoa de
-                                            contacto 4</label>
-                                        <input type="text" class="form-control" id="contacto_4_telefone"
-                                            name="contacto_4_telefone">
-                                    </div>
-
                                 </div>
 
                                 <button type="button" class="btn btn-primary" onclick="associarFornecedor()">
@@ -382,8 +321,9 @@
                                     <i class="fas fa-list"></i> Fornecedores associados
                                 </h3>
 
-                                <table class="table table-bordered table-hover align-middle text-center">
-                                    <thead class="table-light">
+                                <table
+                                    class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                                    <thead>
                                         <tr>
                                             <th>Fornecedor</th>
                                             <th>Tipo de associação</th>
@@ -398,8 +338,7 @@
                                             <td>Empresa de assistência técnica</td>
                                             <td>Responsável pela manutenção preventiva deste equipamento.</td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar"
-                                                    onclick="removerLinha(this)">
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -408,10 +347,9 @@
                                         <tr>
                                             <td>Philips Medical Systems</td>
                                             <td>Fabricante</td>
-                                            <td>Fornecedor fabricante do equipamento.</td>
+                                            <td>Fabricante do equipamento.</td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar"
-                                                    onclick="removerLinha(this)">
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -420,7 +358,8 @@
                                 </table>
 
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-secondary" onclick="voltarParaGeral()">
+                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
+                                        onclick="voltarParaGeral()">
                                         Página anterior
                                     </button>
 
@@ -433,6 +372,7 @@
                         </div>
 
                     </div>
+
                     <!-- Separador: Localização atual -->
                     <div class="tab-pane fade" id="localizacao" role="tabpanel">
 
@@ -440,14 +380,15 @@
                             <div class="card-body">
 
                                 <h3>
-                                    <i class="fas fa-location-dot"></i> Alterar localização atual
+                                    <i class="fas fa-location-dot"></i> Selecionar localização existente
                                 </h3>
 
                                 <div class="row mb-3">
 
                                     <div class="col-12 col-md-8">
-                                        <label for="localizacao_existente" class="form-label">Localização
-                                            existente</label>
+                                        <label for="localizacao_existente" class="form-label">
+                                            Localização existente
+                                        </label>
                                         <select class="form-select" id="localizacao_existente"
                                             name="localizacao_existente">
                                             <option value="">Selecione uma localização</option>
@@ -459,9 +400,6 @@
                                             </option>
                                             <option value="Hospital Central - Piso 0 - Urgência - Sala 3">
                                                 Hospital Central - Piso 0 - Urgência - Sala 3
-                                            </option>
-                                            <option value="Hospital Central - Consulta Externa - Gabinete 4">
-                                                Hospital Central - Consulta Externa - Gabinete 4
                                             </option>
                                         </select>
                                     </div>
@@ -491,7 +429,7 @@
                                 </div>
 
                                 <button type="button" class="btn btn-primary" onclick="associarLocalizacao()">
-                                    Atualizar localização
+                                    Associar localização
                                 </button>
 
                             </div>
@@ -501,11 +439,12 @@
                             <div class="card-body">
 
                                 <h3>
-                                    <i class="fas fa-map-location-dot"></i> Localização atual associada
+                                    <i class="fas fa-list"></i> Localização associada
                                 </h3>
 
-                                <table class="table table-bordered table-hover align-middle text-center">
-                                    <thead class="table-light">
+                                <table
+                                    class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                                    <thead>
                                         <tr>
                                             <th>Localização</th>
                                             <th>Data</th>
@@ -522,8 +461,7 @@
                                             <td>Técnico responsável</td>
                                             <td>Instalação inicial no serviço</td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar"
-                                                    onclick="removerLinha(this)">
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -532,7 +470,8 @@
                                 </table>
 
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-secondary" onclick="voltarParaFornecedores()">
+                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
+                                        onclick="voltarParaFornecedores()">
                                         Página anterior
                                     </button>
 
@@ -545,6 +484,7 @@
                         </div>
 
                     </div>
+
                     <!-- Separador: Documentação associada -->
                     <div class="tab-pane fade" id="documentacao" role="tabpanel">
 
@@ -552,34 +492,26 @@
                             <div class="card-body">
 
                                 <h3>
-                                    <i class="fas fa-file-medical"></i> Documentação associada
+                                    <i class="fas fa-file-medical"></i> Adicionar documentação
                                 </h3>
 
                                 <div class="row mb-3">
 
-                                    <div class="col-12 col-md-4">
+                                    <div class="col-12 col-md-6">
                                         <label for="tipo_documento" class="form-label">Tipo de documento</label>
-                                        <input type="text" class="form-control" id="tipo_documento"
-                                            name="tipo_documento"
-                                            placeholder="Ex.: Manual técnico, certificado, contrato">
+                                        <select class="form-select" id="tipo_documento" name="tipo_documento">
+                                            <option value="">Selecione</option>
+                                            <option value="Manual técnico">Manual técnico</option>
+                                            <option value="Certificado de calibração">Certificado de calibração</option>
+                                            <option value="Contrato de manutenção">Contrato de manutenção</option>
+                                            <option value="Relatório técnico">Relatório técnico</option>
+                                        </select>
                                     </div>
 
-                                    <div class="col-12 col-md-4">
+                                    <div class="col-12 col-md-6">
                                         <label for="nome_documento" class="form-label">Nome do documento</label>
                                         <input type="text" class="form-control" id="nome_documento"
                                             name="nome_documento" placeholder="Ex.: Manual Técnico do Equipamento">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="fornecedor_documento" class="form-label">Fornecedor
-                                            associado</label>
-                                        <select class="form-select" id="fornecedor_documento"
-                                            name="fornecedor_documento">
-                                            <option value="">Selecione um fornecedor associado</option>
-                                            <option value="MedTech Portugal">MedTech Portugal</option>
-                                            <option value="Philips Medical Systems">Philips Medical Systems</option>
-                                            <option value="Hospital Devices S.A.">Hospital Devices S.A.</option>
-                                        </select>
                                     </div>
 
                                 </div>
@@ -593,25 +525,31 @@
                                     </div>
 
                                     <div class="col-12 col-md-4">
-                                        <label for="data_validade_documento" class="form-label">Data de validade /
-                                            expiração</label>
+                                        <label for="data_validade_documento" class="form-label">
+                                            Validade / expiração
+                                        </label>
                                         <input type="date" class="form-control" id="data_validade_documento"
                                             name="data_validade_documento">
                                     </div>
 
                                     <div class="col-12 col-md-4">
-                                        <label for="ficheiro_documento" class="form-label">Ficheiro</label>
-                                        <input type="file" class="form-control" id="ficheiro_documento"
-                                            name="ficheiro_documento">
+                                        <label for="fornecedor_documento" class="form-label">Fornecedor
+                                            associado</label>
+                                        <select class="form-select" id="fornecedor_documento"
+                                            name="fornecedor_documento">
+                                            <option value="">Selecione</option>
+                                            <option value="MedTech Portugal">MedTech Portugal</option>
+                                            <option value="Philips Medical Systems">Philips Medical Systems</option>
+                                            <option value="Hospital Devices S.A.">Hospital Devices S.A.</option>
+                                        </select>
                                     </div>
 
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="observacoes_documento" class="form-label">Observações</label>
-                                    <textarea class="form-control" id="observacoes_documento"
-                                        name="observacoes_documento" rows="3"
-                                        placeholder="Informação adicional sobre o documento."></textarea>
+                                    <label for="ficheiro_documento" class="form-label">Ficheiro</label>
+                                    <input type="file" class="form-control" id="ficheiro_documento"
+                                        name="ficheiro_documento">
                                 </div>
 
                                 <button type="button" class="btn btn-primary" onclick="adicionarDocumentoNovo()">
@@ -625,16 +563,17 @@
                             <div class="card-body">
 
                                 <h3>
-                                    <i class="fas fa-list"></i> Documentos associados
+                                    <i class="fas fa-list"></i> Documentos adicionados
                                 </h3>
 
-                                <table class="table table-bordered table-hover align-middle text-center">
-                                    <thead class="table-light">
+                                <table
+                                    class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                                    <thead>
                                         <tr>
                                             <th>Tipo</th>
                                             <th>Nome do documento</th>
                                             <th>Data</th>
-                                            <th>Validade / Expiração</th>
+                                            <th>Validade</th>
                                             <th>Fornecedor</th>
                                             <th>Ficheiro</th>
                                             <th>Ações</th>
@@ -646,16 +585,11 @@
                                             <td>Manual técnico</td>
                                             <td>Manual Técnico do Equipamento</td>
                                             <td>2025-01-10</td>
-                                            <td>2026-01-10</td>
+                                            <td>Sem validade definida</td>
                                             <td>Philips Medical Systems</td>
+                                            <td>manual-equipamento.pdf</td>
                                             <td>
-                                                <a href="#" class="text-primary text-decoration-underline fw-semibold">
-                                                    manual-equipamento.pdf
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar"
-                                                    onclick="removerLinha(this)">
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -667,14 +601,9 @@
                                             <td>2025-02-15</td>
                                             <td>2026-02-15</td>
                                             <td>MedTech Portugal</td>
+                                            <td>certificado-equipamento.pdf</td>
                                             <td>
-                                                <a href="#" class="text-primary text-decoration-underline fw-semibold">
-                                                    certificado-equipamento.pdf
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar"
-                                                    onclick="removerLinha(this)">
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -683,7 +612,8 @@
                                 </table>
 
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-secondary" onclick="voltarParaLocalizacao()">
+                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
+                                        onclick="voltarParaLocalizacao()">
                                         Página anterior
                                     </button>
 
@@ -696,6 +626,7 @@
                         </div>
 
                     </div>
+
                     <!-- Separador: Garantias e contratos -->
                     <div class="tab-pane fade" id="garantias" role="tabpanel">
 
@@ -708,41 +639,42 @@
 
                                 <div class="row mb-3">
 
-                                    <div class="col-12 col-md-6">
-                                        <label for="inicio_garantia" class="form-label">Data de início da
-                                            garantia</label>
-                                        <input type="date" class="form-control" id="inicio_garantia"
-                                            name="inicio_garantia" value="2024-01-15">
+                                    <div class="col-12 col-md-4">
+                                        <label for="data_inicio_garantia" class="form-label">
+                                            Data de início da garantia
+                                        </label>
+                                        <input type="date" class="form-control" id="data_inicio_garantia"
+                                            name="data_inicio_garantia" value="2024-01-15">
                                     </div>
 
-                                    <div class="col-12 col-md-6">
-                                        <label for="fim_garantia" class="form-label">Data de fim da garantia</label>
-                                        <input type="date" class="form-control" id="fim_garantia" name="fim_garantia"
-                                            value="2027-01-15">
+                                    <div class="col-12 col-md-4">
+                                        <label for="data_fim_garantia" class="form-label">
+                                            Data de fim da garantia
+                                        </label>
+                                        <input type="date" class="form-control" id="data_fim_garantia"
+                                            name="data_fim_garantia" value="2027-01-15">
                                     </div>
 
-                                </div>
+                                    <div class="col-12 col-md-4">
+                                        <label for="entidade_garantia" class="form-label">
+                                            Entidade responsável
+                                        </label>
+                                        <input type="text" class="form-control" id="entidade_garantia"
+                                            name="entidade_garantia" value="MedTech Portugal">
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="entidade_garantia" class="form-label">Entidade responsável pela
-                                        garantia</label>
-                                    <select class="form-select" id="entidade_garantia" name="entidade_garantia">
-                                        <option value="">Selecione uma entidade associada</option>
-                                        <option value="MedTech Portugal" selected>MedTech Portugal</option>
-                                        <option value="Philips Medical Systems">Philips Medical Systems</option>
-                                        <option value="Hospital Devices S.A.">Hospital Devices S.A.</option>
-                                    </select>
                                 </div>
 
                                 <div class="row mb-3">
 
                                     <div class="col-12 col-md-4">
-                                        <label for="contrato_manutencao" class="form-label">Existe contrato de
-                                            manutenção?</label>
-                                        <select class="form-select" id="contrato_manutencao" name="contrato_manutencao">
+                                        <label for="existe_contrato" class="form-label">
+                                            Existe contrato de manutenção?
+                                        </label>
+                                        <select class="form-select" id="existe_contrato" name="existe_contrato">
                                             <option value="">Selecione</option>
-                                            <option value="sim" selected>Sim</option>
-                                            <option value="nao">Não</option>
+                                            <option value="Sim" selected>Sim</option>
+                                            <option value="Não">Não</option>
                                         </select>
                                     </div>
 
@@ -754,28 +686,18 @@
 
                                     <div class="col-12 col-md-4">
                                         <label for="periodicidade" class="form-label">Periodicidade</label>
-                                        <select class="form-select" id="periodicidade" name="periodicidade">
-                                            <option value="">Selecione</option>
-                                            <option value="mensal">Mensal</option>
-                                            <option value="trimestral">Trimestral</option>
-                                            <option value="semestral">Semestral</option>
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="bienal">Bienal</option>
-                                            <option value="quando_necessario">Quando necessário</option>
-                                        </select>
+                                        <input type="text" class="form-control" id="periodicidade" name="periodicidade"
+                                            value="Anual">
                                     </div>
 
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="entidade_contrato" class="form-label">Entidade responsável pelo
-                                        contrato</label>
-                                    <select class="form-select" id="entidade_contrato" name="entidade_contrato">
-                                        <option value="">Selecione uma entidade associada</option>
-                                        <option value="MedTech Portugal" selected>MedTech Portugal</option>
-                                        <option value="Philips Medical Systems">Philips Medical Systems</option>
-                                        <option value="Hospital Devices S.A.">Hospital Devices S.A.</option>
-                                    </select>
+                                    <label for="entidade_contrato" class="form-label">
+                                        Entidade responsável pelo contrato
+                                    </label>
+                                    <input type="text" class="form-control" id="entidade_contrato"
+                                        name="entidade_contrato" value="MedTech Portugal">
                                 </div>
 
                                 <div class="mb-3">
@@ -785,11 +707,12 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-secondary" onclick="voltarParaDocumentacao()">
+                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
+                                        onclick="voltarParaDocumentacao()">
                                         Página anterior
                                     </button>
 
-                                    <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
+                                    <button type="button" class="btn btn-primary" onclick="validarEquipamento()">
                                         Guardar alterações
                                     </button>
                                 </div>

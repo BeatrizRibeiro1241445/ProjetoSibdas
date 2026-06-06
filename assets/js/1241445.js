@@ -131,7 +131,7 @@ function avancarParaFornecedores() {
 
     for (let i = 0; i < camposDadosGerais.length; i++) {
         if (!campoPreenchido(camposDadosGerais[i])) {
-            mostrarErroEtapa("Preencha todos os dados gerais antes de avançar.");
+            mostrarErroEtapa("Preencha todos os dados antes de avançar.");
             return;
         }
     }

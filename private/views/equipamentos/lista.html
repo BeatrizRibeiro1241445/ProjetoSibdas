@@ -31,37 +31,41 @@
         </div>
 
         <div>
-            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
+            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">
+                <i class="fas fa-user-circle"></i>
+                Utilizador
+            </button>
         </div>
 
     </header>
 
     <!-- Sidebar -->
-<aside class="sidebar">
-    <h4>Menu</h4>
+    <aside class="sidebar">
+        <h4>Menu</h4>
 
-    <nav>
-        <a href="../equipamentos/lista.html">
-            <i class="fas fa-laptop-medical"></i> Equipamentos
-        </a>
+        <nav>
+            <a href="../equipamentos/lista.html" class="active">
+                <i class="fas fa-laptop-medical"></i> Equipamentos
+            </a>
 
-        <a href="../fornecedores/lista.html">
-            <i class="fas fa-truck-medical"></i> Fornecedores
-        </a>
+            <a href="../fornecedores/lista.html">
+                <i class="fas fa-truck-medical"></i> Fornecedores
+            </a>
 
-        <a href="../localizacoes/lista.html">
-            <i class="fas fa-location-dot"></i> Localizações
-        </a>
+            <a href="../localizacoes/lista.html">
+                <i class="fas fa-location-dot"></i> Localizações
+            </a>
 
-        <a href="../gestao_conteudos/gestao_conteudos.html">
-            <i class="fas fa-pen-to-square"></i> Conteúdos do site
-        </a>
+            <a href="../gestao_conteudos/gestao_conteudos.html">
+                <i class="fas fa-pen-to-square"></i> Conteúdos do site
+            </a>
 
-        <a href="../dashboard/dashboard.html">
-            <i class="fas fa-chart-bar"></i> Dashboard
-        </a>
-    </nav>
-</aside>
+            <a href="../dashboard/dashboard.html">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+        </nav>
+    </aside>
+
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
@@ -80,6 +84,7 @@
 
             <hr>
 
+            <!-- Pesquisa e filtros -->
             <div class="accordion mb-5" id="accordionPesquisaEquipamentos">
 
                 <div class="accordion-item border-0 shadow-sm">
@@ -100,33 +105,33 @@
 
                         <div class="accordion-body bg-light">
 
-                            <form action="#" method="get" class="row g-3 justify-content-center text-center">
+                            <form action="#" method="get" class="filtros-equipamentos">
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="filtro_codigo" class="form-label fw-semibold">Código interno</label>
                                     <input type="text" class="form-control text-center" id="filtro_codigo"
                                         name="filtro_codigo" placeholder="Ex.: 004.002.00">
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="filtro_designacao" class="form-label fw-semibold">Designação</label>
                                     <input type="text" class="form-control text-center" id="filtro_designacao"
-                                        name="filtro_designacao" placeholder="Ex.: Monitor Multiparamétrico">
+                                        name="filtro_designacao" placeholder="Ex.: Monitor">
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="filtro_serie" class="form-label fw-semibold">Número de série</label>
                                     <input type="text" class="form-control text-center" id="filtro_serie"
-                                        name="filtro_serie" placeholder="Ex.: MP5-2022-45873">
+                                        name="filtro_serie" placeholder="Ex.: MP5-2022">
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="filtro_marca" class="form-label fw-semibold">Marca</label>
                                     <input type="text" class="form-control text-center" id="filtro_marca"
                                         name="filtro_marca" placeholder="Ex.: Philips">
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="filtro_estado" class="form-label fw-semibold">Estado</label>
                                     <select class="form-select text-center" id="filtro_estado" name="filtro_estado">
                                         <option value="">Todos</option>
@@ -138,7 +143,8 @@
                                         <option value="abatido">Abatido</option>
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-4">
+
+                                <div>
                                     <label for="filtro_criticidade" class="form-label fw-semibold">Criticidade</label>
                                     <select class="form-select text-center" id="filtro_criticidade"
                                         name="filtro_criticidade">
@@ -150,20 +156,20 @@
                                     </select>
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="filtro_categoria" class="form-label fw-semibold">Categoria /
                                         Grupo</label>
                                     <input type="text" class="form-control text-center" id="filtro_categoria"
                                         name="filtro_categoria" placeholder="Ex.: Monitorização">
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="filtro_localizacao" class="form-label fw-semibold">Localização</label>
                                     <input type="text" class="form-control text-center" id="filtro_localizacao"
-                                        name="filtro_localizacao" placeholder="Ex.: UCI, Sala 1">
+                                        name="filtro_localizacao" placeholder="Ex.: UCI">
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div>
                                     <label for="ordenar_por" class="form-label fw-semibold">Ordenar por</label>
                                     <select class="form-select text-center" id="ordenar_por" name="ordenar_por">
                                         <option value="">Sem ordenação</option>
@@ -176,7 +182,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-12 mt-4">
+                                <div class="filtros-botoes">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-magnifying-glass"></i> Pesquisar
                                     </button>
@@ -193,9 +199,10 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered align-middle text-center">
-                    <thead class="table-light">
+            <!-- Tabela -->
+            <div class="table-responsive tabela-lista-container">
+                <table class="table table-hover table-bordered align-middle text-center tabela-lista">
+                    <thead>
                         <tr>
                             <th>Código interno</th>
                             <th>Designação</th>
@@ -210,128 +217,80 @@
 
                     <tbody>
                         <tr>
-                            <td>
-                                <strong>004.002.00</strong>
-                            </td>
-
+                            <td><strong>004.002.00</strong></td>
                             <td>Monitor Multiparamétrico</td>
-
                             <td>MP5-2022-45873</td>
+                            <td>Philips / IntelliVue MP5</td>
+                            <td class="table-success fw-bold">Ativo</td>
+                            <td class="table-danger fw-bold">Alta</td>
+                            <td>Hospital Central - Piso 2 - UCI - Sala 1</td>
 
                             <td>
-                                Philips<br>
-                                <small>IntelliVue MP5</small>
-                            </td>
+                                <div class="acoes-tabela">
+                                    <a href="detalhes.html" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
 
-                            <td class="table-success fw-bold">
-                                Ativo
-                            </td>
+                                    <a href="editar.html" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
 
-                            <td class="table-danger fw-bold">
-                                Alta
-                            </td>
-
-                            <td>
-                                UCI<br>
-                                <small>Sala 1</small>
-                            </td>
-
-                            <td>
-                                <a href="detalhes.html" class="btn btn-sm btn-info" title="Consultar">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-
-                                <a href="editar.html" class="btn btn-sm btn-warning" title="Editar">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-
-                                <a href="apagar.html" class="btn btn-sm btn-danger" title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                    <a href="apagar.html" class="btn btn-sm btn-acao btn-arquivar" title="Arquivar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
 
                         <tr>
-                            <td>
-                                <strong>007.001.00</strong>
-                            </td>
-
+                            <td><strong>007.001.00</strong></td>
                             <td>Bomba de Infusão</td>
-
                             <td>INF-2020-88321</td>
+                            <td>B. Braun / Infusomat Space</td>
+                            <td class="table-warning fw-bold">Em manutenção</td>
+                            <td class="table-warning fw-bold">Média</td>
+                            <td>Hospital Central - Piso 1 - Bloco Operatório - Sala 2</td>
 
                             <td>
-                                B. Braun<br>
-                                <small>Infusomat Space</small>
-                            </td>
+                                <div class="acoes-tabela">
+                                    <a href="detalhes.html" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
 
-                            <td class="table-success fw-bold">
-                                Ativo
-                            </td>
+                                    <a href="editar.html" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
 
-                            <td class="table-warning fw-bold">
-                                Média
-                            </td>
-
-                            <td>
-                                Bloco Operatório<br>
-                                <small>Sala 2</small>
-                            </td>
-
-                            <td>
-                                <a href="detalhes.html" class="btn btn-sm btn-info" title="Consultar">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-
-                                <a href="editar.html" class="btn btn-sm btn-warning" title="Editar">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-
-                                <a href="apagar.html" class="btn btn-sm btn-danger" title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                    <a href="apagar.html" class="btn btn-sm btn-acao btn-arquivar" title="Arquivar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
 
                         <tr>
-                            <td>
-                                <strong>003.001.00</strong>
-                            </td>
-
+                            <td><strong>003.001.00</strong></td>
                             <td>Ventilador Pulmonar</td>
-
                             <td>EV500-2021-55210</td>
+                            <td>Evita Medical / EV500</td>
+                            <td class="table-success fw-bold">Ativo</td>
+                            <td class="table-danger fw-bold">Alta</td>
+                            <td>Hospital Central - Piso 2 - UCI - Sala 1</td>
 
                             <td>
-                                Evita Medical<br>
-                                <small>EV500</small>
-                            </td>
+                                <div class="acoes-tabela">
+                                    <a href="detalhes.html" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
 
-                            <td class="table-warning fw-bold">
-                                Em manutenção
-                            </td>
+                                    <a href="editar.html" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
 
-                            <td class="table-danger fw-bold">
-                                Alta
-                            </td>
-
-                            <td>
-                                UCI<br>
-                                <small>Sala 1</small>
-                            </td>
-
-                            <td>
-                                <a href="detalhes.html" class="btn btn-sm btn-info" title="Consultar">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-
-                                <a href="editar.html" class="btn btn-sm btn-warning" title="Editar">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-
-                                <a href="apagar.html" class="btn btn-sm btn-danger" title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                    <a href="apagar.html" class="btn btn-sm btn-acao btn-arquivar" title="Arquivar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
