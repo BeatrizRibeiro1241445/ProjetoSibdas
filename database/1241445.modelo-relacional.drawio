@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="MedInventario-Relacional" id="xX37ec9p0KJCSpEuUL_b">
-    <mxGraphModel dx="1200" dy="483" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="590" dy="265" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -22,20 +22,20 @@
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;TipoEntrada&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idTipoEntrada&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ descricao&lt;/div&gt;" vertex="1">
           <mxGeometry height="80" width="120" x="60" y="360" as="geometry" />
         </mxCell>
-        <mxCell id="qfEg-3RbNerlMu5a_Q6P-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;Fornecedor&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idFornecedor&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ nif&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ email&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;designacao&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N telefone&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N morada&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N observacoes&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ativo&lt;/div&gt;" vertex="1">
-          <mxGeometry height="160" width="120" x="170" y="1000" as="geometry" />
+        <mxCell id="qfEg-3RbNerlMu5a_Q6P-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;Fornecedor&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idFornecedor&lt;br&gt;UQ nif&lt;br&gt;UQ email&lt;br&gt;designacao&lt;br&gt;N telefone&lt;br&gt;N morada&lt;br&gt;N website&lt;br&gt;N pessoaContacto&lt;br&gt;N telefonePessoaContacto&lt;br&gt;N tipoFornecedor&lt;br&gt;N observacoes&lt;br&gt;ativo&lt;/div&gt;" vertex="1">
+          <mxGeometry height="220" width="160" x="150" y="1000" as="geometry" />
         </mxCell>
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;EquipamentoFornecedor&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idEquipamentoFornecedor&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;FK idEquipamento&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;FK idFornecedor&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;tipoRelacao&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N dataInicio&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N dataFim&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N observacoes&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ idEquipamento,&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;idFornecedor, tipoRelacao&lt;/span&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="160" width="270" x="95" y="800" as="geometry" />
         </mxCell>
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;TipoDocumento&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idTipoDocumento&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ descricao&lt;/div&gt;" vertex="1">
-          <mxGeometry height="80" width="140" x="590" y="580" as="geometry" />
+          <mxGeometry height="80" width="140" x="720" y="570" as="geometry" />
         </mxCell>
-        <mxCell id="qfEg-3RbNerlMu5a_Q6P-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;Documento&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idDocumento&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;FK idEquipamento&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;FK idTipoDocumento&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;titulo&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N nomeFicheiro&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N caminhoFicheiro&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N dataDocumento&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N observacoes&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ativo&lt;/div&gt;" vertex="1">
-          <mxGeometry height="180" width="140" x="400" y="520" as="geometry" />
+        <mxCell id="qfEg-3RbNerlMu5a_Q6P-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;Documento&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idDocumento&lt;br&gt;FK idEquipamento&lt;br&gt;FK idTipoDocumento&lt;br&gt;N FK idFornecedor&lt;br&gt;nomeDocumento&lt;br&gt;N dataDocumento&lt;br&gt;N dataValidade&lt;br&gt;N nomeFicheiro&lt;br&gt;N caminhoFicheiro&lt;br&gt;N observacoes&lt;br&gt;ativo&lt;/div&gt;" vertex="1">
+          <mxGeometry height="200" width="140" x="540" y="510" as="geometry" />
         </mxCell>
-        <mxCell id="qfEg-3RbNerlMu5a_Q6P-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;GarantiaContrato&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idGarantiaContrato&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;FK idEquipamento&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;FK idFornecedor&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;tipo&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N numeroContrato&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;dataInicio&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;dataFim&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N entidadeResponsavel&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N observacoes&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ativo&lt;/div&gt;" vertex="1">
-          <mxGeometry height="200" width="160" x="400" y="780" as="geometry" />
+        <mxCell id="qfEg-3RbNerlMu5a_Q6P-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;GarantiaContrato&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idGarantiaContrato&lt;br&gt;FK idEquipamento&lt;br&gt;N FK idFornecedorResponsavel&lt;br&gt;tipo&lt;br&gt;N numeroContrato&lt;br&gt;dataInicio&lt;br&gt;dataFim&lt;br&gt;N periodicidade&lt;br&gt;N observacoes&lt;br&gt;ativo&lt;/div&gt;" vertex="1">
+          <mxGeometry height="200" width="190" x="400" y="780" as="geometry" />
         </mxCell>
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;Utilizador&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idUtilizador&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ username&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ email&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;nome&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;passwordHash&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;perfil&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ativo&lt;/div&gt;" vertex="1">
           <mxGeometry height="140" width="110" x="530" y="80" as="geometry" />
@@ -43,10 +43,10 @@
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;ConteudoSite&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;PK idConteudoSite&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;UQ chave&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;seccao&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;titulo&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;texto&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;N imagem&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ativo&lt;/div&gt;" vertex="1">
           <mxGeometry height="140" width="130" x="670" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="qfEg-3RbNerlMu5a_Q6P-75" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+        <mxCell id="qfEg-3RbNerlMu5a_Q6P-75" edge="1" parent="1" source="qfEg-3RbNerlMu5a_Q6P-11" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="qfEg-3RbNerlMu5a_Q6P-10" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="540" y="610" as="sourcePoint" />
-            <mxPoint x="590" y="610" as="targetPoint" />
+            <mxPoint x="740" y="609.52" as="sourcePoint" />
+            <mxPoint x="720" y="530" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-76" connectable="0" parent="qfEg-3RbNerlMu5a_Q6P-75" style="resizable=0;html=1;whiteSpace=wrap;align=left;verticalAlign=bottom;" value="N" vertex="1">
@@ -55,10 +55,10 @@
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-77" connectable="0" parent="qfEg-3RbNerlMu5a_Q6P-75" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" value="1" vertex="1">
           <mxGeometry relative="1" x="1" as="geometry" />
         </mxCell>
-        <mxCell id="qfEg-3RbNerlMu5a_Q6P-81" edge="1" parent="1" source="qfEg-3RbNerlMu5a_Q6P-3" style="endArrow=none;html=1;rounded=0;" value="">
+        <mxCell id="qfEg-3RbNerlMu5a_Q6P-81" edge="1" parent="1" source="qfEg-3RbNerlMu5a_Q6P-3" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="qfEg-3RbNerlMu5a_Q6P-11" value="">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="320" y="610" as="sourcePoint" />
-            <mxPoint x="400" y="610" as="targetPoint" />
+            <mxPoint x="470" y="600" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-82" connectable="0" parent="qfEg-3RbNerlMu5a_Q6P-81" style="resizable=0;html=1;whiteSpace=wrap;align=left;verticalAlign=bottom;" value="1" vertex="1">
@@ -115,10 +115,10 @@
             <mxPoint x="10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="qfEg-3RbNerlMu5a_Q6P-93" edge="1" parent="1" source="qfEg-3RbNerlMu5a_Q6P-8" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="qfEg-3RbNerlMu5a_Q6P-12" value="">
+        <mxCell id="qfEg-3RbNerlMu5a_Q6P-93" edge="1" parent="1" source="qfEg-3RbNerlMu5a_Q6P-8" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="qfEg-3RbNerlMu5a_Q6P-12" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="480" y="1080" />
+              <mxPoint x="495" y="1055" />
             </Array>
             <mxPoint x="290" y="1080" as="sourcePoint" />
             <mxPoint x="450" y="1080" as="targetPoint" />
@@ -208,6 +208,23 @@
         </mxCell>
         <mxCell id="qfEg-3RbNerlMu5a_Q6P-110" connectable="0" parent="qfEg-3RbNerlMu5a_Q6P-108" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" value="1" vertex="1">
           <mxGeometry relative="1" x="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KJMCybZ9thGldLpKX9h0-1" edge="1" parent="1" source="qfEg-3RbNerlMu5a_Q6P-8" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="610" y="1110" />
+            </Array>
+            <mxPoint x="320" y="1110" as="sourcePoint" />
+            <mxPoint x="610" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KJMCybZ9thGldLpKX9h0-2" connectable="0" parent="KJMCybZ9thGldLpKX9h0-1" style="resizable=0;html=1;whiteSpace=wrap;align=left;verticalAlign=bottom;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry" />
+        </mxCell>
+        <mxCell id="KJMCybZ9thGldLpKX9h0-3" connectable="0" parent="KJMCybZ9thGldLpKX9h0-1" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" value="N" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint y="20" as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
