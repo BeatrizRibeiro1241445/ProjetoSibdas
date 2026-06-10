@@ -1,0 +1,179 @@
+Table CategoriaEquipamento {
+  idCategoriaEquipamento int [pk, increment]
+  descricao varchar(80) [not null, unique]
+}
+
+Table EstadoEquipamento {
+  idEstadoEquipamento int [pk, increment]
+  descricao varchar(80) [not null, unique]
+}
+
+Table CriticidadeEquipamento {
+  idCriticidadeEquipamento int [pk, increment]
+  descricao varchar(80) [not null, unique]
+}
+
+Table TipoEntrada {
+  idTipoEntrada int [pk, increment]
+  descricao varchar(80) [not null, unique]
+}
+
+Table Localizacao {
+  idLocalizacao int [pk, increment]
+  categoria varchar(100) [not null]
+  edificio varchar(100) [not null]
+  piso varchar(50) [not null]
+  servico varchar(120) [not null]
+  sala varchar(80) [not null]
+  observacoes text [null]
+  ativo boolean [not null, default: true]
+}
+
+Table Equipamento {
+  idEquipamento int [pk, increment]
+  codigoInterno varchar(30) [not null, unique]
+  numeroSerie varchar(80) [not null, unique]
+  idCategoriaEquipamento int [not null]
+  idEstadoEquipamento int [not null]
+  idCriticidadeEquipamento int [not null]
+  idTipoEntrada int [not null]
+  idLocalizacao int [not null]
+  designacao varchar(150) [not null]
+  marca varchar(100) [null]
+  modelo varchar(100) [null]
+  fabricante varchar(120) [null]
+  dataAquisicao date [null]
+  anoFabrico int [null]
+  custoAquisicao decimal(10,2) [null]
+  observacoes text [null]
+  ativo boolean [not null, default: true]
+}
+
+Table Fornecedor {
+  idFornecedor int [pk, increment]
+  nif varchar(20) [not null, unique]
+  email varchar(120) [not null, unique]
+  designacao varchar(150) [not null]
+  telefone varchar(30) [null]
+  morada varchar(200) [null]
+  website varchar(150) [null]
+  pessoaContacto varchar(120) [null]
+  telefonePessoaContacto varchar(30) [null]
+  tipoFornecedor varchar(80) [null]
+  observacoes text [null]
+  ativo boolean [not null, default: true]
+}
+
+Table EquipamentoFornecedor {
+  idEquipamentoFornecedor int [pk, increment]
+  idEquipamento int [not null]
+  idFornecedor int [not null]
+  tipoRelacao varchar(80) [not null]
+  dataInicio date [null]
+  dataFim date [null]
+  observacoes text [null]
+
+  indexes {
+    (idEquipamento, idFornecedor, tipoRelacao) [unique]
+  }
+}
+
+Table TipoDocumento {
+  idTipoDocumento int [pk, increment]
+  descricao varchar(100) [not null, unique]
+}
+
+Table Documento {
+  idDocumento int [pk, increment]
+  idEquipamento int [not null]
+  idTipoDocumento int [not null]
+  idFornecedor int [null]
+  nomeDocumento varchar(150) [not null]
+  dataDocumento date [null]
+  dataValidade date [null]
+  nomeFicheiro varchar(150) [null]
+  caminhoFicheiro varchar(255) [null]
+  observacoes text [null]
+  ativo boolean [not null, default: true]
+}
+
+Table GarantiaContrato {
+  idGarantiaContrato int [pk, increment]
+  idEquipamento int [not null]
+  idFornecedorResponsavel int [null]
+  tipo varchar(80) [not null]
+  numeroContrato varchar(80) [null]
+  dataInicio date [not null]
+  dataFim date [not null]
+  periodicidade varchar(80) [null]
+  observacoes text [null]
+  ativo boolean [not null, default: true]
+}
+
+Table Utilizador {
+  idUtilizador int [pk, increment]
+  username varchar(80) [not null, unique]
+  email varchar(120) [not null, unique]
+  nome varchar(120) [not null]
+  passwordHash varchar(255) [not null]
+  perfil varchar(50) [not null]
+  ativo boolean [not null, default: true]
+}
+
+Table ConteudoSite {
+  idConteudoSite int [pk, increment]
+  chave varchar(100) [not null, unique]
+  seccao varchar(100) [not null]
+  titulo varchar(150) [not null]
+  texto text [not null]
+  imagem varchar(150) [null]
+  ativo boolean [not null, default: true]
+}
+
+Ref fk_Equipamento_CategoriaEquipamento {
+  Equipamento.idCategoriaEquipamento > CategoriaEquipamento.idCategoriaEquipamento
+}
+
+Ref fk_Equipamento_EstadoEquipamento {
+  Equipamento.idEstadoEquipamento > EstadoEquipamento.idEstadoEquipamento
+}
+
+Ref fk_Equipamento_CriticidadeEquipamento {
+  Equipamento.idCriticidadeEquipamento > CriticidadeEquipamento.idCriticidadeEquipamento
+}
+
+Ref fk_Equipamento_TipoEntrada {
+  Equipamento.idTipoEntrada > TipoEntrada.idTipoEntrada
+}
+
+Ref fk_Equipamento_Localizacao {
+  Equipamento.idLocalizacao > Localizacao.idLocalizacao
+}
+
+Ref fk_EquipamentoFornecedor_Equipamento {
+  EquipamentoFornecedor.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fk_EquipamentoFornecedor_Fornecedor {
+  EquipamentoFornecedor.idFornecedor > Fornecedor.idFornecedor
+}
+
+Ref fk_Documento_Equipamento {
+  Documento.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fk_Documento_TipoDocumento {
+  Documento.idTipoDocumento > TipoDocumento.idTipoDocumento
+}
+
+Ref fk_Documento_Fornecedor {
+  Documento.idFornecedor > Fornecedor.idFornecedor
+}
+
+Ref fk_GarantiaContrato_Equipamento {
+  GarantiaContrato.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fk_GarantiaContrato_Fornecedor {
+  GarantiaContrato.idFornecedorResponsavel > Fornecedor.idFornecedor
+}
