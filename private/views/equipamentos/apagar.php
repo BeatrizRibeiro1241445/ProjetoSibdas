@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Remover Fornecedor</title>
+    <title>MedInventário - Remover Equipamento</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,7 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <a href="../../area_pessoal.html">
+            <a href="../../area_pessoal.php">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
             <h3>MedInventário</h3>
@@ -41,27 +41,28 @@
         <h4>Menu</h4>
 
         <nav>
-            <a href="../equipamentos/lista.html">
+            <a href="../equipamentos/lista.php">
                 <i class="fas fa-laptop-medical"></i> Equipamentos
             </a>
 
-            <a href="../fornecedores/lista.html">
+            <a href="../fornecedores/lista.php">
                 <i class="fas fa-truck-medical"></i> Fornecedores
             </a>
 
-            <a href="../localizacoes/lista.html">
+            <a href="../localizacoes/lista.php">
                 <i class="fas fa-location-dot"></i> Localizações
             </a>
 
-            <a href="../gestao_conteudos/gestao_conteudos.html">
+            <a href="../gestao_conteudos/gestao_conteudos.php">
                 <i class="fas fa-pen-to-square"></i> Conteúdos do site
             </a>
 
-            <a href="../dashboard/dashboard.html">
+            <a href="../dashboard/dashboard.php">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
         </nav>
     </aside>
+    
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
@@ -71,58 +72,54 @@
                 <div class="card w-100 shadow rounded text-center p-4" style="max-width: 750px;">
 
                     <div class="text-warning display-4 mb-3">
-                        <i class="fas fa-triangle-exclamation"></i>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
 
                     <p class="mb-2 fs-5">
-                        Deseja remover este fornecedor da listagem?
+                        Deseja remover este equipamento da listagem?
                     </p>
 
                     <h4 class="mb-4">
-                        <strong>MedTech Portugal</strong>
+                        <strong>Monitor Multiparamétrico</strong>
                     </h4>
 
                     <div class="mb-4">
 
                         <span class="d-block mb-2">
-                            <i class="fas fa-id-card me-2"></i>
-                            <strong>NIF:</strong> 509000000
+                            <i class="fas fa-barcode me-2"></i>
+                            <strong>Código interno:</strong> 004.002.00
                         </span>
 
                         <span class="d-block mb-2">
-                            <i class="fas fa-envelope me-2"></i>
-                            <strong>Email:</strong> geral@medtech.pt
+                            <i class="fas fa-hashtag me-2"></i>
+                            <strong>N.º série:</strong> MP5-2022-45873
                         </span>
 
                         <span class="d-block mb-2">
-                            <i class="fas fa-phone me-2"></i>
-                            <strong>Telefone:</strong> +351 220 000 000
+                            <i class="fas fa-circle-check me-2"></i>
+                            <strong>Estado:</strong> Ativo
+                        </span>
+
+                        <span class="d-block mb-2">
+                            <i class="fas fa-triangle-exclamation me-2"></i>
+                            <strong>Criticidade:</strong> Alta
                         </span>
 
                         <span class="d-block">
                             <i class="fas fa-location-dot me-2"></i>
-                            <strong>Morada:</strong> Rua da Saúde, Porto, Portugal
+                            <strong>Localização:</strong> Hospital Central - Piso 2 - UCI - Sala 1
                         </span>
 
                     </div>
 
-                    <div class="mb-4 text-start">
-                        <label for="motivo_remocao" class="form-label">
-                            Motivo da remoção
-                        </label>
-
-                        <textarea class="form-control" id="motivo_remocao" name="motivo_remocao" rows="3"
-                            placeholder="Ex.: fornecedor deixou de prestar serviço, foi substituído ou está inativo."></textarea>
-                    </div>
-
                     <div class="d-flex justify-content-center gap-3">
 
-                        <a href="lista.html" class="btn btn-outline-secondary px-4">
-                            <i class="fas fa-xmark me-2"></i> Não
+                        <a href="lista.php" class="btn btn-outline-secondary px-4">
+                            <i class="fa-solid fa-xmark me-2"></i> Não
                         </a>
 
-                        <a href="lista.html" class="btn btn-danger px-4">
-                            <i class="fas fa-check me-2"></i> Sim
+                        <a href="lista.php" class="btn btn-danger px-4">
+                            <i class="fa-solid fa-check me-2"></i> Sim
                         </a>
 
                     </div>

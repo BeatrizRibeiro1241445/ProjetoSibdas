@@ -24,7 +24,7 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <a href="../../area_pessoal.html">
+            <a href="../../area_pessoal.php">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
             <h3>MedInventário</h3>
@@ -44,23 +44,23 @@
         <h4>Menu</h4>
 
         <nav>
-            <a href="../equipamentos/lista.html">
+            <a href="../equipamentos/lista.php">
                 <i class="fas fa-laptop-medical"></i> Equipamentos
             </a>
 
-            <a href="../fornecedores/lista.html">
+            <a href="../fornecedores/lista.php">
                 <i class="fas fa-truck-medical"></i> Fornecedores
             </a>
 
-            <a href="../localizacoes/lista.html">
+            <a href="../localizacoes/lista.php">
                 <i class="fas fa-location-dot"></i> Localizações
             </a>
 
-            <a href="../gestao_conteudos/gestao_conteudos.html" class="active">
+            <a href="../gestao_conteudos/gestao_conteudos.php" class="active">
                 <i class="fas fa-pen-to-square"></i> Conteúdos do site
             </a>
 
-            <a href="../dashboard/dashboard.html">
+            <a href="../dashboard/dashboard.php">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
         </nav>

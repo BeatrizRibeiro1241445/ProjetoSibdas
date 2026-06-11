@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+$validation_errors = $_SESSION['validation_errors'] ?? [];
+$server_error = $_SESSION['server_error'] ?? '';
+
+unset($_SESSION['validation_errors']);
+unset($_SESSION['server_error']);
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -27,7 +37,7 @@
 
                 <div class="card login-box">
 
-                    <a href="index.html" class="btn btn-outline-secondary login-voltar" title="Voltar ao site">
+                    <a href="index.php" class="btn btn-outline-secondary login-voltar" title="Voltar ao site">
                         <i class="fas fa-arrow-left"></i>
                     </a>
 
@@ -43,8 +53,22 @@
                             </div>
                         </div>
 
+                        <?php if (!empty($validation_errors)): ?>
+                            <div class="alert alert-danger text-center">
+                                <?php foreach ($validation_errors as $erro): ?>
+                                    <div><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($server_error)): ?>
+                            <div class="alert alert-danger text-center">
+                                <?= htmlspecialchars($server_error, ENT_QUOTES, 'UTF-8') ?>
+                            </div>
+                        <?php endif; ?>
+
                         <!-- Formulário de login -->
-                        <form action="../private/area_pessoal.html" method="post">
+                        <form action="../private/processa_login.php" method="post" novalidate>
 
                             <div class="mb-3">
                                 <label for="utilizador" class="form-label">

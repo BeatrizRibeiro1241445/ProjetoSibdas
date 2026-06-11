@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Novo Equipamento</title>
+    <title>MedInventário - Editar Equipamento</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,7 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <a href="../../area_pessoal.html">
+            <a href="../../area_pessoal.php">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
             <h3>MedInventário</h3>
@@ -44,23 +44,23 @@
         <h4>Menu</h4>
 
         <nav>
-            <a href="../equipamentos/lista.html" class="active">
+            <a href="../equipamentos/lista.php" class="active">
                 <i class="fas fa-laptop-medical"></i> Equipamentos
             </a>
 
-            <a href="../fornecedores/lista.html">
+            <a href="../fornecedores/lista.php">
                 <i class="fas fa-truck-medical"></i> Fornecedores
             </a>
 
-            <a href="../localizacoes/lista.html">
+            <a href="../localizacoes/lista.php">
                 <i class="fas fa-location-dot"></i> Localizações
             </a>
 
-            <a href="../gestao_conteudos/gestao_conteudos.html">
+            <a href="../gestao_conteudos/gestao_conteudos.php">
                 <i class="fas fa-pen-to-square"></i> Conteúdos do site
             </a>
 
-            <a href="../dashboard/dashboard.html">
+            <a href="../dashboard/dashboard.php">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
         </nav>
@@ -73,11 +73,11 @@
             <div class="actions-top">
                 <h2>
                     <strong>
-                        <i class="fas fa-plus"></i> Adicionar Equipamento
+                        <i class="fas fa-pen"></i> Editar Equipamento
                     </strong>
                 </h2>
 
-                <a href="lista.html" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
+                <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
@@ -86,7 +86,7 @@
 
             <form action="#" method="post" class="formulario-equipamento" enctype="multipart/form-data">
 
-                <ul class="nav nav-tabs mb-4" id="separadoresNovoEquipamento" role="tablist">
+                <ul class="nav nav-tabs mb-4" id="separadoresEditarEquipamento" role="tablist">
 
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="geral-tab" type="button">
@@ -120,7 +120,7 @@
 
                 </ul>
 
-                <div class="tab-content" id="conteudoSeparadoresNovoEquipamento">
+                <div class="tab-content" id="conteudoSeparadoresEditarEquipamento">
 
                     <!-- Separador: Dados gerais -->
                     <div class="tab-pane fade show active" id="geral" role="tabpanel">
@@ -137,19 +137,19 @@
                                     <div class="col-12 col-md-4">
                                         <label for="codigo" class="form-label">Código interno</label>
                                         <input type="text" class="form-control" id="codigo" name="codigo"
-                                            placeholder="Ex.: 111.111.11">
+                                            value="004.002.00">
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="designacao" class="form-label">Designação</label>
                                         <input type="text" class="form-control" id="designacao" name="designacao"
-                                            placeholder="Ex.: Monitor Multiparamétrico">
+                                            value="Monitor Multiparamétrico">
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="numero_serie" class="form-label">Número de série</label>
                                         <input type="text" class="form-control" id="numero_serie" name="numero_serie"
-                                            placeholder="Ex.: MP5-2022-45873">
+                                            value="MP5-2022-45873">
                                     </div>
 
                                 </div>
@@ -159,19 +159,18 @@
                                     <div class="col-12 col-md-4">
                                         <label for="categoria" class="form-label">Categoria / Grupo</label>
                                         <input type="text" class="form-control" id="categoria" name="categoria"
-                                            placeholder="Ex.: Monitorização, suporte de vida">
+                                            value="Monitorização">
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="marca" class="form-label">Marca</label>
-                                        <input type="text" class="form-control" id="marca" name="marca"
-                                            placeholder="Ex.: Philips">
+                                        <input type="text" class="form-control" id="marca" name="marca" value="Philips">
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="modelo" class="form-label">Modelo</label>
                                         <input type="text" class="form-control" id="modelo" name="modelo"
-                                            placeholder="Ex.: IntelliVue MP5">
+                                            value="IntelliVue MP5">
                                     </div>
 
                                 </div>
@@ -182,7 +181,7 @@
                                         <label for="estado" class="form-label">Estado atual</label>
                                         <select class="form-select" id="estado" name="estado">
                                             <option value="">Selecione</option>
-                                            <option value="ativo">Ativo</option>
+                                            <option value="ativo" selected>Ativo</option>
                                             <option value="em_manutencao">Em manutenção</option>
                                             <option value="inativo">Inativo</option>
                                             <option value="avariado">Avariado</option>
@@ -197,7 +196,7 @@
                                             <option value="">Selecione</option>
                                             <option value="baixa">Baixa</option>
                                             <option value="media">Média</option>
-                                            <option value="alta">Alta</option>
+                                            <option value="alta" selected>Alta</option>
                                             <option value="suporte_vida">Suporte de vida</option>
                                         </select>
                                     </div>
@@ -205,7 +204,7 @@
                                     <div class="col-12 col-md-4">
                                         <label for="ano_fabrico" class="form-label">Ano de fabrico</label>
                                         <input type="number" class="form-control" id="ano_fabrico" name="ano_fabrico"
-                                            placeholder="Ex.: 2021">
+                                            value="2021">
                                     </div>
 
                                 </div>
@@ -215,20 +214,20 @@
                                     <div class="col-12 col-md-4">
                                         <label for="data_aquisicao" class="form-label">Data de aquisição</label>
                                         <input type="date" class="form-control" id="data_aquisicao"
-                                            name="data_aquisicao">
+                                            name="data_aquisicao" value="2022-03-15">
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="custo_aquisicao" class="form-label">Custo de aquisição</label>
                                         <input type="text" class="form-control" id="custo_aquisicao"
-                                            name="custo_aquisicao" placeholder="Ex.: 3500 €">
+                                            name="custo_aquisicao" value="3500 €">
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="tipo_entrada" class="form-label">Tipo de entrada</label>
                                         <select class="form-select" id="tipo_entrada" name="tipo_entrada">
                                             <option value="">Selecione</option>
-                                            <option value="compra">Compra</option>
+                                            <option value="compra" selected>Compra</option>
                                             <option value="aluguer">Aluguer</option>
                                             <option value="doacao">Doação</option>
                                             <option value="emprestimo">Empréstimo</option>
@@ -239,8 +238,8 @@
 
                                 <div class="mb-3">
                                     <label for="observacoes" class="form-label">Observações / utilização</label>
-                                    <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
-                                        placeholder="Indique para que é utilizado o equipamento ou outra informação relevante."></textarea>
+                                    <textarea class="form-control" id="observacoes" name="observacoes"
+                                        rows="4">Equipamento utilizado para monitorização contínua de sinais vitais em contexto de cuidados intensivos.</textarea>
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
@@ -334,6 +333,27 @@
                                     </thead>
 
                                     <tbody id="tabela_fornecedores_associados">
+                                        <tr>
+                                            <td>MedTech Portugal</td>
+                                            <td>Empresa de assistência técnica</td>
+                                            <td>Responsável pela manutenção preventiva deste equipamento.</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Philips Medical Systems</td>
+                                            <td>Fabricante</td>
+                                            <td>Fabricante do equipamento.</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
 
@@ -372,7 +392,7 @@
                                         <select class="form-select" id="localizacao_existente"
                                             name="localizacao_existente">
                                             <option value="">Selecione uma localização</option>
-                                            <option value="Hospital Central - Piso 2 - UCI - Sala 1">
+                                            <option value="Hospital Central - Piso 2 - UCI - Sala 1" selected>
                                                 Hospital Central - Piso 2 - UCI - Sala 1
                                             </option>
                                             <option value="Hospital Central - Piso 1 - Bloco Operatório - Sala 2">
@@ -387,7 +407,7 @@
                                     <div class="col-12 col-md-4">
                                         <label for="data_localizacao" class="form-label">Data da localização</label>
                                         <input type="date" class="form-control" id="data_localizacao"
-                                            name="data_localizacao">
+                                            name="data_localizacao" value="2025-01-10">
                                     </div>
 
                                 </div>
@@ -397,13 +417,13 @@
                                     <div class="col-12 col-md-6">
                                         <label for="responsavel_localizacao" class="form-label">Responsável</label>
                                         <input type="text" class="form-control" id="responsavel_localizacao"
-                                            name="responsavel_localizacao" placeholder="Ex.: Técnico responsável">
+                                            name="responsavel_localizacao" value="Técnico responsável">
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <label for="motivo_localizacao" class="form-label">Motivo / observação</label>
                                         <input type="text" class="form-control" id="motivo_localizacao"
-                                            name="motivo_localizacao" placeholder="Ex.: instalação inicial">
+                                            name="motivo_localizacao" value="Instalação inicial no serviço">
                                     </div>
 
                                 </div>
@@ -435,6 +455,17 @@
                                     </thead>
 
                                     <tbody id="tabela_localizacoes_associadas">
+                                        <tr>
+                                            <td>Hospital Central - Piso 2 - UCI - Sala 1</td>
+                                            <td>2025-01-10</td>
+                                            <td>Técnico responsável</td>
+                                            <td>Instalação inicial no serviço</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
 
@@ -550,6 +581,33 @@
                                     </thead>
 
                                     <tbody id="tabela_documentos_adicionados">
+                                        <tr>
+                                            <td>Manual técnico</td>
+                                            <td>Manual Técnico do Equipamento</td>
+                                            <td>2025-01-10</td>
+                                            <td>Sem validade definida</td>
+                                            <td>Philips Medical Systems</td>
+                                            <td>manual-equipamento.pdf</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Certificado de calibração</td>
+                                            <td>Certificado de Calibração</td>
+                                            <td>2025-02-15</td>
+                                            <td>2026-02-15</td>
+                                            <td>MedTech Portugal</td>
+                                            <td>certificado-equipamento.pdf</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
 
@@ -586,7 +644,7 @@
                                             Data de início da garantia
                                         </label>
                                         <input type="date" class="form-control" id="data_inicio_garantia"
-                                            name="data_inicio_garantia">
+                                            name="data_inicio_garantia" value="2024-01-15">
                                     </div>
 
                                     <div class="col-12 col-md-4">
@@ -594,7 +652,7 @@
                                             Data de fim da garantia
                                         </label>
                                         <input type="date" class="form-control" id="data_fim_garantia"
-                                            name="data_fim_garantia">
+                                            name="data_fim_garantia" value="2027-01-15">
                                     </div>
 
                                     <div class="col-12 col-md-4">
@@ -602,7 +660,7 @@
                                             Entidade responsável
                                         </label>
                                         <input type="text" class="form-control" id="entidade_garantia"
-                                            name="entidade_garantia" placeholder="Ex.: MedTech Portugal">
+                                            name="entidade_garantia" value="MedTech Portugal">
                                     </div>
 
                                 </div>
@@ -615,7 +673,7 @@
                                         </label>
                                         <select class="form-select" id="existe_contrato" name="existe_contrato">
                                             <option value="">Selecione</option>
-                                            <option value="Sim">Sim</option>
+                                            <option value="Sim" selected>Sim</option>
                                             <option value="Não">Não</option>
                                         </select>
                                     </div>
@@ -623,13 +681,13 @@
                                     <div class="col-12 col-md-4">
                                         <label for="tipo_contrato" class="form-label">Tipo de contrato</label>
                                         <input type="text" class="form-control" id="tipo_contrato" name="tipo_contrato"
-                                            placeholder="Ex.: manutenção preventiva">
+                                            value="Manutenção preventiva">
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="periodicidade" class="form-label">Periodicidade</label>
                                         <input type="text" class="form-control" id="periodicidade" name="periodicidade"
-                                            placeholder="Ex.: anual">
+                                            value="Anual">
                                     </div>
 
                                 </div>
@@ -639,13 +697,13 @@
                                         Entidade responsável pelo contrato
                                     </label>
                                     <input type="text" class="form-control" id="entidade_contrato"
-                                        name="entidade_contrato" placeholder="Ex.: MedTech Portugal">
+                                        name="entidade_contrato" value="MedTech Portugal">
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="observacoes_garantia" class="form-label">Observações</label>
                                     <textarea class="form-control" id="observacoes_garantia" name="observacoes_garantia"
-                                        rows="4" placeholder="Observações sobre garantia ou contrato."></textarea>
+                                        rows="4">Contrato inclui verificação técnica anual e apoio em caso de avaria.</textarea>
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
@@ -655,7 +713,7 @@
                                     </button>
 
                                     <button type="button" class="btn btn-primary" onclick="validarEquipamento()">
-                                        Guardar equipamento
+                                        Guardar alterações
                                     </button>
                                 </div>
 

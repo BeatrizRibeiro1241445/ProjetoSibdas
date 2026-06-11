@@ -24,7 +24,7 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <a href="../../area_pessoal.html">
+            <a href="../../area_pessoal.php">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
             <h3>MedInventário</h3>
@@ -44,23 +44,23 @@
         <h4>Menu</h4>
 
         <nav>
-            <a href="../equipamentos/lista.html">
+            <a href="../equipamentos/lista.php">
                 <i class="fas fa-laptop-medical"></i> Equipamentos
             </a>
 
-            <a href="../fornecedores/lista.html" class="active">
+            <a href="../fornecedores/lista.php" class="active">
                 <i class="fas fa-truck-medical"></i> Fornecedores
             </a>
 
-            <a href="../localizacoes/lista.html">
+            <a href="../localizacoes/lista.php">
                 <i class="fas fa-location-dot"></i> Localizações
             </a>
 
-            <a href="../gestao_conteudos/gestao_conteudos.html">
+            <a href="../gestao_conteudos/gestao_conteudos.php">
                 <i class="fas fa-pen-to-square"></i> Conteúdos do site
             </a>
 
-            <a href="../dashboard/dashboard.html">
+            <a href="../dashboard/dashboard.php">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
         </nav>
@@ -77,7 +77,7 @@
                     </strong>
                 </h2>
 
-                <a href="novo.html" class="btn btn-primary">
+                <a href="novo.php" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Novo fornecedor
                 </a>
             </div>
@@ -189,15 +189,15 @@
 
                             <td>
                                 <div class="acoes-tabela">
-                                    <a href="detalhes.html" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
                                         <i class="fas fa-eye"></i>
                                     </a>
 
-                                    <a href="editar.html" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <a href="apagar.html" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
+                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
@@ -219,15 +219,15 @@
 
                             <td>
                                 <div class="acoes-tabela">
-                                    <a href="detalhes.html" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
                                         <i class="fas fa-eye"></i>
                                     </a>
 
-                                    <a href="editar.html" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <a href="apagar.html" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
+                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
@@ -249,15 +249,15 @@
 
                             <td>
                                 <div class="acoes-tabela">
-                                    <a href="detalhes.html" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
                                         <i class="fas fa-eye"></i>
                                     </a>
 
-                                    <a href="editar.html" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <a href="apagar.html" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
+                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
@@ -279,15 +279,15 @@
 
                             <td>
                                 <div class="acoes-tabela">
-                                    <a href="detalhes.html" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
                                         <i class="fas fa-eye"></i>
                                     </a>
 
-                                    <a href="editar.html" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <a href="apagar.html" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
+                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>

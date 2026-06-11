@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Editar Fornecedor</title>
+    <title>MedInventário - Novo Fornecedor</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
@@ -24,7 +24,7 @@
     <header class="bng-navbar-menu">
 
         <div>
-            <a href="../../area_pessoal.html">
+            <a href="../../area_pessoal.php">
                 <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
             </a>
             <h3>MedInventário</h3>
@@ -44,23 +44,23 @@
         <h4>Menu</h4>
 
         <nav>
-            <a href="../equipamentos/lista.html">
+            <a href="../equipamentos/lista.php">
                 <i class="fas fa-laptop-medical"></i> Equipamentos
             </a>
 
-            <a href="../fornecedores/lista.html" class="active">
+            <a href="../fornecedores/lista.php" class="active">
                 <i class="fas fa-truck-medical"></i> Fornecedores
             </a>
 
-            <a href="../localizacoes/lista.html">
+            <a href="../localizacoes/lista.php">
                 <i class="fas fa-location-dot"></i> Localizações
             </a>
 
-            <a href="../gestao_conteudos/gestao_conteudos.html">
+            <a href="../gestao_conteudos/gestao_conteudos.php">
                 <i class="fas fa-pen-to-square"></i> Conteúdos do site
             </a>
 
-            <a href="../dashboard/dashboard.html">
+            <a href="../dashboard/dashboard.php">
                 <i class="fas fa-chart-bar"></i> Dashboard
             </a>
         </nav>
@@ -73,11 +73,11 @@
             <div class="actions-top">
                 <h2>
                     <strong>
-                        <i class="fas fa-pen"></i> Editar Fornecedor
+                        <i class="fas fa-plus"></i> Registar Fornecedor
                     </strong>
                 </h2>
 
-                <a href="lista.html" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
+                <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
@@ -86,7 +86,7 @@
 
             <form action="#" method="post" class="formulario-equipamento">
 
-                <ul class="nav nav-tabs mb-4" id="separadoresFornecedorEditar" role="tablist">
+                <ul class="nav nav-tabs mb-4" id="separadoresFornecedor" role="tablist">
 
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="fornecedor-geral-tab" data-bs-target="#fornecedor-geral"
@@ -104,7 +104,7 @@
 
                 </ul>
 
-                <div class="tab-content" id="conteudoSeparadoresFornecedorEditar">
+                <div class="tab-content" id="conteudoSeparadoresFornecedor">
 
                     <!-- Separador: Identificação e contactos -->
                     <div class="tab-pane fade show active" id="fornecedor-geral" role="tabpanel">
@@ -121,13 +121,13 @@
                                     <div class="col-12 col-md-6">
                                         <label for="empresa" class="form-label">Nome da empresa</label>
                                         <input type="text" class="form-control campo-obrigatorio-fornecedor"
-                                            id="empresa" name="empresa" value="MedTech Portugal">
+                                            id="empresa" name="empresa" placeholder="Ex.: MedTech Portugal">
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <label for="nif" class="form-label">NIF</label>
                                         <input type="text" class="form-control campo-obrigatorio-fornecedor" id="nif"
-                                            name="nif" value="509000000">
+                                            name="nif" placeholder="Ex.: 509000000">
                                     </div>
 
                                 </div>
@@ -147,13 +147,13 @@
                                     <div class="col-12 col-md-6">
                                         <label for="telefone" class="form-label">Contacto telefónico</label>
                                         <input type="text" class="form-control campo-obrigatorio-fornecedor"
-                                            id="telefone" name="telefone" value="+351 220 000 000">
+                                            id="telefone" name="telefone" placeholder="Ex.: +351 220 000 000">
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control campo-obrigatorio-fornecedor" id="email"
-                                            name="email" value="geral@medtech.pt">
+                                            name="email" placeholder="Ex.: geral@medtech.pt">
                                     </div>
 
                                 </div>
@@ -161,13 +161,13 @@
                                 <div class="mb-3">
                                     <label for="morada" class="form-label">Morada</label>
                                     <input type="text" class="form-control campo-obrigatorio-fornecedor" id="morada"
-                                        name="morada" value="Rua da Saúde, Porto, Portugal">
+                                        name="morada" placeholder="Ex.: Rua da Saúde, Porto, Portugal">
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="website" class="form-label">Website</label>
                                     <input type="text" class="form-control campo-obrigatorio-fornecedor" id="website"
-                                        name="website" value="https://www.medtech.pt">
+                                        name="website" placeholder="Ex.: https://www.medtech.pt">
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
@@ -197,7 +197,7 @@
                                     <div class="col-12 col-md-6">
                                         <label for="contacto1" class="form-label">Pessoa de contacto 1</label>
                                         <input type="text" class="form-control" id="contacto1" name="contacto1"
-                                            value="Ana Martins">
+                                            placeholder="Ex.: Ana Martins">
                                     </div>
 
                                     <div class="col-12 col-md-6">
@@ -205,7 +205,7 @@
                                             Telefone da pessoa de contacto 1
                                         </label>
                                         <input type="text" class="form-control" id="telefone_contacto1"
-                                            name="telefone_contacto1" value="+351 910 000 000">
+                                            name="telefone_contacto1" placeholder="Ex.: +351 910 000 000">
                                     </div>
 
                                 </div>
@@ -214,8 +214,7 @@
 
                                     <div class="col-12 col-md-6">
                                         <label for="contacto2" class="form-label">Pessoa de contacto 2</label>
-                                        <input type="text" class="form-control" id="contacto2" name="contacto2"
-                                            value="Pedro Costa">
+                                        <input type="text" class="form-control" id="contacto2" name="contacto2">
                                     </div>
 
                                     <div class="col-12 col-md-6">
@@ -223,7 +222,7 @@
                                             Telefone da pessoa de contacto 2
                                         </label>
                                         <input type="text" class="form-control" id="telefone_contacto2"
-                                            name="telefone_contacto2" value="+351 911 111 111">
+                                            name="telefone_contacto2">
                                     </div>
 
                                 </div>
@@ -274,8 +273,8 @@
 
                                 <div class="mb-3">
                                     <label for="observacoes" class="form-label">Observações</label>
-                                    <textarea class="form-control" id="observacoes" name="observacoes"
-                                        rows="4">Fornecedor responsável por assistência técnica de equipamentos críticos.</textarea>
+                                    <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
+                                        placeholder="Indique informação adicional relevante sobre o fornecedor."></textarea>
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
@@ -286,7 +285,7 @@
                                     </button>
 
                                     <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
-                                        Guardar alterações
+                                        Guardar fornecedor
                                     </button>
 
                                 </div>
