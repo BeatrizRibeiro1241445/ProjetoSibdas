@@ -6,244 +6,301 @@ redirect_if_not_logged();
 $page_title = APP_NAME . ' - Fornecedores';
 $body_class = '';
 
+$erro = '';
+$fornecedores = [];
+
+$filtroNif = trim($_GET['filtro_nif'] ?? '');
+$filtroDesignacao = trim($_GET['filtro_designacao'] ?? '');
+$filtroEmail = trim($_GET['filtro_email'] ?? '');
+$filtroTelefone = trim($_GET['filtro_telefone'] ?? '');
+$filtroTipoFornecedor = trim($_GET['filtro_tipo_fornecedor'] ?? '');
+$filtroEquipamento = trim($_GET['filtro_equipamento'] ?? '');
+
+try {
+    $ligacao = db_connect();
+
+    $sql = "
+        SELECT DISTINCT
+            f.idFornecedor,
+            f.nif,
+            f.email,
+            f.designacao,
+            f.telefone,
+            f.morada,
+            f.website,
+            f.pessoaContacto,
+            f.telefonePessoaContacto,
+            f.tipoFornecedor
+        FROM Fornecedor f
+        LEFT JOIN EquipamentoFornecedor ef
+            ON f.idFornecedor = ef.idFornecedor
+        LEFT JOIN Equipamento e
+            ON ef.idEquipamento = e.idEquipamento
+        WHERE f.ativo = true
+    ";
+
+    $parametros = [];
+
+    if ($filtroDesignacao !== '') {
+        $sql .= " AND f.designacao LIKE :designacao";
+        $parametros[':designacao'] = '%' . $filtroDesignacao . '%';
+    }
+
+    if ($filtroNif !== '') {
+        $sql .= " AND f.nif LIKE :nif";
+        $parametros[':nif'] = '%' . $filtroNif . '%';
+    }
+
+    if ($filtroTipoFornecedor !== '') {
+        $sql .= " AND f.tipoFornecedor LIKE :tipoFornecedor";
+        $parametros[':tipoFornecedor'] = '%' . $filtroTipoFornecedor . '%';
+    }
+
+    if ($filtroEmail !== '') {
+        $sql .= " AND f.email LIKE :email";
+        $parametros[':email'] = '%' . $filtroEmail . '%';
+    }
+
+    if ($filtroTelefone !== '') {
+        $sql .= " AND f.telefone LIKE :telefone";
+        $parametros[':telefone'] = '%' . $filtroTelefone . '%';
+    }
+
+    if ($filtroEquipamento !== '') {
+        $sql .= " AND e.designacao LIKE :equipamento";
+        $parametros[':equipamento'] = '%' . $filtroEquipamento . '%';
+    }
+
+    $sql .= " ORDER BY f.designacao";
+
+    $stmt = $ligacao->prepare($sql);
+
+    foreach ($parametros as $nome => $valor) {
+        $stmt->bindValue($nome, $valor, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    $fornecedores = $stmt->fetchAll();
+} catch (PDOException $e) {
+    $erro = 'Erro ao obter a lista de fornecedores.';
+}
+
 include __DIR__ . '/../../includes/header.php';
 include __DIR__ . '/../../includes/nav.php';
 include __DIR__ . '/../../includes/sidebar.php';
 ?>
 
-    <!-- Conteúdo Principal -->
-    <main class="content">
-        <section>
+<!-- Conteúdo Principal -->
+<main class="content">
+    <section>
 
-            <div class="actions-top">
-                <h2>
-                    <strong>
-                        <i class="fas fa-truck-medical"></i> Gestão de Fornecedores
-                    </strong>
+        <div class="actions-top">
+            <h2>
+                <strong>
+                    <i class="fas fa-truck-medical"></i> Gestão de Fornecedores
+                </strong>
+            </h2>
+
+            <a href="novo.php" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Novo fornecedor
+            </a>
+        </div>
+
+        <hr>
+
+        <!-- Pesquisa e filtros -->
+        <div class="accordion mb-5" id="accordionPesquisaFornecedores">
+
+            <div class="accordion-item border-0 shadow-sm">
+
+                <h2 class="accordion-header" id="headingPesquisaFornecedores">
+                    <button class="accordion-button collapsed justify-content-center text-center" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapsePesquisaFornecedores"
+                        aria-expanded="false" aria-controls="collapsePesquisaFornecedores">
+
+                        <strong>
+                            <i class="fas fa-magnifying-glass"></i> Pesquisa e filtros
+                        </strong>
+
+                    </button>
                 </h2>
 
-                <a href="novo.php" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Novo fornecedor
-                </a>
-            </div>
+                <div id="collapsePesquisaFornecedores" class="accordion-collapse collapse"
+                    aria-labelledby="headingPesquisaFornecedores" data-bs-parent="#accordionPesquisaFornecedores">
 
-            <hr>
+                    <div class="accordion-body bg-light">
 
-            <!-- Pesquisa e filtros -->
-            <div class="accordion mb-5" id="accordionPesquisaFornecedores">
+                        <form action="lista.php" method="get" class="filtros-equipamentos">
 
-                <div class="accordion-item border-0 shadow-sm">
+                            <div>
+                                <label for="filtro_designacao" class="form-label fw-semibold">
+                                    Nome da empresa
+                                </label>
 
-                    <h2 class="accordion-header" id="headingPesquisaFornecedores">
-                        <button class="accordion-button collapsed justify-content-center text-center" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapsePesquisaFornecedores"
-                            aria-expanded="false" aria-controls="collapsePesquisaFornecedores">
+                                <input type="text" class="form-control text-center" id="filtro_designacao"
+                                    name="filtro_designacao" placeholder="Ex.: MedTech Portugal"
+                                    value="<?= e($filtroDesignacao) ?>">
+                            </div>
 
-                            <strong>
-                                <i class="fas fa-magnifying-glass"></i> Pesquisa e filtros
-                            </strong>
+                            <div>
+                                <label for="filtro_nif" class="form-label fw-semibold">
+                                    NIF
+                                </label>
 
-                        </button>
-                    </h2>
+                                <input type="text" class="form-control text-center" id="filtro_nif"
+                                    name="filtro_nif" placeholder="Ex.: 509000000"
+                                    value="<?= e($filtroNif) ?>">
+                            </div>
 
-                    <div id="collapsePesquisaFornecedores" class="accordion-collapse collapse"
-                        aria-labelledby="headingPesquisaFornecedores" data-bs-parent="#accordionPesquisaFornecedores">
+                            <div>
+                                <label for="filtro_tipo_fornecedor" class="form-label fw-semibold">
+                                    Tipo de fornecedor
+                                </label>
 
-                        <div class="accordion-body bg-light">
+                                <select class="form-select text-center" id="filtro_tipo_fornecedor"
+                                    name="filtro_tipo_fornecedor">
 
-                            <form action="#" method="get" class="filtros-equipamentos">
+                                    <option value="">Todos</option>
 
-                                <div>
-                                    <label for="filtro_nome" class="form-label fw-semibold">Nome da empresa</label>
-                                    <input type="text" class="form-control text-center" id="filtro_nome"
-                                        name="filtro_nome" placeholder="Ex.: MedTech Portugal">
-                                </div>
+                                    <option value="Fabricante" <?= $filtroTipoFornecedor === 'Fabricante' ? 'selected' : '' ?>>
+                                        Fabricante
+                                    </option>
 
-                                <div>
-                                    <label for="filtro_nif" class="form-label fw-semibold">NIF</label>
-                                    <input type="text" class="form-control text-center" id="filtro_nif"
-                                        name="filtro_nif" placeholder="Ex.: 509000000">
-                                </div>
+                                    <option value="Fornecedor comercial" <?= $filtroTipoFornecedor === 'Fornecedor comercial' ? 'selected' : '' ?>>
+                                        Fornecedor comercial
+                                    </option>
 
-                                <div>
-                                    <label for="filtro_tipo" class="form-label fw-semibold">Tipo de fornecedor</label>
+                                    <option value="Assistência técnica" <?= $filtroTipoFornecedor === 'Assistência técnica' ? 'selected' : '' ?>>
+                                        Empresa de assistência técnica
+                                    </option>
 
-                                    <select class="form-select text-center" id="filtro_tipo" name="filtro_tipo">
-                                        <option value="">Todos</option>
-                                        <option value="fabricante">Fabricante</option>
-                                        <option value="fornecedor_comercial">Fornecedor comercial</option>
-                                        <option value="assistencia_tecnica">Empresa de assistência técnica</option>
-                                        <option value="consumiveis_acessorios">Fornecedor de consumíveis/acessórios
-                                        </option>
-                                    </select>
-                                </div>
+                                </select>
+                            </div>
 
-                                <div>
-                                    <label for="filtro_equipamento" class="form-label fw-semibold">
-                                        Equipamento associado
-                                    </label>
-                                    <input type="text" class="form-control text-center" id="filtro_equipamento"
-                                        name="filtro_equipamento" placeholder="Ex.: Monitor Multiparamétrico">
-                                </div>
+                            <div>
+                                <label for="filtro_email" class="form-label fw-semibold">
+                                    Email
+                                </label>
 
-                                <div class="filtros-botoes">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-magnifying-glass"></i> Pesquisar
-                                    </button>
+                                <input type="text" class="form-control text-center" id="filtro_email"
+                                    name="filtro_email" placeholder="Ex.: geral@medtech.pt"
+                                    value="<?= e($filtroEmail) ?>">
+                            </div>
 
-                                    <button type="reset" class="btn btn-secondary">
-                                        Limpar
-                                    </button>
-                                </div>
+                            <div>
+                                <label for="filtro_telefone" class="form-label fw-semibold">
+                                    Telefone
+                                </label>
 
-                            </form>
+                                <input type="text" class="form-control text-center" id="filtro_telefone"
+                                    name="filtro_telefone" placeholder="Ex.: +351 220 000 000"
+                                    value="<?= e($filtroTelefone) ?>">
+                            </div>
 
-                        </div>
+                            <div>
+                                <label for="filtro_equipamento" class="form-label fw-semibold">
+                                    Equipamento associado
+                                </label>
+
+                                <input type="text" class="form-control text-center" id="filtro_equipamento"
+                                    name="filtro_equipamento" placeholder="Ex.: Monitor Multiparamétrico"
+                                    value="<?= e($filtroEquipamento) ?>">
+                            </div>
+
+                            <div class="filtros-botoes">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-magnifying-glass"></i> Pesquisar
+                                </button>
+
+                                <a href="lista.php" class="btn btn-secondary">
+                                    Limpar
+                                </a>
+                            </div>
+
+                        </form>
+
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Tabela -->
-            <div class="table-responsive tabela-lista-container">
-                <table class="table table-hover table-bordered align-middle text-center tabela-lista">
+        <!-- Tabela -->
+        <div class="table-responsive tabela-lista-container">
+            <table class="table table-hover table-bordered align-middle text-center tabela-lista">
 
-                    <thead>
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>NIF</th>
+                        <th>Tipo</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <?php if (!empty($erro)): ?>
+
                         <tr>
-                            <th>Empresa</th>
-                            <th>NIF</th>
-                            <th>Tipo</th>
-                            <th>Telefone</th>
-                            <th>Email</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>
-                                <strong>MedTech Portugal</strong>
-                            </td>
-
-                            <td>509000000</td>
-
-                            <td>Empresa de assistência técnica</td>
-
-                            <td>+351 220 000 000</td>
-
-                            <td>geral@medtech.pt</td>
-
-                            <td>
-                                <div class="acoes-tabela">
-                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-
-                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-
-                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
+                            <td colspan="6" class="text-center text-danger">
+                                <?= e($erro) ?>
                             </td>
                         </tr>
 
+                    <?php elseif (count($fornecedores) > 0): ?>
+
+                        <?php foreach ($fornecedores as $fornecedor): ?>
+
+                            <tr>
+                                <td>
+                                    <strong><?= e($fornecedor->designacao) ?></strong>
+                                </td>
+
+                                <td><?= e($fornecedor->nif) ?></td>
+
+                                <td><?= e($fornecedor->tipoFornecedor) ?></td>
+
+                                <td><?= e($fornecedor->telefone) ?></td>
+
+                                <td><?= e($fornecedor->email) ?></td>
+
+                                <td>
+                                    <div class="acoes-tabela">
+                                        <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+
+                                        <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
+
                         <tr>
-                            <td>
-                                <strong>Hospital Devices S.A.</strong>
-                            </td>
-
-                            <td>508111222</td>
-
-                            <td>Fornecedor comercial</td>
-
-                            <td>+351 210 000 000</td>
-
-                            <td>info@hospitaldevices.pt</td>
-
-                            <td>
-                                <div class="acoes-tabela">
-                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-
-                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-
-                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
+                            <td colspan="6" class="text-center">
+                                Não existem fornecedores registados para os filtros selecionados.
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <strong>Philips Medical Systems</strong>
-                            </td>
+                    <?php endif; ?>
 
-                            <td>501222333</td>
+                </tbody>
 
-                            <td>Fabricante</td>
+            </table>
+        </div>
 
-                            <td>+351 211 222 333</td>
-
-                            <td>support@philipsmedical.pt</td>
-
-                            <td>
-                                <div class="acoes-tabela">
-                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-
-                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-
-                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <strong>Consumíveis Clínicos Norte</strong>
-                            </td>
-
-                            <td>506333444</td>
-
-                            <td>Fornecedor de consumíveis/acessórios</td>
-
-                            <td>+351 225 333 444</td>
-
-                            <td>geral@consumiveisnorte.pt</td>
-
-                            <td>
-                                <div class="acoes-tabela">
-                                    <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-
-                                    <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-
-                                    <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
-        </section>
-    </main>
+    </section>
+</main>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>
