@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/includes/funcoes.php';
 
+redirect_if_not_logged();
+
 $page_title = APP_NAME . ' - Área Pessoal';
 $body_class = 'area-pessoal-page';
 
