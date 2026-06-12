@@ -56,14 +56,14 @@ unset($_SESSION['server_error']);
                         <?php if (!empty($validation_errors)): ?>
                             <div class="alert alert-danger text-center">
                                 <?php foreach ($validation_errors as $erro): ?>
-                                    <div><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></div>
+                                    <div><?= e($erro) ?></div>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
 
                         <?php if (!empty($server_error)): ?>
                             <div class="alert alert-danger text-center">
-                                <?= htmlspecialchars($server_error, ENT_QUOTES, 'UTF-8') ?>
+                                <?= e($server_error) ?>
                             </div>
                         <?php endif; ?>
 
