@@ -32,6 +32,7 @@ function redirect_if_not_logged($redirect_to = '/public/login.php')
 function logout_and_redirect($redirect_to = '/public/login.php')
 {
     start_session();
+
     session_unset();
     session_destroy();
 
@@ -58,9 +59,9 @@ function db_connect()
 
     if ($ligacao === null) {
         $dsn = 'mysql:host=' . MYSQL_HOST .
-               ';port=' . MYSQL_PORT .
-               ';dbname=' . MYSQL_DATABASE .
-               ';charset=utf8mb4';
+            ';port=' . MYSQL_PORT .
+            ';dbname=' . MYSQL_DATABASE .
+            ';charset=utf8mb4';
 
         $ligacao = new PDO($dsn, MYSQL_USERNAME, MYSQL_PASSWORD);
         $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
