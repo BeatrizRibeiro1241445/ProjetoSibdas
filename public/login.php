@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once __DIR__ . '/../private/includes/funcoes.php';
+
+start_session();
 
 $validation_errors = $_SESSION['validation_errors'] ?? [];
 $server_error = $_SESSION['server_error'] ?? '';
