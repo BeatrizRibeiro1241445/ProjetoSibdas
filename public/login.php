@@ -3,115 +3,133 @@ require_once __DIR__ . '/../private/includes/funcoes.php';
 
 start_session();
 
-$validation_errors = $_SESSION['validation_errors'] ?? [];
-$server_error = $_SESSION['server_error'] ?? '';
+if (check_session()) {
+    header('Location: ' . BASE_URL . '/private/area_pessoal.php');
+    exit;
+}
 
-unset($_SESSION['validation_errors']);
-unset($_SESSION['server_error']);
+$page_title = APP_NAME . ' - Login';
+$body_class = 'login-page';
+
+$erro = '';
+$utilizadorPreenchido = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $utilizadorPreenchido = trim($_POST['utilizador'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($utilizadorPreenchido === '' || $password === '') {
+        $erro = 'Preencha o utilizador e a palavra-passe.';
+    } else {
+        try {
+            $ligacao = db_connect();
+
+            $stmt = $ligacao->prepare("
+                SELECT
+                    idUtilizador,
+                    username,
+                    email,
+                    nome,
+                    passwordHash,
+                    perfil
+                FROM Utilizador
+                WHERE ativo = true
+                  AND (username = :utilizador OR email = :utilizador)
+                LIMIT 1
+            ");
+
+            $stmt->bindValue(':utilizador', $utilizadorPreenchido, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $utilizador = $stmt->fetch();
+
+            if ($utilizador && password_verify($password, $utilizador->passwordHash)) {
+                $_SESSION['idUtilizador'] = $utilizador->idUtilizador;
+                $_SESSION['utilizador'] = $utilizador->username;
+                $_SESSION['nome'] = $utilizador->nome;
+                $_SESSION['perfil'] = $utilizador->perfil;
+
+                header('Location: ' . BASE_URL . '/private/area_pessoal.php');
+                exit;
+            }
+
+            $erro = 'Utilizador ou palavra-passe inválidos.';
+
+        } catch (PDOException $e) {
+            $erro = 'Erro ao validar o utilizador.';
+        }
+    }
+}
+
+include __DIR__ . '/../private/includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="pt">
+<main class="container">
+    <section class="row justify-content-center">
+        <div class="col-12 col-md-7 col-lg-5">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Login</title>
+            <div class="card login-box">
 
-    <!-- favicon -->
-    <link rel="shortcut icon" href="../assets/img/logo.png" type="image/png">
+                <a href="<?= BASE_URL ?>/public/index.php" class="btn btn-outline-secondary login-voltar" title="Voltar ao site">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../assets/bootstrap/bootstrap.min.css">
+                <div class="card-body">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../assets/fontawesome/all.min.css">
+                    <!-- Cabeçalho do login -->
+                    <div class="login-brand">
+                        <img src="<?= BASE_URL ?>/assets/img/logo.png" alt="Logo MedInventário" class="login-logo">
 
-    <!-- folha de estilos CSS -->
-    <link rel="stylesheet" href="../assets/css/1241445.css">
-</head>
+                        <div>
+                            <h2>MedInventário</h2>
+                            <p>Acesso à área reservada</p>
+                        </div>
+                    </div>
 
-<body class="login-page">
+                    <?php if (!empty($erro)): ?>
+                        <div class="alert alert-danger text-center">
+                            <?= e($erro) ?>
+                        </div>
+                    <?php endif; ?>
 
-    <main class="container">
-        <section class="row justify-content-center">
-            <div class="col-12 col-md-7 col-lg-5">
+                    <!-- Formulário de login -->
+                    <form action="login.php" method="post" novalidate>
 
-                <div class="card login-box">
+                        <div class="mb-3">
+                            <label for="utilizador" class="form-label">
+                                <i class="fas fa-user"></i> Utilizador
+                            </label>
 
-                    <a href="index.php" class="btn btn-outline-secondary login-voltar" title="Voltar ao site">
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-
-                    <div class="card-body">
-
-                        <!-- Cabeçalho do login -->
-                        <div class="login-brand">
-                            <img src="../assets/img/logo.png" alt="Logo MedInventário" class="login-logo">
-
-                            <div>
-                                <h2>MedInventário</h2>
-                                <p>Acesso à área reservada</p>
-                            </div>
+                            <input type="text" class="form-control" id="utilizador" name="utilizador"
+                                placeholder="Introduza o utilizador"
+                                value="<?= e($utilizadorPreenchido) ?>"
+                                required>
                         </div>
 
-                        <?php if (!empty($validation_errors)): ?>
-                            <div class="alert alert-danger text-center">
-                                <?php foreach ($validation_errors as $erro): ?>
-                                    <div><?= e($erro) ?></div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock"></i> Palavra-passe
+                            </label>
 
-                        <?php if (!empty($server_error)): ?>
-                            <div class="alert alert-danger text-center">
-                                <?= e($server_error) ?>
-                            </div>
-                        <?php endif; ?>
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Introduza a palavra-passe"
+                                required>
+                        </div>
 
-                        <!-- Formulário de login -->
-                        <form action="../private/processa_login.php" method="post" novalidate>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary login-button">
+                                Entrar <i class="fas fa-sign-in-alt"></i>
+                            </button>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="utilizador" class="form-label">
-                                    <i class="fas fa-user"></i> Utilizador
-                                </label>
-
-                                <input type="text" class="form-control" id="utilizador" name="utilizador"
-                                    placeholder="Introduza o utilizador" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">
-                                    <i class="fas fa-lock"></i> Palavra-passe
-                                </label>
-
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Introduza a palavra-passe" required>
-                            </div>
-
-                            <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-primary login-button">
-                                    Entrar <i class="fas fa-sign-in-alt"></i>
-                                </button>
-                            </div>
-
-                        </form>
-
-                    </div>
+                    </form>
 
                 </div>
 
             </div>
-        </section>
-    </main>
 
-    <!-- Bootstrap JS -->
-    <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
+        </div>
+    </section>
+</main>
 
-    <!-- JavaScript -->
-    <script src="../assets/js/1241445.js"></script>
-
-</body>
-
-</html>
+<?php include __DIR__ . '/../private/includes/footer.php'; ?>

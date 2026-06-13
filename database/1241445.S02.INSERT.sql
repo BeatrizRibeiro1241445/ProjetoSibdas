@@ -194,3 +194,19 @@ ON DUPLICATE KEY UPDATE
     texto = VALUES(texto),
     imagem = VALUES(imagem),
     ativo = VALUES(ativo);
+
+INSERT INTO Utilizador (username, email, nome, passwordHash, perfil, ativo)
+VALUES (
+    'admin',
+    'admin@medinventario.pt',
+    'Administrador MedInventário',
+    '$2y$12$X7.qWwNSVhTD7Qv.ZwhBW.s8GfzubegQv5kN5AYkDKRr70wkxcAAe',
+    'administrador',
+    true
+)
+ON DUPLICATE KEY UPDATE
+    email = VALUES(email),
+    nome = VALUES(nome),
+    passwordHash = VALUES(passwordHash),
+    perfil = VALUES(perfil),
+    ativo = VALUES(ativo);
