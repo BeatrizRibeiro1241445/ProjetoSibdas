@@ -118,3 +118,79 @@ INSERT INTO GarantiaContrato (
 (2, 3, 'Garantia', 'GAR-2021-003', '2021-06-10', '2024-06-09', null, 'Garantia inicial do ventilador pulmonar.', true),
 (3, 1, 'Contrato de manutenção', 'CM-2020-007', '2020-11-05', '2025-11-04', 'Semestral', 'Contrato de manutenção da bomba de infusão.', true),
 (4, 3, 'Garantia', 'GAR-2022-006', '2022-01-20', '2025-01-19', null, 'Garantia do desfibrilhador.', true);
+
+INSERT INTO ConteudoSite (chave, seccao, titulo, texto, imagem, ativo) VALUES
+('site_nome', 'navbar', 'MedInventário', 'MedInventário', 'logo.png', true),
+
+('nav_inicio', 'navbar', 'Início', 'Início', NULL, true),
+('nav_quem_somos', 'navbar', 'Quem Somos', 'Quem Somos', NULL, true),
+('nav_solucao', 'navbar', 'Solução', 'Solução', NULL, true),
+('nav_funcionalidades', 'navbar', 'Funcionalidades', 'Funcionalidades', NULL, true),
+
+('inicio', 'inicio', 'Sistema Web de Apoio ao Inventário Hospitalar',
+'A MedInventário ajuda instituições de saúde a organizar, consultar e controlar equipamentos médicos de forma simples, centralizada e segura.',
+'assets/img/hospital-digital.png', true),
+
+('quem_somos', 'quem_somos', 'Quem Somos',
+'A MedInventário é uma solução digital pensada para apoiar hospitais e serviços de saúde na gestão organizada do seu parque tecnológico.
+
+A plataforma centraliza informação essencial sobre equipamentos, fornecedores, localizações, documentação, garantias e contratos, facilitando o acesso rápido aos dados.',
+'assets/img/equipa-biomedica.png', true),
+
+('solucao', 'solucao', 'A Nossa Solução',
+'O objetivo da MedInventário é disponibilizar uma plataforma organizada para apoiar o ciclo de vida dos equipamentos médicos, desde o registo inicial até à sua consulta, atualização ou desativação.
+
+A aplicação permite melhorar a rastreabilidade, facilitar a pesquisa de informação e apoiar decisões relacionadas com manutenção, garantias e documentação.',
+'assets/img/solução.png', true),
+
+('funcionalidades_intro', 'funcionalidades', 'Funcionalidades',
+'A MedInventário organiza os principais módulos necessários para uma gestão clara, simples e centralizada do inventário hospitalar.',
+NULL, true),
+
+('funcionalidade_1', 'funcionalidades', 'Equipamentos',
+'Registo, consulta e atualização dos equipamentos médicos existentes.',
+'fas fa-laptop-medical', true),
+
+('funcionalidade_2', 'funcionalidades', 'Localizações',
+'Associação dos equipamentos a edifícios, pisos, serviços e salas.',
+'fas fa-location-dot', true),
+
+('funcionalidade_3', 'funcionalidades', 'Fornecedores',
+'Gestão de empresas, contactos e associações aos equipamentos.',
+'fas fa-truck-medical', true),
+
+('funcionalidade_4', 'funcionalidades', 'Documentação',
+'Organização de manuais, certificados e documentos técnicos.',
+'fas fa-file-medical', true),
+
+('funcionalidade_5', 'funcionalidades', 'Garantias',
+'Consulta de garantias, contratos e entidades responsáveis.',
+'fas fa-file-contract', true),
+
+('funcionalidade_6', 'funcionalidades', 'Dashboard',
+'Indicadores, alertas e resumo do estado do inventário.',
+'fas fa-chart-simple', true),
+
+('dashboard_publico', 'dashboard_publico', 'Informação centralizada para melhor decisão',
+'Através de indicadores e alertas, a solução permite identificar equipamentos críticos, garantias próximas do fim, documentação em falta e estados de funcionamento.
+
+Esta informação ajuda os serviços técnicos e administrativos a acompanhar o inventário de forma mais rápida e estruturada.',
+'assets/img/dashboard.png', true),
+
+('footer_localizacao', 'rodape', 'Localização',
+'Porto, Portugal|Rua ************ 000|4249-000',
+NULL, true),
+
+('footer_horario', 'rodape', 'Horário',
+'Segunda a sexta: 09:00 - 18:00|Sábado: 09:00 - 13:00|Domingo: encerrado',
+NULL, true),
+
+('footer_contactos', 'rodape', 'Contactos',
+'geral@medinventario.pt|+351 220 000 000|+351 914 000 000',
+NULL, true)
+ON DUPLICATE KEY UPDATE
+    seccao = VALUES(seccao),
+    titulo = VALUES(titulo),
+    texto = VALUES(texto),
+    imagem = VALUES(imagem),
+    ativo = VALUES(ativo);
