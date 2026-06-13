@@ -1,67 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt">
+<?php
+require_once __DIR__ . '/../../includes/funcoes.php';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedInventário - Remover Fornecedor</title>
+redirect_if_not_logged();
 
-    <!-- favicon -->
-    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+$page_title = APP_NAME . ' - Fornecedores';
+$body_class = 'pagina-novo-equipamento';
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+include __DIR__ . '/../../includes/header.php';
+include __DIR__ . '/../../includes/nav.php';
+include __DIR__ . '/../../includes/sidebar.php';
+?>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
-
-    <!-- folha de estilos CSS -->
-    <link rel="stylesheet" href="../../../assets/css/1241445.css">
-</head>
-
-<body>
-    <!-- Navbar -->
-    <header class="bng-navbar-menu">
-
-        <div>
-            <a href="../../area_pessoal.php">
-                <img src="../../../assets/img/logo.png" alt="Logo da MedInventário">
-            </a>
-            <h3>MedInventário</h3>
-        </div>
-
-        <div>
-            <button id="btn-utilizador" type="button" onclick="mostrarAreaUtilizador()">Utilizador</button>
-        </div>
-
-    </header>
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h4>Menu</h4>
-
-        <nav>
-            <a href="../equipamentos/lista.php">
-                <i class="fas fa-laptop-medical"></i> Equipamentos
-            </a>
-
-            <a href="../fornecedores/lista.php">
-                <i class="fas fa-truck-medical"></i> Fornecedores
-            </a>
-
-            <a href="../localizacoes/lista.php">
-                <i class="fas fa-location-dot"></i> Localizações
-            </a>
-
-            <a href="../gestao_conteudos/gestao_conteudos.php">
-                <i class="fas fa-pen-to-square"></i> Conteúdos do site
-            </a>
-
-            <a href="../dashboard/dashboard.php">
-                <i class="fas fa-chart-bar"></i> Dashboard
-            </a>
-        </nav>
-    </aside>
     <!-- Conteúdo Principal -->
     <main class="content">
         <section>
@@ -134,12 +83,4 @@
         </section>
     </main>
 
-    <!-- Bootstrap JS -->
-    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
-
-    <!-- JavaScript -->
-    <script src="../../../assets/js/1241445.js"></script>
-
-</body>
-
-</html>
+<?php include __DIR__ . '/../../includes/footer.php'; ?>
