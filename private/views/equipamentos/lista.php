@@ -19,6 +19,13 @@ $filtroCategoria = trim($_GET['filtro_categoria'] ?? '');
 $filtroLocalizacao = trim($_GET['filtro_localizacao'] ?? '');
 $ordenarPor = trim($_GET['ordenar_por'] ?? '');
 
+$paginaAtual = max(1, (int) ($_GET['pagina'] ?? 1));
+$registosPorPagina = 5;
+$offset = ($paginaAtual - 1) * $registosPorPagina;
+
+$totalRegistos = 0;
+$totalPaginas = 1;
+
 try {
     $ligacao = db_connect();
 
@@ -88,6 +95,27 @@ try {
         $parametros[':localizacao'] = '%' . $filtroLocalizacao . '%';
     }
 
+    $sqlSemOrdenacao = $sql;
+
+    $stmtTotal = $ligacao->prepare("
+    SELECT COUNT(*) AS total
+    FROM ($sqlSemOrdenacao) AS resultado_total
+");
+
+    foreach ($parametros as $nome => $valor) {
+        $stmtTotal->bindValue($nome, $valor, PDO::PARAM_STR);
+    }
+
+    $stmtTotal->execute();
+    $totalRegistos = (int) $stmtTotal->fetch()->total;
+
+    $totalPaginas = max(1, (int) ceil($totalRegistos / $registosPorPagina));
+
+    if ($paginaAtual > $totalPaginas) {
+        $paginaAtual = $totalPaginas;
+        $offset = ($paginaAtual - 1) * $registosPorPagina;
+    }
+
     switch ($ordenarPor) {
         case 'codigo_crescente':
             $sql .= " ORDER BY e.codigoInterno ASC";
@@ -121,11 +149,16 @@ try {
             break;
     }
 
+    $sql .= " LIMIT :limite OFFSET :offset";
+
     $stmt = $ligacao->prepare($sql);
 
     foreach ($parametros as $nome => $valor) {
         $stmt->bindValue($nome, $valor, PDO::PARAM_STR);
     }
+
+    $stmt->bindValue(':limite', $registosPorPagina, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
     $equipamentos = $stmt->fetchAll();
@@ -446,6 +479,55 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </tbody>
             </table>
         </div>
+
+        <?php if ($totalPaginas > 1): ?>
+
+            <nav aria-label="Paginação de equipamentos" class="mt-4">
+
+                <ul class="pagination justify-content-center paginacao-equipamentos">
+
+                    <?php
+                    $queryAnterior = $_GET;
+                    $queryAnterior['pagina'] = max(1, $paginaAtual - 1);
+                    ?>
+
+                    <li class="page-item <?= $paginaAtual <= 1 ? 'disabled' : '' ?>">
+                        <a class="page-link" href="lista.php?<?= e(http_build_query($queryAnterior)) ?>" title="Página anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    <?php for ($pagina = 1; $pagina <= $totalPaginas; $pagina++): ?>
+
+                        <?php
+                        $queryPagina = $_GET;
+                        $queryPagina['pagina'] = $pagina;
+                        ?>
+
+                        <li class="page-item <?= $pagina === $paginaAtual ? 'active' : '' ?>">
+                            <a class="page-link" href="lista.php?<?= e(http_build_query($queryPagina)) ?>">
+                                <?= e($pagina) ?>
+                            </a>
+                        </li>
+
+                    <?php endfor; ?>
+
+                    <?php
+                    $querySeguinte = $_GET;
+                    $querySeguinte['pagina'] = min($totalPaginas, $paginaAtual + 1);
+                    ?>
+
+                    <li class="page-item <?= $paginaAtual >= $totalPaginas ? 'disabled' : '' ?>">
+                        <a class="page-link" href="lista.php?<?= e(http_build_query($querySeguinte)) ?>" title="Página seguinte">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        <?php endif; ?>
 
     </section>
 </main>
