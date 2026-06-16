@@ -34,15 +34,67 @@ INSERT INTO TipoDocumento (descricao) VALUES
 ('Relatório técnico');
 
 INSERT INTO Localizacao (categoria, edificio, piso, servico, sala, observacoes, ativo) VALUES
-('Área clínica crítica', 'Hospital Central', 'Piso 2', 'Unidade de Cuidados Intensivos', 'Sala 1', 'Localização destinada a equipamentos críticos e de suporte de vida.', true),
-('Área cirúrgica', 'Hospital Central', 'Piso 1', 'Bloco Operatório', 'Sala 2', 'Localização destinada a equipamentos utilizados em contexto cirúrgico.', true),
-('Área de urgência', 'Hospital Central', 'Piso 0', 'Urgência', 'Sala de Reanimação', 'Localização destinada a equipamentos de emergência.', true),
-('Área técnica', 'Hospital Central', 'Piso 3', 'Cardiologia', 'Gabinete Técnico', 'Localização de apoio técnico e diagnóstico.', true);
+('Área clínica crítica', 'Hospital Central', '2', 'Unidade de Cuidados Intensivos', 'Sala 1', 'Localização destinada a equipamentos críticos e de suporte de vida.', true),
+('Área cirúrgica', 'Hospital Central', '1', 'Bloco Operatório', 'Sala 2', 'Localização destinada a equipamentos utilizados em contexto cirúrgico.', true),
+('Área de urgência', 'Hospital Central', '0', 'Urgência', 'Sala de Reanimação', 'Localização destinada a equipamentos de emergência.', true),
+('Área técnica', 'Hospital Central', '3', 'Cardiologia', 'Gabinete Técnico', 'Localização de apoio técnico e diagnóstico.', true);
 
-INSERT INTO Fornecedor (nif, email, designacao, telefone, morada, website, pessoaContacto, telefonePessoaContacto, tipoFornecedor, observacoes, ativo) VALUES
-('509000000', 'geral@medtech.pt', 'MedTech Portugal', '+351 220 000 000', 'Rua da Saúde, Porto, Portugal', 'https://www.medtech.pt', 'Ana Martins', '+351 914 000 000', 'Assistência técnica', 'Fornecedor associado a equipamentos de monitorização e manutenção hospitalar.', true),
-('508111111', 'contacto@philipsmedical.pt', 'Philips Medical Systems', '+351 210 000 000', 'Avenida da Tecnologia, Lisboa, Portugal', 'https://www.philips.pt', 'Carlos Ferreira', '+351 913 000 000', 'Fabricante', 'Fabricante de equipamentos médicos de monitorização.', true),
-('507222222', 'geral@hospitaldevices.pt', 'Hospital Devices S.A.', '+351 221 500 000', 'Rua dos Dispositivos Médicos, Maia, Portugal', 'https://www.hospitaldevices.pt', 'Mariana Costa', '+351 912 000 000', 'Fornecedor comercial', 'Fornecedor de equipamentos hospitalares e acessórios.', true);
+INSERT INTO Fornecedor (
+  nif,
+  email,
+  designacao,
+  telefone,
+  morada,
+  website,
+  pessoaContacto,
+  telefonePessoaContacto,
+  pessoaContacto2,
+  telefonePessoaContacto2,
+  observacoes,
+  ativo
+) VALUES
+(
+  '509000000',
+  'geral@medtech.pt',
+  'MedTech Portugal',
+  '+351 220 000 000',
+  'Rua da Saúde, Porto, Portugal',
+  'https://www.medtech.pt',
+  'Ana Martins',
+  '+351 914 000 000',
+  'Rui Sousa',
+  '+351 914 111 111',
+  'Fornecedor associado a equipamentos de monitorização e manutenção hospitalar.',
+  true
+),
+(
+  '508111111',
+  'contacto@philipsmedical.pt',
+  'Philips Medical Systems',
+  '+351 210 000 000',
+  'Avenida da Tecnologia, Lisboa, Portugal',
+  'https://www.philips.pt',
+  'Carlos Ferreira',
+  '+351 913 000 000',
+  'Joana Almeida',
+  '+351 913 111 111',
+  'Fabricante de equipamentos médicos de monitorização.',
+  true
+),
+(
+  '507222222',
+  'geral@hospitaldevices.pt',
+  'Hospital Devices S.A.',
+  '+351 221 500 000',
+  'Rua dos Dispositivos Médicos, Maia, Portugal',
+  'https://www.hospitaldevices.pt',
+  'Mariana Costa',
+  '+351 912 000 000',
+  'Pedro Rocha',
+  '+351 912 111 111',
+  'Fornecedor de equipamentos hospitalares e acessórios.',
+  true
+);
 
 INSERT INTO Utilizador (username, email, nome, passwordHash, perfil, ativo) VALUES
 ('admin', 'admin@medinventario.pt', 'Administrador MedInventário', '$2y$12$FQCHk/mRXZ3OH/BcYC6LAuS.AyIpJAAeYlln3GCvC6v3OYgypkiKe', 'administrador', true);

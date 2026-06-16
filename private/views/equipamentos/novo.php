@@ -3,272 +3,1028 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$page_title = APP_NAME . ' - Equipamentos';
+$page_title = APP_NAME . ' - Novo Equipamento';
 $body_class = 'pagina-novo-equipamento';
+
+$erros = [];
+$erroSistema = '';
+$sucesso = '';
+
+$categorias = [];
+$estados = [];
+$criticidades = [];
+$tiposEntrada = [];
+$localizacoes = [];
+$fornecedores = [];
+$tiposDocumento = [];
+
+$codigoInterno = '';
+$numeroSerie = '';
+$idCategoriaEquipamento = '';
+$idEstadoEquipamento = '';
+$idCriticidadeEquipamento = '';
+$idTipoEntrada = '';
+$designacao = '';
+$marca = '';
+$modelo = '';
+$fabricante = '';
+$dataAquisicao = '';
+$anoFabrico = '';
+$custoAquisicao = '';
+$observacoes = '';
+
+$fornecedoresAssociados = [];
+$localizacoesAssociadas = [];
+$documentosAdicionados = [];
+
+$tipoGarantiaContrato = '';
+$numeroContrato = '';
+$dataInicioGarantia = '';
+$dataFimGarantia = '';
+$idFornecedorResponsavel = '';
+$periodicidade = '';
+$observacoesGarantia = '';
+
+$tiposRelacaoPermitidos = [
+    'Fabricante',
+    'Fornecedor comercial',
+    'Assistência técnica',
+    'Consumíveis/acessórios'
+];
+
+$tiposGarantiaPermitidos = [
+    'Garantia',
+    'Contrato de manutenção',
+    'Contrato de assistência técnica',
+    'Contrato de calibração'
+];
+
+$periodicidadesPermitidas = [
+    'Mensal',
+    'Trimestral',
+    'Semestral',
+    'Anual',
+    'Bienal',
+    'Pontual'
+];
+
+function existe_id_lista($id, $lista, $campo)
+{
+    foreach ($lista as $item) {
+        if ((string) $item->$campo === (string) $id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function texto_fornecedor($idFornecedor, $fornecedores)
+{
+    foreach ($fornecedores as $fornecedor) {
+        if ((string) $fornecedor->idFornecedor === (string) $idFornecedor) {
+            return $fornecedor->designacao . ' — NIF ' . $fornecedor->nif;
+        }
+    }
+
+    return '';
+}
+
+function texto_localizacao($idLocalizacao, $localizacoes)
+{
+    foreach ($localizacoes as $localizacao) {
+        if ((string) $localizacao->idLocalizacao === (string) $idLocalizacao) {
+            return $localizacao->edificio . ' — Piso ' . $localizacao->piso . ' — ' . $localizacao->servico . ' — Sala ' . $localizacao->sala;
+        }
+    }
+
+    return '';
+}
+
+function texto_tipo_documento($idTipoDocumento, $tiposDocumento)
+{
+    foreach ($tiposDocumento as $tipoDocumento) {
+        if ((string) $tipoDocumento->idTipoDocumento === (string) $idTipoDocumento) {
+            return $tipoDocumento->descricao;
+        }
+    }
+
+    return '';
+}
+
+function data_valida($data)
+{
+    $objetoData = DateTime::createFromFormat('Y-m-d', $data);
+    return $objetoData && $objetoData->format('Y-m-d') === $data;
+}
+
+try {
+    $ligacao = db_connect();
+
+    $categorias = $ligacao->query("
+        SELECT idCategoriaEquipamento, descricao
+        FROM CategoriaEquipamento
+        ORDER BY descricao
+    ")->fetchAll();
+
+    $estados = $ligacao->query("
+        SELECT idEstadoEquipamento, descricao
+        FROM EstadoEquipamento
+        ORDER BY descricao
+    ")->fetchAll();
+
+    $criticidades = $ligacao->query("
+        SELECT idCriticidadeEquipamento, descricao
+        FROM CriticidadeEquipamento
+        ORDER BY idCriticidadeEquipamento
+    ")->fetchAll();
+
+    $tiposEntrada = $ligacao->query("
+        SELECT idTipoEntrada, descricao
+        FROM TipoEntrada
+        ORDER BY descricao
+    ")->fetchAll();
+
+    $localizacoes = $ligacao->query("
+        SELECT idLocalizacao, categoria, edificio, piso, servico, sala
+        FROM Localizacao
+        WHERE ativo = true
+        ORDER BY edificio, piso, servico, sala
+    ")->fetchAll();
+
+    $fornecedores = $ligacao->query("
+        SELECT idFornecedor, designacao, nif
+        FROM Fornecedor
+        WHERE ativo = true
+        ORDER BY designacao
+    ")->fetchAll();
+
+    $tiposDocumento = $ligacao->query("
+        SELECT idTipoDocumento, descricao
+        FROM TipoDocumento
+        ORDER BY descricao
+    ")->fetchAll();
+} catch (PDOException $e) {
+    $erroSistema = 'Erro ao carregar os dados necessários para o formulário.';
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $codigoInterno = trim($_POST['codigoInterno'] ?? '');
+    $numeroSerie = trim($_POST['numeroSerie'] ?? '');
+    $idCategoriaEquipamento = trim($_POST['idCategoriaEquipamento'] ?? '');
+    $idEstadoEquipamento = trim($_POST['idEstadoEquipamento'] ?? '');
+    $idCriticidadeEquipamento = trim($_POST['idCriticidadeEquipamento'] ?? '');
+    $idTipoEntrada = trim($_POST['idTipoEntrada'] ?? '');
+
+    $designacao = trim($_POST['designacao'] ?? '');
+    $marca = trim($_POST['marca'] ?? '');
+    $modelo = trim($_POST['modelo'] ?? '');
+    $fabricante = trim($_POST['fabricante'] ?? '');
+    $dataAquisicao = trim($_POST['dataAquisicao'] ?? '');
+    $anoFabrico = trim($_POST['anoFabrico'] ?? '');
+    $custoAquisicao = trim($_POST['custoAquisicao'] ?? '');
+    $observacoes = trim($_POST['observacoes'] ?? '');
+
+    $fornecedoresAssociados = $_POST['fornecedoresAssociados'] ?? [];
+    $localizacoesAssociadas = $_POST['localizacoesAssociadas'] ?? [];
+    $documentosAdicionados = $_POST['documentosAdicionados'] ?? [];
+
+    $tipoGarantiaContrato = trim($_POST['tipoGarantiaContrato'] ?? '');
+    $numeroContrato = trim($_POST['numeroContrato'] ?? '');
+    $dataInicioGarantia = trim($_POST['dataInicioGarantia'] ?? '');
+    $dataFimGarantia = trim($_POST['dataFimGarantia'] ?? '');
+    $idFornecedorResponsavel = trim($_POST['idFornecedorResponsavel'] ?? '');
+    $periodicidade = trim($_POST['periodicidade'] ?? '');
+    $observacoesGarantia = trim($_POST['observacoesGarantia'] ?? '');
+
+    $codigoInterno = preg_replace('/\s+/', '', $codigoInterno);
+    $numeroSerie = preg_replace('/\s+/', '', $numeroSerie);
+    $designacao = preg_replace('/\s+/', ' ', $designacao);
+    $marca = preg_replace('/\s+/', ' ', $marca);
+    $modelo = preg_replace('/\s+/', ' ', $modelo);
+    $fabricante = preg_replace('/\s+/', ' ', $fabricante);
+    $custoAquisicao = str_replace(',', '.', $custoAquisicao);
+
+    $anoAtual = (int) date('Y');
+
+    if ($codigoInterno === '') {
+        $erros[] = 'O código interno é obrigatório.';
+    } elseif (!preg_match('/^[0-9]{3}\.[0-9]{3}\.[0-9]{2}$/', $codigoInterno)) {
+        $erros[] = 'O código interno deve estar no formato 000.000.00.';
+    }
+
+    if ($numeroSerie === '') {
+        $erros[] = 'O número de série é obrigatório.';
+    } elseif (mb_strlen($numeroSerie) > 80) {
+        $erros[] = 'O número de série não pode ter mais de 80 caracteres.';
+    } elseif (!preg_match('/^[A-Za-z0-9][A-Za-z0-9\-\/.]{2,79}$/', $numeroSerie)) {
+        $erros[] = 'O número de série contém caracteres inválidos.';
+    }
+
+    if ($designacao === '') {
+        $erros[] = 'A designação é obrigatória.';
+    } elseif (mb_strlen($designacao) > 150) {
+        $erros[] = 'A designação não pode ter mais de 150 caracteres.';
+    }
+
+    if ($idCategoriaEquipamento === '') {
+        $erros[] = 'A categoria é obrigatória.';
+    } elseif (!existe_id_lista($idCategoriaEquipamento, $categorias, 'idCategoriaEquipamento')) {
+        $erros[] = 'A categoria selecionada não é válida.';
+    }
+
+    if ($idEstadoEquipamento === '') {
+        $erros[] = 'O estado atual é obrigatório.';
+    } elseif (!existe_id_lista($idEstadoEquipamento, $estados, 'idEstadoEquipamento')) {
+        $erros[] = 'O estado selecionado não é válido.';
+    }
+
+    if ($idCriticidadeEquipamento === '') {
+        $erros[] = 'A criticidade é obrigatória.';
+    } elseif (!existe_id_lista($idCriticidadeEquipamento, $criticidades, 'idCriticidadeEquipamento')) {
+        $erros[] = 'A criticidade selecionada não é válida.';
+    }
+
+    if ($idTipoEntrada === '') {
+        $erros[] = 'O tipo de entrada é obrigatório.';
+    } elseif (!existe_id_lista($idTipoEntrada, $tiposEntrada, 'idTipoEntrada')) {
+        $erros[] = 'O tipo de entrada selecionado não é válido.';
+    }
+
+    if ($marca === '') {
+        $erros[] = 'A marca é obrigatória.';
+    } elseif (mb_strlen($marca) > 100) {
+        $erros[] = 'A marca não pode ter mais de 100 caracteres.';
+    }
+
+    if ($modelo === '') {
+        $erros[] = 'O modelo é obrigatório.';
+    } elseif (mb_strlen($modelo) > 100) {
+        $erros[] = 'O modelo não pode ter mais de 100 caracteres.';
+    }
+
+    if ($fabricante === '') {
+        $erros[] = 'O fabricante é obrigatório.';
+    } elseif (mb_strlen($fabricante) > 120) {
+        $erros[] = 'O fabricante não pode ter mais de 120 caracteres.';
+    }
+
+    if ($dataAquisicao === '') {
+        $erros[] = 'A data de aquisição é obrigatória.';
+    } elseif (!data_valida($dataAquisicao)) {
+        $erros[] = 'A data de aquisição não é válida.';
+    } elseif ($dataAquisicao > date('Y-m-d')) {
+        $erros[] = 'A data de aquisição não pode ser futura.';
+    }
+
+    if ($anoFabrico === '') {
+        $erros[] = 'O ano de fabrico é obrigatório.';
+    } elseif (!preg_match('/^[0-9]{4}$/', $anoFabrico)) {
+        $erros[] = 'O ano de fabrico deve ter 4 dígitos.';
+    } elseif ((int) $anoFabrico < 1800 || (int) $anoFabrico > $anoAtual) {
+        $erros[] = 'O ano de fabrico deve estar entre 1800 e o ano atual.';
+    }
+
+    if ($custoAquisicao === '') {
+        $erros[] = 'O custo de aquisição é obrigatório.';
+    } elseif (!preg_match('/^[0-9]+(\.[0-9]{1,2})?$/', $custoAquisicao)) {
+        $erros[] = 'O custo de aquisição deve ser um valor numérico válido, por exemplo 3500.00.';
+    } elseif ((float) $custoAquisicao < 0) {
+        $erros[] = 'O custo de aquisição não pode ser negativo.';
+    }
+
+    if ($observacoes !== '' && mb_strlen($observacoes) > 500) {
+        $erros[] = 'As observações do equipamento não podem ter mais de 500 caracteres.';
+    }
+
+    $paresFornecedores = [];
+
+    foreach ($fornecedoresAssociados as $indice => $fornecedorAssociado) {
+        $idFornecedorAssociado = trim($fornecedorAssociado['idFornecedor'] ?? '');
+        $tipoRelacaoAssociado = trim($fornecedorAssociado['tipoRelacao'] ?? '');
+        $observacoesFornecedor = trim($fornecedorAssociado['observacoes'] ?? '');
+
+        if ($idFornecedorAssociado === '' || $tipoRelacaoAssociado === '') {
+            $erros[] = 'Existem fornecedores associados incompletos.';
+            continue;
+        }
+
+        if (!existe_id_lista($idFornecedorAssociado, $fornecedores, 'idFornecedor')) {
+            $erros[] = 'Existe um fornecedor associado inválido.';
+        }
+
+        if (!in_array($tipoRelacaoAssociado, $tiposRelacaoPermitidos, true)) {
+            $erros[] = 'Existe um tipo de associação de fornecedor inválido.';
+        }
+
+        if ($observacoesFornecedor !== '' && mb_strlen($observacoesFornecedor) > 500) {
+            $erros[] = 'As observações dos fornecedores associados não podem ter mais de 500 caracteres.';
+        }
+
+        $chavePar = $idFornecedorAssociado . '|' . $tipoRelacaoAssociado;
+
+        if (in_array($chavePar, $paresFornecedores, true)) {
+            $erros[] = 'Não pode associar o mesmo fornecedor duas vezes com o mesmo tipo.';
+        }
+
+        $paresFornecedores[] = $chavePar;
+    }
+
+    if (empty($localizacoesAssociadas)) {
+        $erros[] = 'Deve associar pelo menos uma localização.';
+    }
+
+    $ultimaLocalizacaoId = '';
+    $ultimaLocalizacaoAnterior = '';
+
+    foreach ($localizacoesAssociadas as $localizacaoAssociada) {
+        $idLocalizacaoAssociada = trim($localizacaoAssociada['idLocalizacao'] ?? '');
+        $dataLocalizacao = trim($localizacaoAssociada['dataLocalizacao'] ?? '');
+        $responsavel = trim($localizacaoAssociada['responsavel'] ?? '');
+        $motivo = trim($localizacaoAssociada['motivo'] ?? '');
+
+        if ($idLocalizacaoAssociada === '' || $dataLocalizacao === '' || $responsavel === '' || $motivo === '') {
+            $erros[] = 'Existem localizações associadas incompletas.';
+            continue;
+        }
+
+        if (!existe_id_lista($idLocalizacaoAssociada, $localizacoes, 'idLocalizacao')) {
+            $erros[] = 'Existe uma localização associada inválida.';
+        }
+
+        if (!data_valida($dataLocalizacao)) {
+            $erros[] = 'Existe uma data de localização inválida.';
+        } elseif ($dataLocalizacao > date('Y-m-d')) {
+            $erros[] = 'A data da localização não pode ser futura.';
+        }
+
+        if (mb_strlen($responsavel) > 120) {
+            $erros[] = 'O responsável da localização não pode ter mais de 120 caracteres.';
+        }
+
+        if (mb_strlen($motivo) > 200) {
+            $erros[] = 'O motivo/observação da localização não pode ter mais de 200 caracteres.';
+        }
+
+        if ($ultimaLocalizacaoAnterior !== '' && $ultimaLocalizacaoAnterior === $idLocalizacaoAssociada) {
+            $erros[] = 'A localização não pode ser igual à última localização adicionada.';
+        }
+
+        $ultimaLocalizacaoAnterior = $idLocalizacaoAssociada;
+        $ultimaLocalizacaoId = $idLocalizacaoAssociada;
+    }
+
+    $documentosUnicos = [];
+
+    foreach ($documentosAdicionados as $documentoAdicionado) {
+        $idTipoDocumento = trim($documentoAdicionado['idTipoDocumento'] ?? '');
+        $nomeDocumento = trim($documentoAdicionado['nomeDocumento'] ?? '');
+        $dataDocumento = trim($documentoAdicionado['dataDocumento'] ?? '');
+        $dataValidade = trim($documentoAdicionado['dataValidade'] ?? '');
+        $idFornecedorDocumento = trim($documentoAdicionado['idFornecedor'] ?? '');
+
+        if ($idTipoDocumento === '' || $nomeDocumento === '' || $dataDocumento === '') {
+            $erros[] = 'Existem documentos adicionados incompletos.';
+            continue;
+        }
+
+        if (!existe_id_lista($idTipoDocumento, $tiposDocumento, 'idTipoDocumento')) {
+            $erros[] = 'Existe um tipo de documento inválido.';
+        }
+
+        if (mb_strlen($nomeDocumento) > 150) {
+            $erros[] = 'O nome do documento não pode ter mais de 150 caracteres.';
+        }
+
+        if (!data_valida($dataDocumento)) {
+            $erros[] = 'Existe uma data de documento inválida.';
+        }
+
+        if ($dataValidade !== '' && !data_valida($dataValidade)) {
+            $erros[] = 'Existe uma data de validade de documento inválida.';
+        }
+
+        if ($dataValidade !== '' && $dataDocumento !== '' && $dataValidade < $dataDocumento) {
+            $erros[] = 'A validade do documento não pode ser anterior à data do documento.';
+        }
+
+        if ($idFornecedorDocumento !== '' && !existe_id_lista($idFornecedorDocumento, $fornecedores, 'idFornecedor')) {
+            $erros[] = 'Existe um fornecedor de documento inválido.';
+        }
+
+        $chaveDocumento = $idTipoDocumento . '|' . mb_strtolower($nomeDocumento) . '|' . $dataDocumento;
+
+        if (in_array($chaveDocumento, $documentosUnicos, true)) {
+            $erros[] = 'Não pode adicionar documentos duplicados à tabela.';
+        }
+
+        $documentosUnicos[] = $chaveDocumento;
+    }
+
+    if ($tipoGarantiaContrato === '') {
+        $erros[] = 'O tipo de garantia/contrato é obrigatório.';
+    } elseif (!in_array($tipoGarantiaContrato, $tiposGarantiaPermitidos, true)) {
+        $erros[] = 'O tipo de garantia/contrato selecionado não é válido.';
+    }
+
+    if ($numeroContrato === '') {
+        $erros[] = 'O número da garantia/contrato é obrigatório.';
+    } elseif (mb_strlen($numeroContrato) > 80) {
+        $erros[] = 'O número da garantia/contrato não pode ter mais de 80 caracteres.';
+    }
+
+    if ($dataInicioGarantia === '') {
+        $erros[] = 'A data de início da garantia/contrato é obrigatória.';
+    } elseif (!data_valida($dataInicioGarantia)) {
+        $erros[] = 'A data de início da garantia/contrato não é válida.';
+    }
+
+    if ($dataFimGarantia === '') {
+        $erros[] = 'A data de fim da garantia/contrato é obrigatória.';
+    } elseif (!data_valida($dataFimGarantia)) {
+        $erros[] = 'A data de fim da garantia/contrato não é válida.';
+    }
+
+    if ($dataInicioGarantia !== '' && $dataFimGarantia !== '' && data_valida($dataInicioGarantia) && data_valida($dataFimGarantia) && $dataFimGarantia < $dataInicioGarantia) {
+        $erros[] = 'A data de fim não pode ser anterior à data de início.';
+    }
+
+    if ($idFornecedorResponsavel === '') {
+        $erros[] = 'A entidade responsável pela garantia/contrato é obrigatória.';
+    } elseif (!existe_id_lista($idFornecedorResponsavel, $fornecedores, 'idFornecedor')) {
+        $erros[] = 'A entidade responsável selecionada não é válida.';
+    }
+
+    if ($periodicidade === '') {
+        $erros[] = 'A periodicidade é obrigatória.';
+    } elseif (!in_array($periodicidade, $periodicidadesPermitidas, true)) {
+        $erros[] = 'A periodicidade selecionada não é válida.';
+    }
+
+    if ($observacoesGarantia === '') {
+        $erros[] = 'As observações da garantia/contrato são obrigatórias.';
+    } elseif (mb_strlen($observacoesGarantia) > 500) {
+        $erros[] = 'As observações da garantia/contrato não podem ter mais de 500 caracteres.';
+    }
+
+    if (empty($erros)) {
+        try {
+            $ligacao = db_connect();
+
+            $stmtDuplicado = $ligacao->prepare("
+                SELECT COUNT(*) AS total
+                FROM Equipamento
+                WHERE codigoInterno = :codigoInterno
+                   OR numeroSerie = :numeroSerie
+            ");
+
+            $stmtDuplicado->execute([
+                ':codigoInterno' => $codigoInterno,
+                ':numeroSerie' => $numeroSerie
+            ]);
+
+            $existe = (int) $stmtDuplicado->fetch()->total;
+
+            if ($existe > 0) {
+                $erros[] = 'Já existe um equipamento com esse código interno ou número de série.';
+            } else {
+                $ligacao->beginTransaction();
+
+                $stmt = $ligacao->prepare("
+                    INSERT INTO Equipamento (
+                        codigoInterno,
+                        numeroSerie,
+                        idCategoriaEquipamento,
+                        idEstadoEquipamento,
+                        idCriticidadeEquipamento,
+                        idTipoEntrada,
+                        idLocalizacao,
+                        designacao,
+                        marca,
+                        modelo,
+                        fabricante,
+                        dataAquisicao,
+                        anoFabrico,
+                        custoAquisicao,
+                        observacoes,
+                        ativo
+                    ) VALUES (
+                        :codigoInterno,
+                        :numeroSerie,
+                        :idCategoriaEquipamento,
+                        :idEstadoEquipamento,
+                        :idCriticidadeEquipamento,
+                        :idTipoEntrada,
+                        :idLocalizacao,
+                        :designacao,
+                        :marca,
+                        :modelo,
+                        :fabricante,
+                        :dataAquisicao,
+                        :anoFabrico,
+                        :custoAquisicao,
+                        :observacoes,
+                        true
+                    )
+                ");
+
+                $stmt->execute([
+                    ':codigoInterno' => $codigoInterno,
+                    ':numeroSerie' => $numeroSerie,
+                    ':idCategoriaEquipamento' => $idCategoriaEquipamento,
+                    ':idEstadoEquipamento' => $idEstadoEquipamento,
+                    ':idCriticidadeEquipamento' => $idCriticidadeEquipamento,
+                    ':idTipoEntrada' => $idTipoEntrada,
+                    ':idLocalizacao' => $ultimaLocalizacaoId,
+                    ':designacao' => $designacao,
+                    ':marca' => $marca,
+                    ':modelo' => $modelo,
+                    ':fabricante' => $fabricante,
+                    ':dataAquisicao' => $dataAquisicao,
+                    ':anoFabrico' => $anoFabrico,
+                    ':custoAquisicao' => $custoAquisicao,
+                    ':observacoes' => $observacoes !== '' ? $observacoes : null
+                ]);
+
+                $idEquipamentoCriado = (int) $ligacao->lastInsertId();
+
+                foreach ($fornecedoresAssociados as $fornecedorAssociado) {
+                    $stmtFornecedor = $ligacao->prepare("
+                        INSERT INTO EquipamentoFornecedor (
+                            idEquipamento,
+                            idFornecedor,
+                            tipoRelacao,
+                            dataInicio,
+                            dataFim,
+                            observacoes
+                        ) VALUES (
+                            :idEquipamento,
+                            :idFornecedor,
+                            :tipoRelacao,
+                            :dataInicio,
+                            NULL,
+                            :observacoes
+                        )
+                    ");
+
+                    $stmtFornecedor->execute([
+                        ':idEquipamento' => $idEquipamentoCriado,
+                        ':idFornecedor' => trim($fornecedorAssociado['idFornecedor']),
+                        ':tipoRelacao' => trim($fornecedorAssociado['tipoRelacao']),
+                        ':dataInicio' => $dataAquisicao,
+                        ':observacoes' => trim($fornecedorAssociado['observacoes'] ?? '') !== '' ? trim($fornecedorAssociado['observacoes']) : null
+                    ]);
+                }
+
+                $stmtGarantia = $ligacao->prepare("
+                    INSERT INTO GarantiaContrato (
+                        idEquipamento,
+                        idFornecedorResponsavel,
+                        tipo,
+                        numeroContrato,
+                        dataInicio,
+                        dataFim,
+                        periodicidade,
+                        observacoes,
+                        ativo
+                    ) VALUES (
+                        :idEquipamento,
+                        :idFornecedorResponsavel,
+                        :tipo,
+                        :numeroContrato,
+                        :dataInicio,
+                        :dataFim,
+                        :periodicidade,
+                        :observacoes,
+                        true
+                    )
+                ");
+
+                $stmtGarantia->execute([
+                    ':idEquipamento' => $idEquipamentoCriado,
+                    ':idFornecedorResponsavel' => $idFornecedorResponsavel,
+                    ':tipo' => $tipoGarantiaContrato,
+                    ':numeroContrato' => $numeroContrato,
+                    ':dataInicio' => $dataInicioGarantia,
+                    ':dataFim' => $dataFimGarantia,
+                    ':periodicidade' => $periodicidade,
+                    ':observacoes' => $observacoesGarantia
+                ]);
+
+                $ligacao->commit();
+
+                $sucesso = 'Equipamento registado com sucesso.';
+
+                $codigoInterno = '';
+                $numeroSerie = '';
+                $idCategoriaEquipamento = '';
+                $idEstadoEquipamento = '';
+                $idCriticidadeEquipamento = '';
+                $idTipoEntrada = '';
+                $designacao = '';
+                $marca = '';
+                $modelo = '';
+                $fabricante = '';
+                $dataAquisicao = '';
+                $anoFabrico = '';
+                $custoAquisicao = '';
+                $observacoes = '';
+                $fornecedoresAssociados = [];
+                $localizacoesAssociadas = [];
+                $documentosAdicionados = [];
+                $tipoGarantiaContrato = '';
+                $numeroContrato = '';
+                $dataInicioGarantia = '';
+                $dataFimGarantia = '';
+                $idFornecedorResponsavel = '';
+                $periodicidade = '';
+                $observacoesGarantia = '';
+            }
+        } catch (PDOException $e) {
+            if (isset($ligacao) && $ligacao->inTransaction()) {
+                $ligacao->rollBack();
+            }
+
+            $erroSistema = 'Erro ao guardar o equipamento.';
+        }
+    }
+}
+
+$fornecedoresAssociadosJs = [];
+
+foreach ($fornecedoresAssociados as $fornecedorAssociado) {
+    $idFornecedorAssociado = trim($fornecedorAssociado['idFornecedor'] ?? '');
+
+    if ($idFornecedorAssociado === '') {
+        continue;
+    }
+
+    $fornecedoresAssociadosJs[] = [
+        'idFornecedor' => $idFornecedorAssociado,
+        'fornecedorTexto' => texto_fornecedor($idFornecedorAssociado, $fornecedores),
+        'tipoRelacao' => trim($fornecedorAssociado['tipoRelacao'] ?? ''),
+        'observacoes' => trim($fornecedorAssociado['observacoes'] ?? '')
+    ];
+}
+
+$localizacoesAssociadasJs = [];
+
+foreach ($localizacoesAssociadas as $localizacaoAssociada) {
+    $idLocalizacaoAssociada = trim($localizacaoAssociada['idLocalizacao'] ?? '');
+
+    if ($idLocalizacaoAssociada === '') {
+        continue;
+    }
+
+    $localizacoesAssociadasJs[] = [
+        'idLocalizacao' => $idLocalizacaoAssociada,
+        'localizacaoTexto' => texto_localizacao($idLocalizacaoAssociada, $localizacoes),
+        'dataLocalizacao' => trim($localizacaoAssociada['dataLocalizacao'] ?? ''),
+        'responsavel' => trim($localizacaoAssociada['responsavel'] ?? ''),
+        'motivo' => trim($localizacaoAssociada['motivo'] ?? '')
+    ];
+}
+
+$documentosAdicionadosJs = [];
+
+foreach ($documentosAdicionados as $documentoAdicionado) {
+    $idTipoDocumento = trim($documentoAdicionado['idTipoDocumento'] ?? '');
+
+    if ($idTipoDocumento === '') {
+        continue;
+    }
+
+    $idFornecedorDocumento = trim($documentoAdicionado['idFornecedor'] ?? '');
+
+    $documentosAdicionadosJs[] = [
+        'idTipoDocumento' => $idTipoDocumento,
+        'tipoDocumentoTexto' => texto_tipo_documento($idTipoDocumento, $tiposDocumento),
+        'nomeDocumento' => trim($documentoAdicionado['nomeDocumento'] ?? ''),
+        'dataDocumento' => trim($documentoAdicionado['dataDocumento'] ?? ''),
+        'dataValidade' => trim($documentoAdicionado['dataValidade'] ?? ''),
+        'idFornecedor' => $idFornecedorDocumento,
+        'fornecedorTexto' => $idFornecedorDocumento !== '' ? texto_fornecedor($idFornecedorDocumento, $fornecedores) : '',
+        'nomeFicheiro' => trim($documentoAdicionado['nomeFicheiro'] ?? '')
+    ];
+}
 
 include __DIR__ . '/../../includes/header.php';
 include __DIR__ . '/../../includes/nav.php';
 include __DIR__ . '/../../includes/sidebar.php';
 ?>
 
-    <!-- Conteúdo Principal -->
-    <main class="content">
-        <section>
+<!-- Conteúdo Principal -->
+<main class="content">
+    <section>
 
-            <div class="actions-top">
-                <h2>
-                    <strong>
-                        <i class="fas fa-plus"></i> Adicionar Equipamento
-                    </strong>
-                </h2>
+        <div class="actions-top">
+            <h2>
+                <strong>
+                    <i class="fas fa-plus"></i> Adicionar Equipamento
+                </strong>
+            </h2>
 
-                <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
+            <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+
+        <hr>
+
+        <?php if (!empty($sucesso)): ?>
+            <div class="alert alert-success text-center">
+                <?= e($sucesso) ?>
             </div>
+        <?php endif; ?>
 
-            <hr>
+        <?php if (!empty($erroSistema)): ?>
+            <div class="alert alert-danger text-center">
+                <?= e($erroSistema) ?>
+            </div>
+        <?php endif; ?>
 
-            <form action="#" method="post" class="formulario-equipamento" enctype="multipart/form-data">
+        <?php if (!empty($erros)): ?>
+            <div class="alert alert-danger">
+                <strong>Foram encontrados os seguintes erros:</strong>
 
-                <ul class="nav nav-tabs mb-4" id="separadoresNovoEquipamento" role="tablist">
-
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="geral-tab" type="button">
-                            Dados gerais
-                        </button>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="fornecedores-tab" type="button">
-                            Fornecedores associados
-                        </button>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="localizacao-tab" type="button">
-                            Localização atual
-                        </button>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="documentacao-tab" type="button">
-                            Documentação associada
-                        </button>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="garantias-tab" type="button">
-                            Garantias e contratos
-                        </button>
-                    </li>
-
+                <ul class="mb-0 mt-2">
+                    <?php foreach ($erros as $erro): ?>
+                        <li><?= e($erro) ?></li>
+                    <?php endforeach; ?>
                 </ul>
+            </div>
+        <?php endif; ?>
 
-                <div class="tab-content" id="conteudoSeparadoresNovoEquipamento">
+        <form action="#" method="post" class="formulario-equipamento" enctype="multipart/form-data" novalidate>
 
-                    <!-- Separador: Dados gerais -->
-                    <div class="tab-pane fade show active" id="geral" role="tabpanel">
+            <ul class="nav nav-tabs mb-4" id="separadoresNovoEquipamento" role="tablist">
 
-                        <div class="card mb-4">
-                            <div class="card-body">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="geral-tab" data-bs-toggle="tab"
+                        data-bs-target="#geral" type="button" role="tab">
+                        Dados gerais
+                    </button>
+                </li>
 
-                                <h3>
-                                    <i class="fas fa-laptop-medical"></i> Dados gerais do equipamento
-                                </h3>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="fornecedores-tab" data-bs-toggle="tab"
+                        data-bs-target="#fornecedores" type="button" role="tab">
+                        Fornecedores associados
+                    </button>
+                </li>
 
-                                <div class="row mb-3">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="localizacao-tab" data-bs-toggle="tab"
+                        data-bs-target="#localizacao" type="button" role="tab">
+                        Localização atual
+                    </button>
+                </li>
 
-                                    <div class="col-12 col-md-4">
-                                        <label for="codigo" class="form-label">Código interno</label>
-                                        <input type="text" class="form-control" id="codigo" name="codigo"
-                                            placeholder="Ex.: 111.111.11">
-                                    </div>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="documentacao-tab" data-bs-toggle="tab"
+                        data-bs-target="#documentacao" type="button" role="tab">
+                        Documentação associada
+                    </button>
+                </li>
 
-                                    <div class="col-12 col-md-4">
-                                        <label for="designacao" class="form-label">Designação</label>
-                                        <input type="text" class="form-control" id="designacao" name="designacao"
-                                            placeholder="Ex.: Monitor Multiparamétrico">
-                                    </div>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="garantias-tab" data-bs-toggle="tab"
+                        data-bs-target="#garantias" type="button" role="tab">
+                        Garantias e contratos
+                    </button>
+                </li>
 
-                                    <div class="col-12 col-md-4">
-                                        <label for="numero_serie" class="form-label">Número de série</label>
-                                        <input type="text" class="form-control" id="numero_serie" name="numero_serie"
-                                            placeholder="Ex.: MP5-2022-45873">
-                                    </div>
+            </ul>
 
+            <div id="inputs_fornecedores_associados"></div>
+            <div id="inputs_localizacoes_associadas"></div>
+            <div id="inputs_documentos_adicionados"></div>
+
+            <div class="tab-content" id="conteudoSeparadoresNovoEquipamento">
+
+                <!-- Separador: Dados gerais -->
+                <div class="tab-pane fade show active" id="geral" role="tabpanel">
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h3>
+                                <i class="fas fa-laptop-medical"></i> Dados gerais do equipamento
+                            </h3>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="codigoInterno" class="form-label">Código interno</label>
+                                    <input type="text" class="form-control" id="codigoInterno" name="codigoInterno"
+                                        placeholder="Ex.: 004.002.00" value="<?= e($codigoInterno) ?>">
                                 </div>
 
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="categoria" class="form-label">Categoria / Grupo</label>
-                                        <input type="text" class="form-control" id="categoria" name="categoria"
-                                            placeholder="Ex.: Monitorização, suporte de vida">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="marca" class="form-label">Marca</label>
-                                        <input type="text" class="form-control" id="marca" name="marca"
-                                            placeholder="Ex.: Philips">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="modelo" class="form-label">Modelo</label>
-                                        <input type="text" class="form-control" id="modelo" name="modelo"
-                                            placeholder="Ex.: IntelliVue MP5">
-                                    </div>
-
+                                <div class="col-12 col-md-4">
+                                    <label for="designacao" class="form-label">Designação</label>
+                                    <input type="text" class="form-control" id="designacao" name="designacao"
+                                        placeholder="Ex.: Monitor Multiparamétrico" value="<?= e($designacao) ?>">
                                 </div>
 
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="estado" class="form-label">Estado atual</label>
-                                        <select class="form-select" id="estado" name="estado">
-                                            <option value="">Selecione</option>
-                                            <option value="ativo">Ativo</option>
-                                            <option value="em_manutencao">Em manutenção</option>
-                                            <option value="inativo">Inativo</option>
-                                            <option value="avariado">Avariado</option>
-                                            <option value="fora_servico">Fora de serviço</option>
-                                            <option value="abatido">Abatido</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="criticidade" class="form-label">Criticidade</label>
-                                        <select class="form-select" id="criticidade" name="criticidade">
-                                            <option value="">Selecione</option>
-                                            <option value="baixa">Baixa</option>
-                                            <option value="media">Média</option>
-                                            <option value="alta">Alta</option>
-                                            <option value="suporte_vida">Suporte de vida</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="ano_fabrico" class="form-label">Ano de fabrico</label>
-                                        <input type="number" class="form-control" id="ano_fabrico" name="ano_fabrico"
-                                            placeholder="Ex.: 2021">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="data_aquisicao" class="form-label">Data de aquisição</label>
-                                        <input type="date" class="form-control" id="data_aquisicao"
-                                            name="data_aquisicao">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="custo_aquisicao" class="form-label">Custo de aquisição</label>
-                                        <input type="text" class="form-control" id="custo_aquisicao"
-                                            name="custo_aquisicao" placeholder="Ex.: 3500 €">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="tipo_entrada" class="form-label">Tipo de entrada</label>
-                                        <select class="form-select" id="tipo_entrada" name="tipo_entrada">
-                                            <option value="">Selecione</option>
-                                            <option value="compra">Compra</option>
-                                            <option value="aluguer">Aluguer</option>
-                                            <option value="doacao">Doação</option>
-                                            <option value="emprestimo">Empréstimo</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="observacoes" class="form-label">Observações / utilização</label>
-                                    <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
-                                        placeholder="Indique para que é utilizado o equipamento ou outra informação relevante."></textarea>
-                                </div>
-
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-primary" onclick="avancarParaFornecedores()">
-                                        Página seguinte
-                                    </button>
+                                <div class="col-12 col-md-4">
+                                    <label for="numeroSerie" class="form-label">Número de série</label>
+                                    <input type="text" class="form-control" id="numeroSerie" name="numeroSerie"
+                                        placeholder="Ex.: MP5-2022-45873" value="<?= e($numeroSerie) ?>">
                                 </div>
 
                             </div>
-                        </div>
 
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="idCategoriaEquipamento" class="form-label">Categoria / Grupo</label>
+
+                                    <select class="form-select" id="idCategoriaEquipamento" name="idCategoriaEquipamento">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($categorias as $categoria): ?>
+                                            <option value="<?= e($categoria->idCategoriaEquipamento) ?>"
+                                                <?= (string) $idCategoriaEquipamento === (string) $categoria->idCategoriaEquipamento ? 'selected' : '' ?>>
+                                                <?= e($categoria->descricao) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="marca" class="form-label">Marca</label>
+                                    <input type="text" class="form-control" id="marca" name="marca"
+                                        placeholder="Ex.: Philips" value="<?= e($marca) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="modelo" class="form-label">Modelo</label>
+                                    <input type="text" class="form-control" id="modelo" name="modelo"
+                                        placeholder="Ex.: IntelliVue MP5" value="<?= e($modelo) ?>">
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="fabricante" class="form-label">Fabricante</label>
+                                    <input type="text" class="form-control" id="fabricante" name="fabricante"
+                                        placeholder="Ex.: Philips Medical Systems" value="<?= e($fabricante) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="idEstadoEquipamento" class="form-label">Estado atual</label>
+                                    <select class="form-select" id="idEstadoEquipamento" name="idEstadoEquipamento">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($estados as $estado): ?>
+                                            <option value="<?= e($estado->idEstadoEquipamento) ?>"
+                                                <?= (string) $idEstadoEquipamento === (string) $estado->idEstadoEquipamento ? 'selected' : '' ?>>
+                                                <?= e($estado->descricao) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="idCriticidadeEquipamento" class="form-label">Criticidade</label>
+                                    <select class="form-select" id="idCriticidadeEquipamento" name="idCriticidadeEquipamento">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($criticidades as $criticidade): ?>
+                                            <option value="<?= e($criticidade->idCriticidadeEquipamento) ?>"
+                                                <?= (string) $idCriticidadeEquipamento === (string) $criticidade->idCriticidadeEquipamento ? 'selected' : '' ?>>
+                                                <?= e($criticidade->descricao) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="anoFabrico" class="form-label">Ano de fabrico</label>
+                                    <input type="number" class="form-control" id="anoFabrico" name="anoFabrico"
+                                        placeholder="Ex.: 2021" value="<?= e($anoFabrico) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="dataAquisicao" class="form-label">Data de aquisição</label>
+                                    <input type="date" class="form-control" id="dataAquisicao" name="dataAquisicao"
+                                        value="<?= e($dataAquisicao) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="custoAquisicao" class="form-label">Custo de aquisição (€)</label>
+                                    <input type="text" class="form-control" id="custoAquisicao" name="custoAquisicao"
+                                        placeholder="Ex.: 3500.00" value="<?= e($custoAquisicao) ?>">
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label for="idTipoEntrada" class="form-label">Tipo de entrada</label>
+                                    <select class="form-select" id="idTipoEntrada" name="idTipoEntrada">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($tiposEntrada as $tipoEntrada): ?>
+                                            <option value="<?= e($tipoEntrada->idTipoEntrada) ?>"
+                                                <?= (string) $idTipoEntrada === (string) $tipoEntrada->idTipoEntrada ? 'selected' : '' ?>>
+                                                <?= e($tipoEntrada->descricao) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="observacoes" class="form-label">Observações / utilização</label>
+                                <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
+                                    placeholder="Indique para que é utilizado o equipamento ou outra informação relevante."><?= e($observacoes) ?></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-primary" onclick="avancarParaFornecedores()">
+                                    Página seguinte
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <!-- Separador: Fornecedores associados -->
-                    <div class="tab-pane fade" id="fornecedores" role="tabpanel">
+                </div>
 
-                        <div class="card mb-4">
-                            <div class="card-body">
+                <!-- Separador: Fornecedores associados -->
+                <div class="tab-pane fade" id="fornecedores" role="tabpanel">
 
-                                <h3>
-                                    <i class="fas fa-truck-medical"></i> Associar fornecedor existente
-                                </h3>
+                    <div class="card mb-4">
+                        <div class="card-body">
 
-                                <div class="row mb-3">
+                            <h3>
+                                <i class="fas fa-truck-medical"></i> Associar fornecedor existente
+                            </h3>
 
-                                    <div class="col-12 col-md-6">
-                                        <label for="fornecedor_existente" class="form-label">Fornecedor
-                                            existente</label>
-                                        <select class="form-select" id="fornecedor_existente"
-                                            name="fornecedor_existente">
-                                            <option value="">Selecione um fornecedor</option>
-                                            <option value="MedTech Portugal">MedTech Portugal</option>
-                                            <option value="Philips Medical Systems">Philips Medical Systems</option>
-                                            <option value="Hospital Devices S.A.">Hospital Devices S.A.</option>
-                                            <option value="Consumíveis Clínicos Norte">Consumíveis Clínicos Norte
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-6">
+                                    <label for="idFornecedor" class="form-label">Fornecedor existente</label>
+                                    <select class="form-select" id="idFornecedor">
+                                        <option value="">Selecione um fornecedor</option>
+
+                                        <?php foreach ($fornecedores as $fornecedor): ?>
+                                            <option value="<?= e($fornecedor->idFornecedor) ?>">
+                                                <?= e($fornecedor->designacao) ?> — NIF <?= e($fornecedor->nif) ?>
                                             </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="tipo_associacao" class="form-label">
-                                            Tipo de associação ao equipamento
-                                        </label>
-                                        <select class="form-select" id="tipo_associacao" name="tipo_associacao">
-                                            <option value="">Selecione</option>
-                                            <option value="Fabricante">Fabricante</option>
-                                            <option value="Fornecedor comercial">Fornecedor comercial</option>
-                                            <option value="Empresa de assistência técnica">
-                                                Empresa de assistência técnica
-                                            </option>
-                                            <option value="Fornecedor de consumíveis/acessórios">
-                                                Fornecedor de consumíveis/acessórios
-                                            </option>
-                                        </select>
-                                    </div>
-
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="observacoes_associacao" class="form-label">
-                                        Observações da associação
+                                <div class="col-12 col-md-6">
+                                    <label for="tipoRelacao" class="form-label">
+                                        Tipo de associação ao equipamento
                                     </label>
-                                    <textarea class="form-control" id="observacoes_associacao"
-                                        name="observacoes_associacao" rows="3"
-                                        placeholder="Ex.: entidade responsável pela manutenção preventiva deste equipamento."></textarea>
-                                </div>
+                                    <select class="form-select" id="tipoRelacao">
+                                        <option value="">Selecione</option>
 
-                                <button type="button" class="btn btn-primary" onclick="associarFornecedor()">
-                                    Associar fornecedor
-                                </button>
+                                        <?php foreach ($tiposRelacaoPermitidos as $tipoRelacaoPermitido): ?>
+                                            <option value="<?= e($tipoRelacaoPermitido) ?>">
+                                                <?= e($tipoRelacaoPermitido) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
 
                             </div>
+
+                            <div class="mb-3">
+                                <label for="observacoesAssociacao" class="form-label">
+                                    Observações da associação
+                                </label>
+                                <textarea class="form-control" id="observacoesAssociacao" rows="3"
+                                    placeholder="Ex.: entidade responsável pela manutenção preventiva deste equipamento."></textarea>
+                            </div>
+
+                            <button type="button" class="btn btn-primary" onclick="associarFornecedor()">
+                                Associar fornecedor
+                            </button>
+
                         </div>
+                    </div>
 
-                        <div class="card mb-4">
-                            <div class="card-body">
+                    <div class="card mb-4">
+                        <div class="card-body">
 
-                                <h3>
-                                    <i class="fas fa-list"></i> Fornecedores associados
-                                </h3>
+                            <h3>
+                                <i class="fas fa-list"></i> Fornecedores associados
+                            </h3>
 
-                                <table
-                                    class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                            <div class="table-responsive tabela-lista-container">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
                                     <thead>
                                         <tr>
                                             <th>Fornecedor</th>
@@ -278,97 +1034,96 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         </tr>
                                     </thead>
 
-                                    <tbody id="tabela_fornecedores_associados">
-                                    </tbody>
+                                    <tbody id="tabela_fornecedores_associados"></tbody>
                                 </table>
-
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
-                                        onclick="voltarParaGeral()">
-                                        Página anterior
-                                    </button>
-
-                                    <button type="button" class="btn btn-primary" onclick="avancarParaLocalizacao()">
-                                        Página seguinte
-                                    </button>
-                                </div>
-
                             </div>
-                        </div>
 
-                    </div>
+                            <div id="paginacao_fornecedores_associados"></div>
 
-                    <!-- Separador: Localização atual -->
-                    <div class="tab-pane fade" id="localizacao" role="tabpanel">
-
-                        <div class="card mb-4">
-                            <div class="card-body">
-
-                                <h3>
-                                    <i class="fas fa-location-dot"></i> Selecionar localização existente
-                                </h3>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-8">
-                                        <label for="localizacao_existente" class="form-label">
-                                            Localização existente
-                                        </label>
-                                        <select class="form-select" id="localizacao_existente"
-                                            name="localizacao_existente">
-                                            <option value="">Selecione uma localização</option>
-                                            <option value="Hospital Central - Piso 2 - UCI - Sala 1">
-                                                Hospital Central - Piso 2 - UCI - Sala 1
-                                            </option>
-                                            <option value="Hospital Central - Piso 1 - Bloco Operatório - Sala 2">
-                                                Hospital Central - Piso 1 - Bloco Operatório - Sala 2
-                                            </option>
-                                            <option value="Hospital Central - Piso 0 - Urgência - Sala 3">
-                                                Hospital Central - Piso 0 - Urgência - Sala 3
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="data_localizacao" class="form-label">Data da localização</label>
-                                        <input type="date" class="form-control" id="data_localizacao"
-                                            name="data_localizacao">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="responsavel_localizacao" class="form-label">Responsável</label>
-                                        <input type="text" class="form-control" id="responsavel_localizacao"
-                                            name="responsavel_localizacao" placeholder="Ex.: Técnico responsável">
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="motivo_localizacao" class="form-label">Motivo / observação</label>
-                                        <input type="text" class="form-control" id="motivo_localizacao"
-                                            name="motivo_localizacao" placeholder="Ex.: instalação inicial">
-                                    </div>
-
-                                </div>
-
-                                <button type="button" class="btn btn-primary" onclick="associarLocalizacao()">
-                                    Associar localização
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaGeral()">
+                                    Página anterior
                                 </button>
 
+                                <button type="button" class="btn btn-primary" onclick="avancarParaLocalizacao()">
+                                    Página seguinte
+                                </button>
                             </div>
+
                         </div>
+                    </div>
 
-                        <div class="card mb-4">
-                            <div class="card-body">
+                </div>
 
-                                <h3>
-                                    <i class="fas fa-list"></i> Localização associada
-                                </h3>
+                <!-- Separador: Localização atual -->
+                <div class="tab-pane fade" id="localizacao" role="tabpanel">
 
-                                <table
-                                    class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h3>
+                                <i class="fas fa-location-dot"></i> Selecionar localização existente
+                            </h3>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-8">
+                                    <label for="idLocalizacao" class="form-label">
+                                        Localização existente
+                                    </label>
+                                    <select class="form-select" id="idLocalizacao">
+                                        <option value="">Selecione uma localização</option>
+
+                                        <?php foreach ($localizacoes as $localizacao): ?>
+                                            <option value="<?= e($localizacao->idLocalizacao) ?>">
+                                                <?= e($localizacao->edificio) ?>
+                                                — Piso <?= e($localizacao->piso) ?>
+                                                — <?= e($localizacao->servico) ?>
+                                                — Sala <?= e($localizacao->sala) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="dataLocalizacao" class="form-label">Data da localização</label>
+                                    <input type="date" class="form-control" id="dataLocalizacao">
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-6">
+                                    <label for="responsavelLocalizacao" class="form-label">Responsável</label>
+                                    <input type="text" class="form-control" id="responsavelLocalizacao"
+                                        placeholder="Ex.: Técnico responsável">
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label for="motivoLocalizacao" class="form-label">Motivo / observação</label>
+                                    <input type="text" class="form-control" id="motivoLocalizacao"
+                                        placeholder="Ex.: instalação inicial">
+                                </div>
+
+                            </div>
+
+                            <button type="button" class="btn btn-primary" onclick="associarLocalizacao()">
+                                Associar localização
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h3>
+                                <i class="fas fa-list"></i> Localização associada
+                            </h3>
+
+                            <div class="table-responsive tabela-lista-container">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
                                     <thead>
                                         <tr>
                                             <th>Localização</th>
@@ -379,109 +1134,110 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         </tr>
                                     </thead>
 
-                                    <tbody id="tabela_localizacoes_associadas">
-                                    </tbody>
+                                    <tbody id="tabela_localizacoes_associadas"></tbody>
                                 </table>
-
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
-                                        onclick="voltarParaFornecedores()">
-                                        Página anterior
-                                    </button>
-
-                                    <button type="button" class="btn btn-primary" onclick="avancarParaDocumentacao()">
-                                        Página seguinte
-                                    </button>
-                                </div>
-
                             </div>
-                        </div>
 
-                    </div>
+                            <div id="paginacao_localizacoes_associadas"></div>
 
-                    <!-- Separador: Documentação associada -->
-                    <div class="tab-pane fade" id="documentacao" role="tabpanel">
-
-                        <div class="card mb-4">
-                            <div class="card-body">
-
-                                <h3>
-                                    <i class="fas fa-file-medical"></i> Adicionar documentação
-                                </h3>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="tipo_documento" class="form-label">Tipo de documento</label>
-                                        <select class="form-select" id="tipo_documento" name="tipo_documento">
-                                            <option value="">Selecione</option>
-                                            <option value="Manual técnico">Manual técnico</option>
-                                            <option value="Certificado de calibração">Certificado de calibração</option>
-                                            <option value="Contrato de manutenção">Contrato de manutenção</option>
-                                            <option value="Relatório técnico">Relatório técnico</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="nome_documento" class="form-label">Nome do documento</label>
-                                        <input type="text" class="form-control" id="nome_documento"
-                                            name="nome_documento" placeholder="Ex.: Manual Técnico do Equipamento">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="data_documento" class="form-label">Data do documento</label>
-                                        <input type="date" class="form-control" id="data_documento"
-                                            name="data_documento">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="data_validade_documento" class="form-label">
-                                            Validade / expiração
-                                        </label>
-                                        <input type="date" class="form-control" id="data_validade_documento"
-                                            name="data_validade_documento">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="fornecedor_documento" class="form-label">Fornecedor
-                                            associado</label>
-                                        <select class="form-select" id="fornecedor_documento"
-                                            name="fornecedor_documento">
-                                            <option value="">Selecione</option>
-                                            <option value="MedTech Portugal">MedTech Portugal</option>
-                                            <option value="Philips Medical Systems">Philips Medical Systems</option>
-                                            <option value="Hospital Devices S.A.">Hospital Devices S.A.</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="ficheiro_documento" class="form-label">Ficheiro</label>
-                                    <input type="file" class="form-control" id="ficheiro_documento"
-                                        name="ficheiro_documento">
-                                </div>
-
-                                <button type="button" class="btn btn-primary" onclick="adicionarDocumentoNovo()">
-                                    Adicionar documento
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaFornecedores()">
+                                    Página anterior
                                 </button>
 
+                                <button type="button" class="btn btn-primary" onclick="avancarParaDocumentacao()">
+                                    Página seguinte
+                                </button>
                             </div>
+
                         </div>
+                    </div>
 
-                        <div class="card mb-4">
-                            <div class="card-body">
+                </div>
 
-                                <h3>
-                                    <i class="fas fa-list"></i> Documentos adicionados
-                                </h3>
+                <!-- Separador: Documentação associada -->
+                <div class="tab-pane fade" id="documentacao" role="tabpanel">
 
-                                <table
-                                    class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h3>
+                                <i class="fas fa-file-medical"></i> Adicionar documentação
+                            </h3>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-6">
+                                    <label for="idTipoDocumento" class="form-label">Tipo de documento</label>
+                                    <select class="form-select" id="idTipoDocumento">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($tiposDocumento as $tipoDocumento): ?>
+                                            <option value="<?= e($tipoDocumento->idTipoDocumento) ?>">
+                                                <?= e($tipoDocumento->descricao) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label for="nomeDocumento" class="form-label">Nome do documento</label>
+                                    <input type="text" class="form-control" id="nomeDocumento"
+                                        placeholder="Ex.: Manual Técnico do Equipamento">
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="dataDocumento" class="form-label">Data do documento</label>
+                                    <input type="date" class="form-control" id="dataDocumento">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="dataValidadeDocumento" class="form-label">
+                                        Validade / expiração
+                                    </label>
+                                    <input type="date" class="form-control" id="dataValidadeDocumento">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="idFornecedorDocumento" class="form-label">Fornecedor associado</label>
+                                    <select class="form-select" id="idFornecedorDocumento">
+                                        <option value="">Sem fornecedor associado</option>
+
+                                        <?php foreach ($fornecedores as $fornecedor): ?>
+                                            <option value="<?= e($fornecedor->idFornecedor) ?>">
+                                                <?= e($fornecedor->designacao) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ficheiroDocumento" class="form-label">Ficheiro</label>
+                                <input type="file" class="form-control" id="ficheiroDocumento">
+                            </div>
+
+                            <button type="button" class="btn btn-primary" onclick="adicionarDocumentoNovo()">
+                                Adicionar documento
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h3>
+                                <i class="fas fa-list"></i> Documentos adicionados
+                            </h3>
+
+                            <div class="table-responsive tabela-lista-container">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
                                     <thead>
                                         <tr>
                                             <th>Tipo</th>
@@ -494,128 +1250,147 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         </tr>
                                     </thead>
 
-                                    <tbody id="tabela_documentos_adicionados">
-                                    </tbody>
+                                    <tbody id="tabela_documentos_adicionados"></tbody>
                                 </table>
-
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
-                                        onclick="voltarParaLocalizacao()">
-                                        Página anterior
-                                    </button>
-
-                                    <button type="button" class="btn btn-primary" onclick="avancarParaGarantias()">
-                                        Página seguinte
-                                    </button>
-                                </div>
-
                             </div>
-                        </div>
 
-                    </div>
+                            <div id="paginacao_documentos_adicionados"></div>
 
-                    <!-- Separador: Garantias e contratos -->
-                    <div class="tab-pane fade" id="garantias" role="tabpanel">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaLocalizacao()">
+                                    Página anterior
+                                </button>
 
-                        <div class="card mb-4">
-                            <div class="card-body">
-
-                                <h3>
-                                    <i class="fas fa-file-contract"></i> Garantias e contratos
-                                </h3>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="data_inicio_garantia" class="form-label">
-                                            Data de início da garantia
-                                        </label>
-                                        <input type="date" class="form-control" id="data_inicio_garantia"
-                                            name="data_inicio_garantia">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="data_fim_garantia" class="form-label">
-                                            Data de fim da garantia
-                                        </label>
-                                        <input type="date" class="form-control" id="data_fim_garantia"
-                                            name="data_fim_garantia">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="entidade_garantia" class="form-label">
-                                            Entidade responsável
-                                        </label>
-                                        <input type="text" class="form-control" id="entidade_garantia"
-                                            name="entidade_garantia" placeholder="Ex.: MedTech Portugal">
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="existe_contrato" class="form-label">
-                                            Existe contrato de manutenção?
-                                        </label>
-                                        <select class="form-select" id="existe_contrato" name="existe_contrato">
-                                            <option value="">Selecione</option>
-                                            <option value="Sim">Sim</option>
-                                            <option value="Não">Não</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="tipo_contrato" class="form-label">Tipo de contrato</label>
-                                        <input type="text" class="form-control" id="tipo_contrato" name="tipo_contrato"
-                                            placeholder="Ex.: manutenção preventiva">
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <label for="periodicidade" class="form-label">Periodicidade</label>
-                                        <input type="text" class="form-control" id="periodicidade" name="periodicidade"
-                                            placeholder="Ex.: anual">
-                                    </div>
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="entidade_contrato" class="form-label">
-                                        Entidade responsável pelo contrato
-                                    </label>
-                                    <input type="text" class="form-control" id="entidade_contrato"
-                                        name="entidade_contrato" placeholder="Ex.: MedTech Portugal">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="observacoes_garantia" class="form-label">Observações</label>
-                                    <textarea class="form-control" id="observacoes_garantia" name="observacoes_garantia"
-                                        rows="4" placeholder="Observações sobre garantia ou contrato."></textarea>
-                                </div>
-
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-secondary botao-anterior"
-                                        onclick="voltarParaDocumentacao()">
-                                        Página anterior
-                                    </button>
-
-                                    <button type="button" class="btn btn-primary" onclick="validarEquipamento()">
-                                        Guardar equipamento
-                                    </button>
-                                </div>
-
+                                <button type="button" class="btn btn-primary" onclick="avancarParaGarantias()">
+                                    Página seguinte
+                                </button>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
 
                 </div>
 
-            </form>
+                <!-- Separador: Garantias e contratos -->
+                <div class="tab-pane fade" id="garantias" role="tabpanel">
 
-            <p id="mensagem-formulario"></p>
+                    <div class="card mb-4">
+                        <div class="card-body">
 
-        </section>
-    </main>
+                            <h3>
+                                <i class="fas fa-file-contract"></i> Garantias e contratos
+                            </h3>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="tipoGarantiaContrato" class="form-label">Tipo</label>
+                                    <select class="form-select" id="tipoGarantiaContrato" name="tipoGarantiaContrato">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($tiposGarantiaPermitidos as $tipoGarantiaPermitido): ?>
+                                            <option value="<?= e($tipoGarantiaPermitido) ?>"
+                                                <?= $tipoGarantiaContrato === $tipoGarantiaPermitido ? 'selected' : '' ?>>
+                                                <?= e($tipoGarantiaPermitido) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="numeroContrato" class="form-label">Número da garantia/contrato</label>
+                                    <input type="text" class="form-control" id="numeroContrato" name="numeroContrato"
+                                        placeholder="Ex.: CM-2025-001" value="<?= e($numeroContrato) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="periodicidade" class="form-label">Periodicidade</label>
+                                    <select class="form-select" id="periodicidade" name="periodicidade">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($periodicidadesPermitidas as $periodicidadePermitida): ?>
+                                            <option value="<?= e($periodicidadePermitida) ?>"
+                                                <?= $periodicidade === $periodicidadePermitida ? 'selected' : '' ?>>
+                                                <?= e($periodicidadePermitida) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="dataInicioGarantia" class="form-label">
+                                        Data de início
+                                    </label>
+                                    <input type="date" class="form-control" id="dataInicioGarantia"
+                                        name="dataInicioGarantia" value="<?= e($dataInicioGarantia) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="dataFimGarantia" class="form-label">
+                                        Data de fim
+                                    </label>
+                                    <input type="date" class="form-control" id="dataFimGarantia"
+                                        name="dataFimGarantia" value="<?= e($dataFimGarantia) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="idFornecedorResponsavel" class="form-label">
+                                        Entidade responsável
+                                    </label>
+                                    <select class="form-select" id="idFornecedorResponsavel" name="idFornecedorResponsavel">
+                                        <option value="">Selecione</option>
+
+                                        <?php foreach ($fornecedores as $fornecedor): ?>
+                                            <option value="<?= e($fornecedor->idFornecedor) ?>"
+                                                <?= (string) $idFornecedorResponsavel === (string) $fornecedor->idFornecedor ? 'selected' : '' ?>>
+                                                <?= e($fornecedor->designacao) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="observacoesGarantia" class="form-label">Observações</label>
+                                <textarea class="form-control" id="observacoesGarantia" name="observacoesGarantia"
+                                    rows="4" placeholder="Observações sobre garantia ou contrato."><?= e($observacoesGarantia) ?></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaDocumentacao()">
+                                    Página anterior
+                                </button>
+
+                                <button type="submit" class="btn btn-primary">
+                                    Guardar equipamento
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <p id="mensagem-formulario"></p>
+
+    </section>
+</main>
+
+<script>
+    window.medInventarioNovoEquipamento = {
+        fornecedoresAssociados: <?= json_encode($fornecedoresAssociadosJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+        localizacoesAssociadas: <?= json_encode($localizacoesAssociadasJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+        documentosAdicionados: <?= json_encode($documentosAdicionadosJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>
+    };
+</script>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>

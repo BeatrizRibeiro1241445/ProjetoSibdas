@@ -21,6 +21,15 @@ $totalDocumentosExpirar = 0;
 $totalDocumentosExpirados = 0;
 $totalAvariadosForaServico = 0;
 
+$resumoServicos = [];
+$garantiasExpiradas = [];
+$garantiasExpirar = [];
+$equipamentosSemDocumentacao = [];
+$equipamentosCriticidadeElevada = [];
+$documentosExpirar = [];
+$documentosExpirados = [];
+$equipamentosAvariadosForaServico = [];
+
 try {
     $ligacao = db_connect();
 
@@ -157,6 +166,187 @@ try {
         ")
         ->fetch()
         ->total;
+
+    $resumoServicos = $ligacao
+        ->query("
+            SELECT
+                l.servico,
+                COUNT(e.idEquipamento) AS totalEquipamentos,
+                SUM(CASE WHEN ee.descricao = 'Ativo' THEN 1 ELSE 0 END) AS totalAtivos,
+                SUM(CASE WHEN ee.descricao = 'Em manutenção' THEN 1 ELSE 0 END) AS totalManutencao,
+                SUM(CASE WHEN ee.descricao IN ('Inativo', 'Abatido') THEN 1 ELSE 0 END) AS totalInativos,
+                SUM(CASE WHEN cr.descricao = 'Suporte de vida' THEN 1 ELSE 0 END) AS totalSuporteVida
+            FROM Localizacao l
+            LEFT JOIN Equipamento e
+                ON l.idLocalizacao = e.idLocalizacao
+               AND e.ativo = true
+            LEFT JOIN EstadoEquipamento ee
+                ON e.idEstadoEquipamento = ee.idEstadoEquipamento
+            LEFT JOIN CriticidadeEquipamento cr
+                ON e.idCriticidadeEquipamento = cr.idCriticidadeEquipamento
+            WHERE l.ativo = true
+            GROUP BY l.servico
+            ORDER BY l.servico
+        ")
+        ->fetchAll();
+
+    $garantiasExpiradas = $ligacao
+        ->query("
+            SELECT
+                e.codigoInterno,
+                e.designacao,
+                l.servico,
+                gc.dataFim,
+                COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
+            FROM GarantiaContrato gc
+            INNER JOIN Equipamento e
+                ON gc.idEquipamento = e.idEquipamento
+            INNER JOIN Localizacao l
+                ON e.idLocalizacao = l.idLocalizacao
+            LEFT JOIN Fornecedor f
+                ON gc.idFornecedorResponsavel = f.idFornecedor
+            WHERE gc.ativo = true
+              AND e.ativo = true
+              AND gc.dataFim < CURDATE()
+            ORDER BY gc.dataFim ASC
+        ")
+        ->fetchAll();
+
+    $garantiasExpirar = $ligacao
+        ->query("
+            SELECT
+                e.codigoInterno,
+                e.designacao,
+                l.servico,
+                gc.dataFim,
+                COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
+            FROM GarantiaContrato gc
+            INNER JOIN Equipamento e
+                ON gc.idEquipamento = e.idEquipamento
+            INNER JOIN Localizacao l
+                ON e.idLocalizacao = l.idLocalizacao
+            LEFT JOIN Fornecedor f
+                ON gc.idFornecedorResponsavel = f.idFornecedor
+            WHERE gc.ativo = true
+              AND e.ativo = true
+              AND gc.dataFim BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+            ORDER BY gc.dataFim ASC
+        ")
+        ->fetchAll();
+
+    $equipamentosSemDocumentacao = $ligacao
+        ->query("
+            SELECT
+                e.codigoInterno,
+                e.designacao,
+                l.servico,
+                l.sala,
+                ee.descricao AS estado
+            FROM Equipamento e
+            INNER JOIN Localizacao l
+                ON e.idLocalizacao = l.idLocalizacao
+            INNER JOIN EstadoEquipamento ee
+                ON e.idEstadoEquipamento = ee.idEstadoEquipamento
+            WHERE e.ativo = true
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM Documento d
+                    WHERE d.idEquipamento = e.idEquipamento
+                      AND d.ativo = true
+              )
+            ORDER BY e.codigoInterno
+        ")
+        ->fetchAll();
+
+    $equipamentosCriticidadeElevada = $ligacao
+        ->query("
+            SELECT
+                e.codigoInterno,
+                e.designacao,
+                l.servico,
+                l.sala,
+                cr.descricao AS criticidade,
+                ee.descricao AS estado
+            FROM Equipamento e
+            INNER JOIN Localizacao l
+                ON e.idLocalizacao = l.idLocalizacao
+            INNER JOIN CriticidadeEquipamento cr
+                ON e.idCriticidadeEquipamento = cr.idCriticidadeEquipamento
+            INNER JOIN EstadoEquipamento ee
+                ON e.idEstadoEquipamento = ee.idEstadoEquipamento
+            WHERE e.ativo = true
+              AND cr.descricao IN ('Alta', 'Suporte de vida')
+            ORDER BY e.codigoInterno
+        ")
+        ->fetchAll();
+
+    $documentosExpirar = $ligacao
+        ->query("
+            SELECT
+                e.codigoInterno,
+                e.designacao AS equipamento,
+                d.nomeDocumento,
+                td.descricao AS tipoDocumento,
+                d.dataValidade,
+                COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
+            FROM Documento d
+            INNER JOIN Equipamento e
+                ON d.idEquipamento = e.idEquipamento
+            INNER JOIN TipoDocumento td
+                ON d.idTipoDocumento = td.idTipoDocumento
+            LEFT JOIN Fornecedor f
+                ON d.idFornecedor = f.idFornecedor
+            WHERE d.ativo = true
+              AND e.ativo = true
+              AND d.dataValidade IS NOT NULL
+              AND d.dataValidade BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+            ORDER BY d.dataValidade ASC
+        ")
+        ->fetchAll();
+
+    $documentosExpirados = $ligacao
+        ->query("
+            SELECT
+                e.codigoInterno,
+                e.designacao AS equipamento,
+                d.nomeDocumento,
+                td.descricao AS tipoDocumento,
+                d.dataValidade,
+                COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
+            FROM Documento d
+            INNER JOIN Equipamento e
+                ON d.idEquipamento = e.idEquipamento
+            INNER JOIN TipoDocumento td
+                ON d.idTipoDocumento = td.idTipoDocumento
+            LEFT JOIN Fornecedor f
+                ON d.idFornecedor = f.idFornecedor
+            WHERE d.ativo = true
+              AND e.ativo = true
+              AND d.dataValidade IS NOT NULL
+              AND d.dataValidade < CURDATE()
+            ORDER BY d.dataValidade ASC
+        ")
+        ->fetchAll();
+
+    $equipamentosAvariadosForaServico = $ligacao
+        ->query("
+            SELECT
+                e.codigoInterno,
+                e.designacao,
+                l.servico,
+                l.sala,
+                ee.descricao AS estado,
+                e.observacoes
+            FROM Equipamento e
+            INNER JOIN Localizacao l
+                ON e.idLocalizacao = l.idLocalizacao
+            INNER JOIN EstadoEquipamento ee
+                ON e.idEstadoEquipamento = ee.idEstadoEquipamento
+            WHERE e.ativo = true
+              AND ee.descricao IN ('Inativo', 'Abatido')
+            ORDER BY e.codigoInterno
+        ")
+        ->fetchAll();
 } catch (PDOException $e) {
     $erro = 'Erro ao obter dados do dashboard.';
 }
@@ -366,7 +556,8 @@ include __DIR__ . '/../../includes/sidebar.php';
         </h3>
 
         <div class="table-responsive tabela-lista-container">
-            <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+            <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                data-linhas-pagina="5">
                 <thead>
                     <tr>
                         <th>Serviço / Departamento</th>
@@ -379,50 +570,22 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>Unidade de Cuidados Intensivos</td>
-                        <td>320</td>
-                        <td>285</td>
-                        <td>25</td>
-                        <td>10</td>
-                        <td>85</td>
-                    </tr>
-
-                    <tr>
-                        <td>Bloco Operatório</td>
-                        <td>410</td>
-                        <td>360</td>
-                        <td>38</td>
-                        <td>12</td>
-                        <td>64</td>
-                    </tr>
-
-                    <tr>
-                        <td>Urgência</td>
-                        <td>280</td>
-                        <td>240</td>
-                        <td>28</td>
-                        <td>12</td>
-                        <td>42</td>
-                    </tr>
-
-                    <tr>
-                        <td>Consulta Externa</td>
-                        <td>190</td>
-                        <td>165</td>
-                        <td>15</td>
-                        <td>10</td>
-                        <td>8</td>
-                    </tr>
-
-                    <tr>
-                        <td>Imagiologia</td>
-                        <td>300</td>
-                        <td>230</td>
-                        <td>39</td>
-                        <td>31</td>
-                        <td>16</td>
-                    </tr>
+                    <?php if (!empty($resumoServicos)): ?>
+                        <?php foreach ($resumoServicos as $linha): ?>
+                            <tr>
+                                <td><?= e($linha->servico) ?></td>
+                                <td><?= e((int) $linha->totalEquipamentos) ?></td>
+                                <td><?= e((int) $linha->totalAtivos) ?></td>
+                                <td><?= e((int) $linha->totalManutencao) ?></td>
+                                <td><?= e((int) $linha->totalInativos) ?></td>
+                                <td><?= e((int) $linha->totalSuporteVida) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6" class="text-center">Não existem dados por serviço.</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -449,7 +612,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="accordion-body">
 
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
                             <thead>
                                 <tr>
                                     <th>Código interno</th>
@@ -461,29 +625,21 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>011.003.00</td>
-                                    <td>Aspirador Cirúrgico</td>
-                                    <td>Bloco Operatório</td>
-                                    <td>2024-12-20</td>
-                                    <td>Hospital Devices S.A.</td>
-                                </tr>
-
-                                <tr>
-                                    <td>006.004.00</td>
-                                    <td>Eletrocardiógrafo</td>
-                                    <td>Urgência</td>
-                                    <td>2025-01-15</td>
-                                    <td>MedTech Portugal</td>
-                                </tr>
-
-                                <tr>
-                                    <td>012.001.00</td>
-                                    <td>Monitor de Transporte</td>
-                                    <td>Consulta Externa</td>
-                                    <td>2025-02-01</td>
-                                    <td>MedTech Portugal</td>
-                                </tr>
+                                <?php if (!empty($garantiasExpiradas)): ?>
+                                    <?php foreach ($garantiasExpiradas as $linha): ?>
+                                        <tr>
+                                            <td><?= e($linha->codigoInterno) ?></td>
+                                            <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->servico) ?></td>
+                                            <td><?= e($linha->dataFim) ?></td>
+                                            <td><?= e($linha->fornecedor) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center">Não existem equipamentos com garantia expirada.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -497,8 +653,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                         data-bs-target="#collapseGarantiasExpirar" aria-expanded="false"
                         aria-controls="collapseGarantiasExpirar">
                         <strong>
-                            <i class="fas fa-calendar-days"></i> Equipamentos com garantia a expirar nos próximos 30
-                            dias
+                            <i class="fas fa-calendar-days"></i> Equipamentos com garantia a expirar nos próximos 30 dias
                         </strong>
                     </button>
                 </h2>
@@ -508,7 +663,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="accordion-body">
 
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
                             <thead>
                                 <tr>
                                     <th>Código interno</th>
@@ -520,29 +676,21 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>007.001.00</td>
-                                    <td>Bomba de Infusão</td>
-                                    <td>Bloco Operatório</td>
-                                    <td>2025-06-10</td>
-                                    <td>Hospital Devices S.A.</td>
-                                </tr>
-
-                                <tr>
-                                    <td>006.004.00</td>
-                                    <td>Eletrocardiógrafo</td>
-                                    <td>Urgência</td>
-                                    <td>2025-06-18</td>
-                                    <td>MedTech Portugal</td>
-                                </tr>
-
-                                <tr>
-                                    <td>009.002.00</td>
-                                    <td>Desfibrilhador</td>
-                                    <td>Urgência</td>
-                                    <td>2025-06-25</td>
-                                    <td>MedTech Portugal</td>
-                                </tr>
+                                <?php if (!empty($garantiasExpirar)): ?>
+                                    <?php foreach ($garantiasExpirar as $linha): ?>
+                                        <tr>
+                                            <td><?= e($linha->codigoInterno) ?></td>
+                                            <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->servico) ?></td>
+                                            <td><?= e($linha->dataFim) ?></td>
+                                            <td><?= e($linha->fornecedor) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center">Não existem garantias a expirar nos próximos 30 dias.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -566,7 +714,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="accordion-body">
 
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
                             <thead>
                                 <tr>
                                     <th>Código interno</th>
@@ -578,29 +727,21 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>014.002.00</td>
-                                    <td>Oxímetro de Pulso</td>
-                                    <td>Urgência</td>
-                                    <td>Sala 3</td>
-                                    <td>Ativo</td>
-                                </tr>
-
-                                <tr>
-                                    <td>015.001.00</td>
-                                    <td>Termómetro Clínico Digital</td>
-                                    <td>Consulta Externa</td>
-                                    <td>Gabinete 4</td>
-                                    <td>Ativo</td>
-                                </tr>
-
-                                <tr>
-                                    <td>016.003.00</td>
-                                    <td>Carro de Emergência</td>
-                                    <td>UCI</td>
-                                    <td>Sala 1</td>
-                                    <td>Ativo</td>
-                                </tr>
+                                <?php if (!empty($equipamentosSemDocumentacao)): ?>
+                                    <?php foreach ($equipamentosSemDocumentacao as $linha): ?>
+                                        <tr>
+                                            <td><?= e($linha->codigoInterno) ?></td>
+                                            <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->servico) ?></td>
+                                            <td><?= e($linha->sala) ?></td>
+                                            <td><?= e($linha->estado) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center">Todos os equipamentos ativos têm documentação associada.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -624,7 +765,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="accordion-body">
 
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
                             <thead>
                                 <tr>
                                     <th>Código interno</th>
@@ -637,32 +779,22 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>003.001.00</td>
-                                    <td>Ventilador Pulmonar</td>
-                                    <td>Unidade de Cuidados Intensivos</td>
-                                    <td>Sala 1</td>
-                                    <td>Alta</td>
-                                    <td>Ativo</td>
-                                </tr>
-
-                                <tr>
-                                    <td>004.002.00</td>
-                                    <td>Monitor Multiparamétrico</td>
-                                    <td>Unidade de Cuidados Intensivos</td>
-                                    <td>Sala 1</td>
-                                    <td>Alta</td>
-                                    <td>Ativo</td>
-                                </tr>
-
-                                <tr>
-                                    <td>009.002.00</td>
-                                    <td>Desfibrilhador</td>
-                                    <td>Urgência</td>
-                                    <td>Sala 3</td>
-                                    <td>Alta</td>
-                                    <td>Ativo</td>
-                                </tr>
+                                <?php if (!empty($equipamentosCriticidadeElevada)): ?>
+                                    <?php foreach ($equipamentosCriticidadeElevada as $linha): ?>
+                                        <tr>
+                                            <td><?= e($linha->codigoInterno) ?></td>
+                                            <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->servico) ?></td>
+                                            <td><?= e($linha->sala) ?></td>
+                                            <td><?= e($linha->criticidade) ?></td>
+                                            <td><?= e($linha->estado) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center">Não existem equipamentos de criticidade elevada.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -686,7 +818,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="accordion-body">
 
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
                             <thead>
                                 <tr>
                                     <th>Código interno</th>
@@ -699,23 +832,22 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>004.002.00</td>
-                                    <td>Monitor Multiparamétrico</td>
-                                    <td>Certificado de Calibração</td>
-                                    <td>Certificado</td>
-                                    <td>2025-06-15</td>
-                                    <td>MedTech Portugal</td>
-                                </tr>
-
-                                <tr>
-                                    <td>003.001.00</td>
-                                    <td>Ventilador Pulmonar</td>
-                                    <td>Relatório Técnico de Verificação</td>
-                                    <td>Relatório técnico</td>
-                                    <td>2025-06-20</td>
-                                    <td>MedTech Portugal</td>
-                                </tr>
+                                <?php if (!empty($documentosExpirar)): ?>
+                                    <?php foreach ($documentosExpirar as $linha): ?>
+                                        <tr>
+                                            <td><?= e($linha->codigoInterno) ?></td>
+                                            <td><?= e($linha->equipamento) ?></td>
+                                            <td><?= e($linha->nomeDocumento) ?></td>
+                                            <td><?= e($linha->tipoDocumento) ?></td>
+                                            <td><?= e($linha->dataValidade) ?></td>
+                                            <td><?= e($linha->fornecedor) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center">Não existem documentos a expirar nos próximos 30 dias.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -739,7 +871,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="accordion-body">
 
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
                             <thead>
                                 <tr>
                                     <th>Código interno</th>
@@ -752,23 +885,22 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>007.001.00</td>
-                                    <td>Bomba de Infusão</td>
-                                    <td>Certificado de Calibração</td>
-                                    <td>Certificado</td>
-                                    <td>2025-01-10</td>
-                                    <td>Hospital Devices S.A.</td>
-                                </tr>
-
-                                <tr>
-                                    <td>006.004.00</td>
-                                    <td>Eletrocardiógrafo</td>
-                                    <td>Relatório Técnico</td>
-                                    <td>Relatório técnico</td>
-                                    <td>2025-02-18</td>
-                                    <td>MedTech Portugal</td>
-                                </tr>
+                                <?php if (!empty($documentosExpirados)): ?>
+                                    <?php foreach ($documentosExpirados as $linha): ?>
+                                        <tr>
+                                            <td><?= e($linha->codigoInterno) ?></td>
+                                            <td><?= e($linha->equipamento) ?></td>
+                                            <td><?= e($linha->nomeDocumento) ?></td>
+                                            <td><?= e($linha->tipoDocumento) ?></td>
+                                            <td><?= e($linha->dataValidade) ?></td>
+                                            <td><?= e($linha->fornecedor) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center">Não existem documentos expirados.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -792,7 +924,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="accordion-body">
 
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
                             <thead>
                                 <tr>
                                     <th>Código interno</th>
@@ -805,32 +938,22 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>018.002.00</td>
-                                    <td>Monitor de Sinais Vitais</td>
-                                    <td>Urgência</td>
-                                    <td>Sala 3</td>
-                                    <td>Avariado</td>
-                                    <td>A aguardar avaliação técnica.</td>
-                                </tr>
-
-                                <tr>
-                                    <td>020.001.00</td>
-                                    <td>Bomba de Seringa</td>
-                                    <td>Unidade de Cuidados Intensivos</td>
-                                    <td>Sala 1</td>
-                                    <td>Fora de serviço</td>
-                                    <td>Equipamento retirado temporariamente da utilização.</td>
-                                </tr>
-
-                                <tr>
-                                    <td>021.004.00</td>
-                                    <td>Aspirador Portátil</td>
-                                    <td>Bloco Operatório</td>
-                                    <td>Sala 2</td>
-                                    <td>Avariado</td>
-                                    <td>Necessita de reparação.</td>
-                                </tr>
+                                <?php if (!empty($equipamentosAvariadosForaServico)): ?>
+                                    <?php foreach ($equipamentosAvariadosForaServico as $linha): ?>
+                                        <tr>
+                                            <td><?= e($linha->codigoInterno) ?></td>
+                                            <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->servico) ?></td>
+                                            <td><?= e($linha->sala) ?></td>
+                                            <td><?= e($linha->estado) ?></td>
+                                            <td><?= e($linha->observacoes ?: '-') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center">Não existem equipamentos inativos ou abatidos.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -865,31 +988,26 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <p class="legenda-grafico">
                                     <span class="cor-grafico azul"></span>
                                     <strong>Monitorização</strong><br>
-                                    420 equipamentos — 28%
                                 </p>
 
                                 <p class="legenda-grafico">
                                     <span class="cor-grafico verde"></span>
                                     <strong>Suporte de vida</strong><br>
-                                    215 equipamentos — 14%
                                 </p>
 
                                 <p class="legenda-grafico">
                                     <span class="cor-grafico amarelo"></span>
                                     <strong>Infusão</strong><br>
-                                    310 equipamentos — 21%
                                 </p>
 
                                 <p class="legenda-grafico">
                                     <span class="cor-grafico vermelho"></span>
                                     <strong>Diagnóstico</strong><br>
-                                    280 equipamentos — 19%
                                 </p>
 
                                 <p class="legenda-grafico">
                                     <span class="cor-grafico cinzento"></span>
                                     <strong>Outros</strong><br>
-                                    275 equipamentos — 18%
                                 </p>
 
                             </div>
@@ -918,14 +1036,12 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                                 <p class="legenda-grafico">
                                     <span class="cor-grafico azul"></span>
-                                    <strong>Hospital Central</strong><br>
-                                    1310 equipamentos — 87%
+                                    <strong>Serviços hospitalares</strong><br>
                                 </p>
 
                                 <p class="legenda-grafico">
                                     <span class="cor-grafico verde"></span>
-                                    <strong>Consulta Externa</strong><br>
-                                    190 equipamentos — 13%
+                                    <strong>Localizações clínicas</strong><br>
                                 </p>
 
                             </div>

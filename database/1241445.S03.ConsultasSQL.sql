@@ -211,3 +211,16 @@ LEFT JOIN Fornecedor f
     ON gc.idFornecedorResponsavel = f.idFornecedor
 WHERE gc.ativo = true
 ORDER BY gc.dataFim;
+
+/* 17. Listar fornecedores com pessoas de contacto */
+SELECT
+    designacao,
+    nif,
+    email,
+    pessoaContacto AS pessoaContacto1,
+    telefonePessoaContacto AS telefonePessoaContacto1,
+    pessoaContacto2,
+    telefonePessoaContacto2,
+    tipoFornecedor
+FROM Fornecedor
+ORDER BY designacao;

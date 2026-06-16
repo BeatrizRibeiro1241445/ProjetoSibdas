@@ -57,9 +57,10 @@ Table Fornecedor {
   telefone varchar(30) [null]
   morada varchar(200) [null]
   website varchar(150) [null]
-  pessoaContacto varchar(120) [null]
-  telefonePessoaContacto varchar(30) [null]
-  tipoFornecedor varchar(80) [null]
+  pessoaContacto varchar(120) [null] // Pessoa de contacto 1
+  telefonePessoaContacto varchar(30) [null] // Telefone da pessoa de contacto 1
+  pessoaContacto2 varchar(120) [null] // Pessoa de contacto 2
+  telefonePessoaContacto2 varchar(30) [null] // Telefone da pessoa de contacto 2
   observacoes text [null]
   ativo boolean [not null, default: true]
 }

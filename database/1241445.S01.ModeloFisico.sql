@@ -52,12 +52,13 @@ CREATE TABLE `Fornecedor` (
   `nif` VARCHAR(20) UNIQUE NOT NULL,
   `email` VARCHAR(120) UNIQUE NOT NULL,
   `designacao` VARCHAR(150) NOT NULL,
-  `telefone` VARCHAR(30),
+  `telefone` VARCHAR(30) UNIQUE NOT NULL,
   `morada` VARCHAR(200),
   `website` VARCHAR(150),
-  `pessoaContacto` VARCHAR(120),
-  `telefonePessoaContacto` VARCHAR(30),
-  `tipoFornecedor` VARCHAR(80),
+  `pessoaContacto` VARCHAR(120) NOT NULL,
+  `telefonePessoaContacto` VARCHAR(30) NOT NULL,
+  `pessoaContacto2` VARCHAR(120),
+  `telefonePessoaContacto2` VARCHAR(30),
   `observacoes` TEXT,
   `ativo` BOOLEAN NOT NULL DEFAULT TRUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

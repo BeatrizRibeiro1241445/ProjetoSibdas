@@ -13,7 +13,6 @@ $filtroNif = trim($_GET['filtro_nif'] ?? '');
 $filtroDesignacao = trim($_GET['filtro_designacao'] ?? '');
 $filtroEmail = trim($_GET['filtro_email'] ?? '');
 $filtroTelefone = trim($_GET['filtro_telefone'] ?? '');
-$filtroTipoFornecedor = trim($_GET['filtro_tipo_fornecedor'] ?? '');
 $filtroEquipamento = trim($_GET['filtro_equipamento'] ?? '');
 
 $paginaAtual = max(1, (int) ($_GET['pagina'] ?? 1));
@@ -37,7 +36,8 @@ try {
             f.website,
             f.pessoaContacto,
             f.telefonePessoaContacto,
-            f.tipoFornecedor
+            f.pessoaContacto2,
+            f.telefonePessoaContacto2
         FROM Fornecedor f
         LEFT JOIN EquipamentoFornecedor ef
             ON f.idFornecedor = ef.idFornecedor
@@ -56,11 +56,6 @@ try {
     if ($filtroNif !== '') {
         $sql .= " AND f.nif LIKE :nif";
         $parametros[':nif'] = '%' . $filtroNif . '%';
-    }
-
-    if ($filtroTipoFornecedor !== '') {
-        $sql .= " AND f.tipoFornecedor LIKE :tipoFornecedor";
-        $parametros[':tipoFornecedor'] = '%' . $filtroTipoFornecedor . '%';
     }
 
     if ($filtroEmail !== '') {
@@ -185,31 +180,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </div>
 
                             <div>
-                                <label for="filtro_tipo_fornecedor" class="form-label fw-semibold">
-                                    Tipo de fornecedor
-                                </label>
-
-                                <select class="form-select text-center" id="filtro_tipo_fornecedor"
-                                    name="filtro_tipo_fornecedor">
-
-                                    <option value="">Todos</option>
-
-                                    <option value="Fabricante" <?= $filtroTipoFornecedor === 'Fabricante' ? 'selected' : '' ?>>
-                                        Fabricante
-                                    </option>
-
-                                    <option value="Fornecedor comercial" <?= $filtroTipoFornecedor === 'Fornecedor comercial' ? 'selected' : '' ?>>
-                                        Fornecedor comercial
-                                    </option>
-
-                                    <option value="Assistência técnica" <?= $filtroTipoFornecedor === 'Assistência técnica' ? 'selected' : '' ?>>
-                                        Empresa de assistência técnica
-                                    </option>
-
-                                </select>
-                            </div>
-
-                            <div>
                                 <label for="filtro_email" class="form-label fw-semibold">
                                     Email
                                 </label>
@@ -264,7 +234,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <tr>
                         <th>Empresa</th>
                         <th>NIF</th>
-                        <th>Tipo</th>
                         <th>Telefone</th>
                         <th>Email</th>
                         <th>Ações</th>
@@ -276,7 +245,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <?php if (!empty($erro)): ?>
 
                         <tr>
-                            <td colspan="6" class="text-center text-danger">
+                            <td colspan="5" class="text-center text-danger">
                                 <?= e($erro) ?>
                             </td>
                         </tr>
@@ -291,8 +260,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 </td>
 
                                 <td><?= e($fornecedor->nif) ?></td>
-
-                                <td><?= e($fornecedor->tipoFornecedor) ?></td>
 
                                 <td><?= e($fornecedor->telefone) ?></td>
 
@@ -320,7 +287,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <?php else: ?>
 
                         <tr>
-                            <td colspan="6" class="text-center">
+                            <td colspan="5" class="text-center">
                                 Não existem fornecedores registados para os filtros selecionados.
                             </td>
                         </tr>
