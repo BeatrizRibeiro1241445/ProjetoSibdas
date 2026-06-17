@@ -7,23 +7,9 @@ $page_title = APP_NAME . ' - Gestão de Conteúdos';
 $body_class = 'pagina-novo-equipamento';
 
 $erro = '';
+$sucesso = '';
+$erros = [];
 $conteudos = [];
-
-try {
-    $ligacao = db_connect();
-
-    $stmt = $ligacao->query("
-        SELECT chave, seccao, titulo, texto, imagem
-        FROM ConteudoSite
-        WHERE ativo = true
-    ");
-
-    foreach ($stmt->fetchAll() as $conteudo) {
-        $conteudos[$conteudo->chave] = $conteudo;
-    }
-} catch (PDOException $e) {
-    $erro = 'Erro ao obter os conteúdos do site.';
-}
 
 function conteudo_titulo($conteudos, $chave, $fallback = '')
 {
@@ -46,6 +32,263 @@ function conteudo_linha($conteudos, $chave, $posicao, $fallback = '')
     $partes = explode('|', $texto);
 
     return $partes[$posicao] ?? $fallback;
+}
+
+function atualizar_conteudo_site($ligacao, $chave, $seccao, $titulo, $texto, $imagem)
+{
+    $stmt = $ligacao->prepare("
+        UPDATE ConteudoSite
+        SET
+            seccao = :seccao,
+            titulo = :titulo,
+            texto = :texto,
+            imagem = :imagem,
+            ativo = true
+        WHERE chave = :chave
+    ");
+
+    $stmt->bindValue(':chave', $chave, PDO::PARAM_STR);
+    $stmt->bindValue(':seccao', $seccao, PDO::PARAM_STR);
+    $stmt->bindValue(':titulo', $titulo, PDO::PARAM_STR);
+    $stmt->bindValue(':texto', $texto, PDO::PARAM_STR);
+
+    if ($imagem === null || $imagem === '') {
+        $stmt->bindValue(':imagem', null, PDO::PARAM_NULL);
+    } else {
+        $stmt->bindValue(':imagem', $imagem, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+}
+
+try {
+    $ligacao = db_connect();
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $nomeSite = trim($_POST['nome_site'] ?? '');
+        $logoSite = trim($_POST['logo_site'] ?? '');
+        $navInicio = trim($_POST['nav_inicio'] ?? '');
+        $navSeccao1 = trim($_POST['nav_seccao1'] ?? '');
+        $navSeccao2 = trim($_POST['nav_seccao2'] ?? '');
+        $navSeccao3 = trim($_POST['nav_seccao3'] ?? '');
+
+        $tituloInicio = trim($_POST['titulo_inicio'] ?? '');
+        $textoInicio = trim($_POST['texto_inicio'] ?? '');
+        $imagemInicio = trim($_POST['imagem_inicio'] ?? '');
+
+        $tituloSeccao1 = trim($_POST['titulo_seccao1'] ?? '');
+        $textoSeccao1 = trim($_POST['texto_seccao1'] ?? '');
+        $imagemSeccao1 = trim($_POST['imagem_seccao1'] ?? '');
+
+        $tituloSeccao2 = trim($_POST['titulo_seccao2'] ?? '');
+        $textoSeccao2 = trim($_POST['texto_seccao2'] ?? '');
+        $imagemSeccao2 = trim($_POST['imagem_seccao2'] ?? '');
+
+        $tituloFuncionalidades = trim($_POST['titulo_funcionalidades'] ?? '');
+        $textoFuncionalidades = trim($_POST['texto_funcionalidades'] ?? '');
+
+        $iconeFuncionalidade1 = trim($_POST['icone_funcionalidade_1'] ?? '');
+        $tituloFuncionalidade1 = trim($_POST['titulo_funcionalidade_1'] ?? '');
+        $textoFuncionalidade1 = trim($_POST['texto_funcionalidade_1'] ?? '');
+
+        $iconeFuncionalidade2 = trim($_POST['icone_funcionalidade_2'] ?? '');
+        $tituloFuncionalidade2 = trim($_POST['titulo_funcionalidade_2'] ?? '');
+        $textoFuncionalidade2 = trim($_POST['texto_funcionalidade_2'] ?? '');
+
+        $iconeFuncionalidade3 = trim($_POST['icone_funcionalidade_3'] ?? '');
+        $tituloFuncionalidade3 = trim($_POST['titulo_funcionalidade_3'] ?? '');
+        $textoFuncionalidade3 = trim($_POST['texto_funcionalidade_3'] ?? '');
+
+        $iconeFuncionalidade4 = trim($_POST['icone_funcionalidade_4'] ?? '');
+        $tituloFuncionalidade4 = trim($_POST['titulo_funcionalidade_4'] ?? '');
+        $textoFuncionalidade4 = trim($_POST['texto_funcionalidade_4'] ?? '');
+
+        $iconeFuncionalidade5 = trim($_POST['icone_funcionalidade_5'] ?? '');
+        $tituloFuncionalidade5 = trim($_POST['titulo_funcionalidade_5'] ?? '');
+        $textoFuncionalidade5 = trim($_POST['texto_funcionalidade_5'] ?? '');
+
+        $iconeFuncionalidade6 = trim($_POST['icone_funcionalidade_6'] ?? '');
+        $tituloFuncionalidade6 = trim($_POST['titulo_funcionalidade_6'] ?? '');
+        $textoFuncionalidade6 = trim($_POST['texto_funcionalidade_6'] ?? '');
+
+        $tituloSeccao4 = trim($_POST['titulo_seccao4'] ?? '');
+        $textoSeccao4 = trim($_POST['texto_seccao4'] ?? '');
+        $imagemSeccao4 = trim($_POST['imagem_seccao4'] ?? '');
+
+        $cidadePaisFooter = trim($_POST['cidade_pais_footer'] ?? '');
+        $codigoPostalFooter = trim($_POST['codigo_postal_footer'] ?? '');
+        $moradaFooter = trim($_POST['morada_footer'] ?? '');
+
+        $horarioSemanaFooter = trim($_POST['horario_semana_footer'] ?? '');
+        $horarioSabadoFooter = trim($_POST['horario_sabado_footer'] ?? '');
+        $horarioDomingoFooter = trim($_POST['horario_domingo_footer'] ?? '');
+
+        $emailFooter = trim($_POST['email_footer'] ?? '');
+        $telefone1Footer = trim($_POST['telefone_1_footer'] ?? '');
+        $telefone2Footer = trim($_POST['telefone_2_footer'] ?? '');
+
+        $nomeSite = preg_replace('/\s+/', ' ', $nomeSite);
+        $navInicio = preg_replace('/\s+/', ' ', $navInicio);
+        $navSeccao1 = preg_replace('/\s+/', ' ', $navSeccao1);
+        $navSeccao2 = preg_replace('/\s+/', ' ', $navSeccao2);
+        $navSeccao3 = preg_replace('/\s+/', ' ', $navSeccao3);
+
+        $tituloInicio = preg_replace('/\s+/', ' ', $tituloInicio);
+        $tituloSeccao1 = preg_replace('/\s+/', ' ', $tituloSeccao1);
+        $tituloSeccao2 = preg_replace('/\s+/', ' ', $tituloSeccao2);
+        $tituloFuncionalidades = preg_replace('/\s+/', ' ', $tituloFuncionalidades);
+        $tituloSeccao4 = preg_replace('/\s+/', ' ', $tituloSeccao4);
+
+        $cidadePaisFooter = preg_replace('/\s+/', ' ', $cidadePaisFooter);
+        $codigoPostalFooter = preg_replace('/\s+/', ' ', $codigoPostalFooter);
+        $moradaFooter = preg_replace('/\s+/', ' ', $moradaFooter);
+        $horarioSemanaFooter = preg_replace('/\s+/', ' ', $horarioSemanaFooter);
+        $horarioSabadoFooter = preg_replace('/\s+/', ' ', $horarioSabadoFooter);
+        $horarioDomingoFooter = preg_replace('/\s+/', ' ', $horarioDomingoFooter);
+        $emailFooter = preg_replace('/\s+/', '', $emailFooter);
+        $telefone1Footer = preg_replace('/\s+/', '', $telefone1Footer);
+        $telefone2Footer = preg_replace('/\s+/', '', $telefone2Footer);
+
+        $camposObrigatorios = [
+            'nome do site' => $nomeSite,
+            'logo do site' => $logoSite,
+            'link inicial' => $navInicio,
+            'link da secção 1' => $navSeccao1,
+            'link da secção 2' => $navSeccao2,
+            'link da secção 3' => $navSeccao3,
+            'título da secção início' => $tituloInicio,
+            'texto da secção início' => $textoInicio,
+            'imagem da secção início' => $imagemInicio,
+            'título da secção 1' => $tituloSeccao1,
+            'texto da secção 1' => $textoSeccao1,
+            'imagem da secção 1' => $imagemSeccao1,
+            'título da secção 2' => $tituloSeccao2,
+            'texto da secção 2' => $textoSeccao2,
+            'imagem da secção 2' => $imagemSeccao2,
+            'título das funcionalidades' => $tituloFuncionalidades,
+            'texto das funcionalidades' => $textoFuncionalidades,
+            'título da secção 4' => $tituloSeccao4,
+            'texto da secção 4' => $textoSeccao4,
+            'imagem da secção 4' => $imagemSeccao4,
+            'cidade e país do rodapé' => $cidadePaisFooter,
+            'código postal do rodapé' => $codigoPostalFooter,
+            'morada do rodapé' => $moradaFooter,
+            'horário semanal' => $horarioSemanaFooter,
+            'horário de sábado' => $horarioSabadoFooter,
+            'horário de domingo' => $horarioDomingoFooter,
+            'email do rodapé' => $emailFooter,
+            'telefone 1 do rodapé' => $telefone1Footer,
+            'telefone 2 do rodapé' => $telefone2Footer
+        ];
+
+        foreach ($camposObrigatorios as $nomeCampo => $valorCampo) {
+            if ($valorCampo === '') {
+                $erros[] = 'O campo ' . $nomeCampo . ' é obrigatório.';
+            }
+        }
+
+        for ($i = 1; $i <= 6; $i++) {
+            $icone = trim($_POST['icone_funcionalidade_' . $i] ?? '');
+            $titulo = trim($_POST['titulo_funcionalidade_' . $i] ?? '');
+            $texto = trim($_POST['texto_funcionalidade_' . $i] ?? '');
+
+            if ($icone === '' || $titulo === '' || $texto === '') {
+                $erros[] = 'A funcionalidade ' . $i . ' deve ter ícone, título e texto.';
+            }
+
+            if (mb_strlen($icone) > 150) {
+                $erros[] = 'O ícone da funcionalidade ' . $i . ' não pode ter mais de 150 caracteres.';
+            }
+
+            if (mb_strlen($titulo) > 150) {
+                $erros[] = 'O título da funcionalidade ' . $i . ' não pode ter mais de 150 caracteres.';
+            }
+        }
+
+        $titulos = [
+            $nomeSite,
+            $tituloInicio,
+            $tituloSeccao1,
+            $tituloSeccao2,
+            $tituloFuncionalidades,
+            $tituloSeccao4
+        ];
+
+        foreach ($titulos as $titulo) {
+            if (mb_strlen($titulo) > 150) {
+                $erros[] = 'Os títulos não podem ter mais de 150 caracteres.';
+                break;
+            }
+        }
+
+        $imagens = [
+            $logoSite,
+            $imagemInicio,
+            $imagemSeccao1,
+            $imagemSeccao2,
+            $imagemSeccao4
+        ];
+
+        foreach ($imagens as $imagem) {
+            if (mb_strlen($imagem) > 150) {
+                $erros[] = 'Os nomes/caminhos das imagens não podem ter mais de 150 caracteres.';
+                break;
+            }
+        }
+
+        if (!filter_var($emailFooter, FILTER_VALIDATE_EMAIL)) {
+            $erros[] = 'O email do rodapé deve estar num formato válido.';
+        }
+
+        if (!preg_match('/^\+[0-9]{8,15}$/', $telefone1Footer)) {
+            $erros[] = 'O telefone 1 do rodapé deve começar por +, incluir o indicativo do país e conter apenas números.';
+        }
+
+        if (!preg_match('/^\+[0-9]{8,15}$/', $telefone2Footer)) {
+            $erros[] = 'O telefone 2 do rodapé deve começar por +, incluir o indicativo do país e conter apenas números.';
+        }
+
+        if (empty($erros)) {
+            atualizar_conteudo_site($ligacao, 'site_nome', 'navbar', $nomeSite, $nomeSite, $logoSite);
+            atualizar_conteudo_site($ligacao, 'nav_inicio', 'navbar', $navInicio, $navInicio, null);
+            atualizar_conteudo_site($ligacao, 'nav_quem_somos', 'navbar', $navSeccao1, $navSeccao1, null);
+            atualizar_conteudo_site($ligacao, 'nav_solucao', 'navbar', $navSeccao2, $navSeccao2, null);
+            atualizar_conteudo_site($ligacao, 'nav_funcionalidades', 'navbar', $navSeccao3, $navSeccao3, null);
+
+            atualizar_conteudo_site($ligacao, 'inicio', 'inicio', $tituloInicio, $textoInicio, $imagemInicio);
+            atualizar_conteudo_site($ligacao, 'quem_somos', 'quem_somos', $tituloSeccao1, $textoSeccao1, $imagemSeccao1);
+            atualizar_conteudo_site($ligacao, 'solucao', 'solucao', $tituloSeccao2, $textoSeccao2, $imagemSeccao2);
+
+            atualizar_conteudo_site($ligacao, 'funcionalidades_intro', 'funcionalidades', $tituloFuncionalidades, $textoFuncionalidades, null);
+            atualizar_conteudo_site($ligacao, 'funcionalidade_1', 'funcionalidades', $tituloFuncionalidade1, $textoFuncionalidade1, $iconeFuncionalidade1);
+            atualizar_conteudo_site($ligacao, 'funcionalidade_2', 'funcionalidades', $tituloFuncionalidade2, $textoFuncionalidade2, $iconeFuncionalidade2);
+            atualizar_conteudo_site($ligacao, 'funcionalidade_3', 'funcionalidades', $tituloFuncionalidade3, $textoFuncionalidade3, $iconeFuncionalidade3);
+            atualizar_conteudo_site($ligacao, 'funcionalidade_4', 'funcionalidades', $tituloFuncionalidade4, $textoFuncionalidade4, $iconeFuncionalidade4);
+            atualizar_conteudo_site($ligacao, 'funcionalidade_5', 'funcionalidades', $tituloFuncionalidade5, $textoFuncionalidade5, $iconeFuncionalidade5);
+            atualizar_conteudo_site($ligacao, 'funcionalidade_6', 'funcionalidades', $tituloFuncionalidade6, $textoFuncionalidade6, $iconeFuncionalidade6);
+
+            atualizar_conteudo_site($ligacao, 'dashboard_publico', 'dashboard_publico', $tituloSeccao4, $textoSeccao4, $imagemSeccao4);
+
+            atualizar_conteudo_site($ligacao, 'footer_localizacao', 'rodape', 'Localização', $cidadePaisFooter . '|' . $moradaFooter . '|' . $codigoPostalFooter, null);
+            atualizar_conteudo_site($ligacao, 'footer_horario', 'rodape', 'Horário', $horarioSemanaFooter . '|' . $horarioSabadoFooter . '|' . $horarioDomingoFooter, null);
+            atualizar_conteudo_site($ligacao, 'footer_contactos', 'rodape', 'Contactos', $emailFooter . '|' . $telefone1Footer . '|' . $telefone2Footer, null);
+
+            $sucesso = 'Conteúdos atualizados com sucesso.';
+        }
+    }
+
+    $stmt = $ligacao->query("
+        SELECT chave, seccao, titulo, texto, imagem
+        FROM ConteudoSite
+        WHERE ativo = true
+    ");
+
+    foreach ($stmt->fetchAll() as $conteudo) {
+        $conteudos[$conteudo->chave] = $conteudo;
+    }
+} catch (PDOException $e) {
+    $erro = 'Erro ao guardar ou obter os conteúdos do site.';
 }
 
 include __DIR__ . '/../../includes/header.php';
@@ -73,7 +316,25 @@ include __DIR__ . '/../../includes/sidebar.php';
             </div>
         <?php endif; ?>
 
-        <form action="#" method="post" class="formulario-equipamento">
+        <?php if (!empty($sucesso)): ?>
+            <div class="alert alert-success text-center">
+                <?= e($sucesso) ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($erros)): ?>
+            <div class="alert alert-danger">
+                <strong>Foram encontrados os seguintes erros:</strong>
+
+                <ul class="mb-0 mt-2">
+                    <?php foreach ($erros as $erroValidacao): ?>
+                        <li><?= e($erroValidacao) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <form action="" method="post" class="formulario-equipamento" novalidate>
 
             <!-- Bloco informativo -->
             <div class="card mb-4"
@@ -169,7 +430,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <div class="col-12 col-md-6">
                                     <label for="logo_site" class="form-label">Nome do ficheiro do logo</label>
                                     <input type="text" class="form-control" id="logo_site" name="logo_site"
-                                        value="<?= e(conteudo_imagem($conteudos, 'site_nome', 'logo.png')) ?>">
+                                        value="<?= e(conteudo_imagem($conteudos, 'site_nome', 'assets/img/logo.png')) ?>">
                                 </div>
 
                             </div>
@@ -630,7 +891,7 @@ Esta informação ajuda os serviços técnicos e administrativos a acompanhar o 
                     Repor
                 </button>
 
-                <button type="button" class="btn btn-primary" onclick="mostrarMensagemFormulario()">
+                <button type="submit" class="btn btn-primary">
                     Guardar conteúdos
                 </button>
 
