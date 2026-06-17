@@ -22,3 +22,10 @@ define('MYSQL_USERNAME', '1241445');
 define('MYSQL_PASSWORD', 'ribeiro_445');
 
 define('MYSQL_AES_KEY', 'medinventario_1241445_chave_segura');
+
+// --------------------------------------------------------------------
+// Segurança – Encriptação com OpenSSL
+// --------------------------------------------------------------------
+define('OPENSSL_METHOD', 'AES-256-CBC');
+define('OPENSSL_KEY', 'H0SDRQzIGqclX2kbYBk9xspdn9U5f3Wa');
+define('OPENSSL_IV', 'BzKAbjuREsHgnw56');

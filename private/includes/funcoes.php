@@ -71,50 +71,32 @@ function db_connect()
     return $ligacao;
 }
 
-// =====================================================
-// Encriptação simples de IDs para GET
-// Usado mais tarde em detalhes.php, editar.php e apagar.php
-// =====================================================
+// ============================================================
+// Encriptação e desencriptação de valores com OpenSSL
+// ============================================================
 
-function aes_encrypt($valor)
+function aes_encrypt($value)
 {
-    $key = hash('sha256', MYSQL_AES_KEY, true);
-    $iv = random_bytes(16);
-
-    $encrypted = openssl_encrypt(
-        (string) $valor,
-        'AES-256-CBC',
-        $key,
+    return bin2hex(openssl_encrypt(
+        $value,
+        OPENSSL_METHOD,
+        OPENSSL_KEY,
         OPENSSL_RAW_DATA,
-        $iv
-    );
-
-    return rtrim(strtr(base64_encode($iv . $encrypted), '+/', '-_'), '=');
+        OPENSSL_IV
+    ));
 }
 
-function aes_decrypt($valor)
+function aes_decrypt($value)
 {
-    if (empty($valor)) {
-        return null;
+    if (!is_string($value) || strlen($value) % 2 !== 0) {
+        return false;
     }
 
-    $data = base64_decode(strtr($valor, '-_', '+/'));
-
-    if ($data === false || strlen($data) <= 16) {
-        return null;
-    }
-
-    $iv = substr($data, 0, 16);
-    $encrypted = substr($data, 16);
-    $key = hash('sha256', MYSQL_AES_KEY, true);
-
-    $decrypted = openssl_decrypt(
-        $encrypted,
-        'AES-256-CBC',
-        $key,
+    return openssl_decrypt(
+        hex2bin($value),
+        OPENSSL_METHOD,
+        OPENSSL_KEY,
         OPENSSL_RAW_DATA,
-        $iv
+        OPENSSL_IV
     );
-
-    return $decrypted === false ? null : $decrypted;
 }

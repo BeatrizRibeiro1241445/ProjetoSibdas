@@ -8,7 +8,8 @@ if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
     exit;
 }
 
-$idLocalizacao = $_GET['id_localizacao'] ?? null;
+$idLocalizacaoEncrypted = $_GET['id_localizacao'] ?? null;
+$idLocalizacao = aes_decrypt($idLocalizacaoEncrypted);
 
 if (!$idLocalizacao || !is_numeric($idLocalizacao)) {
     header('Location: lista.php');
@@ -217,7 +218,7 @@ include __DIR__ . '/../../includes/sidebar.php';
             </div>
         <?php endif; ?>
 
-        <form action="editar.php?id_localizacao=<?= e($idLocalizacao) ?>" method="post" class="formulario-equipamento" novalidate>
+        <form action="editar.php?id_localizacao=<?= e($idLocalizacaoEncrypted) ?>" method="post" class="formulario-equipamento" novalidate>
 
             <div class="card mb-4">
                 <div class="card-body">
