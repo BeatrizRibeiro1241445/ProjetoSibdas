@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $padraoTexto = '/^[\p{L}0-9\s\/ºª.,-]+$/u';
     $padraoPiso = '/^-?[0-9]{1,2}$/';
-    $padraoSala = '/^[0-9]{1,4}$/';
+    $padraoSala = '/^[\p{L}0-9\s\/ºª.,-]+$/u';
 
     if ($categoria === '') {
         $erros[] = 'A categoria é obrigatória.';
@@ -68,8 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($sala === '') {
         $erros[] = 'A sala/gabinete é obrigatória.';
+    } elseif (mb_strlen($sala) > 80) {
+        $erros[] = 'A sala/gabinete não pode ter mais de 80 caracteres.';
     } elseif (!preg_match($padraoSala, $sala)) {
-        $erros[] = 'A sala/gabinete deve ser apenas um número, por exemplo 1, 12 ou 101.';
+        $erros[] = 'A sala/gabinete contém caracteres inválidos.';
     }
 
     if ($observacoes !== '' && mb_strlen($observacoes) > 500) {
@@ -233,7 +235,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                         <div class="col-12 col-md-4">
                             <label for="sala" class="form-label">Sala / Gabinete</label>
                             <input type="text" class="form-control campo-obrigatorio-localizacao" id="sala"
-                                name="sala" placeholder="Ex.: 101"
+                                name="sala" placeholder="Ex.: Sala 1, Gabinete 4 ou Reanimação"
                                 value="<?= e($sala) ?>">
                         </div>
 

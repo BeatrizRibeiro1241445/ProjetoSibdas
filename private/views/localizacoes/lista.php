@@ -283,8 +283,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-                                        <a href="editar.php" class="btn btn-sm btn-acao btn-editar" title="Editar">
-                                            <i class="fas fa-pen"></i>
+                                        <a href="editar.php?id_localizacao=<?= $localizacao->idLocalizacao ?>" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                            <i class="fas fa-pen-to-square"></i>
                                         </a>
 
                                         <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
