@@ -271,7 +271,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-                                        <a href="editar.php?id_fornecedor=<?= $fornecedor->idFornecedor ?>" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                        <a href="editar.php?id_fornecedor=<?= aes_encrypt($fornecedor->idFornecedor) ?>" class="btn btn-sm btn-acao btn-editar" title="Editar">
                                             <i class="fas fa-pen-to-square"></i>
                                         </a>
 
