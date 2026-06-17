@@ -562,12 +562,39 @@ function removerLocalizacaoEquipamento(index) {
 // Documentos adicionados visualmente no novo equipamento
 // =====================================================
 
+function atualizarInputsDocumentosNovo() {
+    const container = document.getElementById("inputs_documentos_adicionados");
+
+    if (!container) {
+        return;
+    }
+
+    let html = "";
+
+    for (let i = 0; i < documentosAdicionadosNovo.length; i++) {
+        const item = documentosAdicionadosNovo[i];
+        const idTipoDocumento = item.idTipoDocumento || "";
+        const idFornecedor = item.idFornecedor || "";
+
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][idTipoDocumento]' value='" + limparHtml(idTipoDocumento) + "'>";
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][nomeDocumento]' value='" + limparHtml(item.nomeDocumento || "") + "'>";
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][dataDocumento]' value='" + limparHtml(item.dataDocumento || "") + "'>";
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][dataValidade]' value='" + limparHtml(item.dataValidade || "") + "'>";
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][idFornecedor]' value='" + limparHtml(idFornecedor) + "'>";
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][nomeFicheiro]' value='" + limparHtml(item.nomeFicheiro || "") + "'>";
+    }
+
+    container.innerHTML = html;
+}
+
 function renderDocumentosNovo() {
     const tabela = document.getElementById("tabela_documentos_adicionados");
 
     if (!tabela) {
         return;
     }
+
+    atualizarInputsDocumentosNovo();
 
     const totalPaginas = Math.max(
         1,
@@ -589,9 +616,9 @@ function renderDocumentosNovo() {
             const indexReal = inicio + index;
 
             return "<tr>" +
-                "<td>" + limparHtml(item.tipoDocumento) + "</td>" +
-                "<td>" + limparHtml(item.nomeDocumento) + "</td>" +
-                "<td>" + limparHtml(item.dataDocumento) + "</td>" +
+                "<td>" + limparHtml(item.tipoDocumento || "-") + "</td>" +
+                "<td>" + limparHtml(item.nomeDocumento || "-") + "</td>" +
+                "<td>" + limparHtml(item.dataDocumento || "-") + "</td>" +
                 "<td>" + limparHtml(item.dataValidade || "-") + "</td>" +
                 "<td>" + limparHtml(item.fornecedorTexto || "-") + "</td>" +
                 "<td>" + limparHtml(item.nomeFicheiro || "-") + "</td>" +
@@ -635,11 +662,15 @@ function adicionarDocumentoNovo() {
         return;
     }
 
-    const tipo = tipoDocumento.value;
+    const idTipoDocumento = tipoDocumento.value;
+    const tipoTexto = tipoDocumento.options[tipoDocumento.selectedIndex]
+        ? tipoDocumento.options[tipoDocumento.selectedIndex].text
+        : "";
+
     const nome = nomeDocumento.value.trim();
     const data = dataDocumento.value;
     const validade = dataValidade.value;
-    const idFornecedorDocumento = fornecedorDocumento.value;
+    const idFornecedor = fornecedorDocumento.value;
 
     const fornecedorTexto = fornecedorDocumento.options[fornecedorDocumento.selectedIndex]
         ? fornecedorDocumento.options[fornecedorDocumento.selectedIndex].text
@@ -651,7 +682,7 @@ function adicionarDocumentoNovo() {
         nomeFicheiro = nomeFicheiro.substring(nomeFicheiro.lastIndexOf("\\") + 1);
     }
 
-    if (tipo === "" || nome === "" || data === "") {
+    if (idTipoDocumento === "" || nome === "" || data === "") {
         mostrarErroEtapa("Preencha o tipo, o nome e a data do documento antes de adicionar.");
         return;
     }
@@ -667,8 +698,8 @@ function adicionarDocumentoNovo() {
     }
 
     const duplicado = documentosAdicionadosNovo.some(function (item) {
-        return item.tipoDocumento === tipo &&
-            item.nomeDocumento.toLowerCase() === nome.toLowerCase() &&
+        return String(item.idTipoDocumento || "") === String(idTipoDocumento) &&
+            String(item.nomeDocumento || "").toLowerCase() === nome.toLowerCase() &&
             item.dataDocumento === data;
     });
 
@@ -678,12 +709,13 @@ function adicionarDocumentoNovo() {
     }
 
     documentosAdicionadosNovo.push({
-        tipoDocumento: tipo,
+        idTipoDocumento: idTipoDocumento,
+        tipoDocumento: tipoTexto,
         nomeDocumento: nome,
         dataDocumento: data,
         dataValidade: validade,
-        idFornecedorDocumento: idFornecedorDocumento,
-        fornecedorTexto: idFornecedorDocumento === "" ? "" : fornecedorTexto,
+        idFornecedor: idFornecedor,
+        fornecedorTexto: idFornecedor === "" ? "" : fornecedorTexto,
         nomeFicheiro: nomeFicheiro
     });
 
@@ -706,6 +738,7 @@ function removerDocumentoNovo(index) {
     documentosAdicionadosNovo.splice(index, 1);
     renderDocumentosNovo();
 }
+
 // =====================================================
 // Paginação das tabelas da dashboard
 // =====================================================
@@ -806,6 +839,23 @@ function prepararNovoEquipamento() {
         return;
     }
 
+    const dados = window.medInventarioNovoEquipamento || {};
+
+    if (Array.isArray(dados.fornecedoresAssociados)) {
+        fornecedoresAssociadosNovo = dados.fornecedoresAssociados;
+        paginaFornecedoresNovo = 1;
+    }
+
+    if (Array.isArray(dados.localizacoesAssociadas)) {
+        localizacoesAssociadasNovo = dados.localizacoesAssociadas;
+        paginaLocalizacoesNovo = 1;
+    }
+
+    if (Array.isArray(dados.documentosAdicionados)) {
+        documentosAdicionadosNovo = dados.documentosAdicionados;
+        paginaDocumentosNovo = 1;
+    }
+
     renderFornecedoresNovo();
     renderLocalizacoesNovo();
     renderDocumentosNovo();
@@ -816,6 +866,7 @@ function prepararNovoEquipamento() {
         formulario.addEventListener("submit", function () {
             atualizarInputsFornecedoresNovo();
             atualizarInputsLocalizacoesNovo();
+            atualizarInputsDocumentosNovo();
         });
     }
 }
