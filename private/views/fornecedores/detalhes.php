@@ -3,31 +3,101 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$page_title = APP_NAME . ' - Fornecedores';
+$idFornecedorEncrypted = $_GET['id_fornecedor'] ?? null;
+$idFornecedor = aes_decrypt($idFornecedorEncrypted);
+
+if (!$idFornecedor || !is_numeric($idFornecedor)) {
+    header('Location: lista.php');
+    exit;
+}
+
+$idFornecedor = (int) $idFornecedor;
+
+$page_title = APP_NAME . ' - Consultar Fornecedor';
 $body_class = 'pagina-novo-equipamento';
+
+$erro = '';
+$fornecedor = null;
+$equipamentosAssociados = [];
+
+try {
+    $ligacao = db_connect();
+
+    $stmt = $ligacao->prepare("
+        SELECT *
+        FROM Fornecedor
+        WHERE idFornecedor = :idFornecedor
+    ");
+
+    $stmt->bindParam(':idFornecedor', $idFornecedor, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $fornecedor = $stmt->fetch();
+
+    if (!$fornecedor) {
+        header('Location: lista.php');
+        exit;
+    }
+
+    $stmtEquipamentos = $ligacao->prepare("
+        SELECT
+            e.codigoInterno,
+            e.designacao,
+            e.numeroSerie,
+            ef.tipoRelacao,
+            ef.observacoes
+        FROM EquipamentoFornecedor ef
+        INNER JOIN Equipamento e
+            ON ef.idEquipamento = e.idEquipamento
+        WHERE ef.idFornecedor = :idFornecedor
+          AND e.ativo = true
+        ORDER BY e.codigoInterno, ef.tipoRelacao
+    ");
+
+    $stmtEquipamentos->bindParam(':idFornecedor', $idFornecedor, PDO::PARAM_INT);
+    $stmtEquipamentos->execute();
+
+    $equipamentosAssociados = $stmtEquipamentos->fetchAll();
+} catch (PDOException $e) {
+    $erro = 'Erro ao obter os dados do fornecedor.';
+}
 
 include __DIR__ . '/../../includes/header.php';
 include __DIR__ . '/../../includes/nav.php';
 include __DIR__ . '/../../includes/sidebar.php';
 ?>
 
-    <!-- Conteúdo Principal -->
-    <main class="content">
-        <section>
+<!-- Conteúdo Principal -->
+<main class="content">
+    <section>
 
-            <div class="actions-top">
-                <h2>
-                    <strong>
-                        <i class="fas fa-eye"></i> Consultar Fornecedor
-                    </strong>
-                </h2>
+        <div class="actions-top">
+            <h2>
+                <strong>
+                    <i class="fas fa-eye"></i> Consultar Fornecedor
+                </strong>
 
-                <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
+                <?php if ($fornecedor && $fornecedor->ativo == 1): ?>
+                    <span class="badge bg-success">Ativo</span>
+                <?php elseif ($fornecedor): ?>
+                    <span class="badge bg-secondary">Inativo</span>
+                <?php endif; ?>
+            </h2>
+
+            <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+
+        <hr>
+
+        <?php if (!empty($erro)): ?>
+            <div class="alert alert-danger text-center">
+                <?= e($erro) ?>
             </div>
+        <?php endif; ?>
 
-            <hr>
+        <?php if ($fornecedor): ?>
 
             <ul class="nav nav-tabs mb-4" id="separadoresDetalhesFornecedor" role="tablist">
 
@@ -70,12 +140,12 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <tbody>
                                     <tr>
                                         <th>Nome da empresa</th>
-                                        <td>MedTech Portugal</td>
+                                        <td><?= e($fornecedor->designacao) ?></td>
                                     </tr>
 
                                     <tr>
                                         <th>NIF</th>
-                                        <td>509000000</td>
+                                        <td><?= e($fornecedor->nif) ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -94,22 +164,22 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <tbody>
                                     <tr>
                                         <th>Contacto telefónico</th>
-                                        <td>+351 220 000 000</td>
+                                        <td><?= e($fornecedor->telefone ?: '-') ?></td>
                                     </tr>
 
                                     <tr>
                                         <th>Email</th>
-                                        <td>geral@medtech.pt</td>
+                                        <td><?= e($fornecedor->email) ?></td>
                                     </tr>
 
                                     <tr>
                                         <th>Morada</th>
-                                        <td>Rua da Saúde, Porto, Portugal</td>
+                                        <td><?= e($fornecedor->morada ?: '-') ?></td>
                                     </tr>
 
                                     <tr>
                                         <th>Website</th>
-                                        <td>https://www.medtech.pt</td>
+                                        <td><?= e($fornecedor->website ?: '-') ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -129,8 +199,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <i class="fas fa-users"></i> Pessoas de contacto
                             </h3>
 
-                            <table
-                                class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
                                 <thead>
                                     <tr>
                                         <th>Pessoa de contacto</th>
@@ -139,15 +208,31 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td>Ana Martins</td>
-                                        <td>+351 910 000 000</td>
-                                    </tr>
+                                    <?php if (!empty($fornecedor->pessoaContacto) || !empty($fornecedor->pessoaContacto2)): ?>
 
-                                    <tr>
-                                        <td>Pedro Costa</td>
-                                        <td>+351 911 111 111</td>
-                                    </tr>
+                                        <?php if (!empty($fornecedor->pessoaContacto)): ?>
+                                            <tr>
+                                                <td><?= e($fornecedor->pessoaContacto) ?></td>
+                                                <td><?= e($fornecedor->telefonePessoaContacto ?: '-') ?></td>
+                                            </tr>
+                                        <?php endif; ?>
+
+                                        <?php if (!empty($fornecedor->pessoaContacto2)): ?>
+                                            <tr>
+                                                <td><?= e($fornecedor->pessoaContacto2) ?></td>
+                                                <td><?= e($fornecedor->telefonePessoaContacto2 ?: '-') ?></td>
+                                            </tr>
+                                        <?php endif; ?>
+
+                                    <?php else: ?>
+
+                                        <tr>
+                                            <td colspan="2" class="text-center">
+                                                Não existem pessoas de contacto registadas.
+                                            </td>
+                                        </tr>
+
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
 
@@ -162,7 +247,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </h3>
 
                             <p class="mb-0">
-                                Fornecedor responsável por assistência técnica de equipamentos críticos.
+                                <?= e($fornecedor->observacoes ?: '-') ?>
                             </p>
 
                         </div>
@@ -194,33 +279,33 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     </thead>
 
                                     <tbody>
-                                        <tr>
-                                            <td>004.002.00</td>
+                                        <?php if (!empty($equipamentosAssociados)): ?>
 
-                                            <td>
-                                                <strong>Monitor Multiparamétrico</strong>
-                                            </td>
+                                            <?php foreach ($equipamentosAssociados as $equipamento): ?>
+                                                <tr>
+                                                    <td><?= e($equipamento->codigoInterno) ?></td>
 
-                                            <td>MP5-2022-45873</td>
+                                                    <td>
+                                                        <strong><?= e($equipamento->designacao) ?></strong>
+                                                    </td>
 
-                                            <td>Empresa de assistência técnica</td>
+                                                    <td><?= e($equipamento->numeroSerie) ?></td>
 
-                                            <td>Responsável pela manutenção preventiva deste equipamento.</td>
-                                        </tr>
+                                                    <td><?= e($equipamento->tipoRelacao) ?></td>
 
-                                        <tr>
-                                            <td>003.001.00</td>
+                                                    <td><?= e($equipamento->observacoes ?: '-') ?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
 
-                                            <td>
-                                                <strong>Ventilador Pulmonar</strong>
-                                            </td>
+                                        <?php else: ?>
 
-                                            <td>EV500-2021-55210</td>
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    Não existem equipamentos ativos associados a este fornecedor.
+                                                </td>
+                                            </tr>
 
-                                            <td>Manutenção preventiva</td>
-
-                                            <td>Entidade responsável pela manutenção anual.</td>
-                                        </tr>
+                                        <?php endif; ?>
                                     </tbody>
 
                                 </table>
@@ -233,7 +318,9 @@ include __DIR__ . '/../../includes/sidebar.php';
 
             </div>
 
-        </section>
-    </main>
+        <?php endif; ?>
+
+    </section>
+</main>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>
