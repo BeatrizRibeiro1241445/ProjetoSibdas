@@ -275,7 +275,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <i class="fas fa-pen-to-square"></i>
                                         </a>
 
-                                        <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
+                                        <a href="apagar.php?id_fornecedor=<?= aes_encrypt($fornecedor->idFornecedor) ?>" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
