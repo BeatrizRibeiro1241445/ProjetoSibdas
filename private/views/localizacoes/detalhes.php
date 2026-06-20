@@ -3,31 +3,140 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$page_title = APP_NAME . ' - Localizações';
+$idLocalizacaoEncrypted = $_GET['id_localizacao'] ?? null;
+$idLocalizacao = aes_decrypt($idLocalizacaoEncrypted);
+
+if (!$idLocalizacao || !is_numeric($idLocalizacao)) {
+    header('Location: lista.php');
+    exit;
+}
+
+$idLocalizacao = (int) $idLocalizacao;
+
+$page_title = APP_NAME . ' - Consultar Localização';
 $body_class = 'pagina-novo-equipamento';
+
+$erro = '';
+$localizacao = null;
+$equipamentos = [];
+
+function classe_estado_detalhes_localizacao($estado)
+{
+    switch ($estado) {
+        case 'Ativo':
+            return 'table-success fw-bold';
+
+        case 'Em manutenção':
+        case 'Em calibração':
+            return 'table-warning fw-bold';
+
+        case 'Inativo':
+        case 'Abatido':
+            return 'table-secondary fw-bold';
+
+        default:
+            return 'fw-bold';
+    }
+}
+
+function classe_criticidade_detalhes_localizacao($criticidade)
+{
+    switch ($criticidade) {
+        case 'Suporte de vida':
+        case 'Alta':
+            return 'table-danger fw-bold';
+
+        case 'Média':
+            return 'table-warning fw-bold';
+
+        case 'Baixa':
+            return 'table-success fw-bold';
+
+        default:
+            return 'fw-bold';
+    }
+}
+
+try {
+    $ligacao = db_connect();
+
+    $stmt = $ligacao->prepare("
+        SELECT *
+        FROM Localizacao
+        WHERE idLocalizacao = :idLocalizacao
+    ");
+
+    $stmt->bindParam(':idLocalizacao', $idLocalizacao, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $localizacao = $stmt->fetch();
+
+    if (!$localizacao) {
+        header('Location: lista.php');
+        exit;
+    }
+
+    $stmtEquipamentos = $ligacao->prepare("
+        SELECT
+            e.codigoInterno,
+            e.designacao,
+            e.numeroSerie,
+            ee.descricao AS estado,
+            cr.descricao AS criticidade
+        FROM Equipamento e
+        INNER JOIN EstadoEquipamento ee
+            ON e.idEstadoEquipamento = ee.idEstadoEquipamento
+        INNER JOIN CriticidadeEquipamento cr
+            ON e.idCriticidadeEquipamento = cr.idCriticidadeEquipamento
+        WHERE e.idLocalizacao = :idLocalizacao
+          AND e.ativo = true
+        ORDER BY e.codigoInterno
+    ");
+
+    $stmtEquipamentos->bindParam(':idLocalizacao', $idLocalizacao, PDO::PARAM_INT);
+    $stmtEquipamentos->execute();
+
+    $equipamentos = $stmtEquipamentos->fetchAll();
+} catch (PDOException $e) {
+    $erro = 'Erro ao obter os dados da localização.';
+}
 
 include __DIR__ . '/../../includes/header.php';
 include __DIR__ . '/../../includes/nav.php';
 include __DIR__ . '/../../includes/sidebar.php';
 ?>
 
-    <!-- Conteúdo Principal -->
-    <main class="content">
-        <section>
+<!-- Conteúdo Principal -->
+<main class="content">
+    <section>
 
-            <div class="actions-top">
-                <h2>
-                    <strong>
-                        <i class="fas fa-eye"></i> Consultar Localização
-                    </strong>
-                </h2>
+        <div class="actions-top">
+            <h2>
+                <strong>
+                    <i class="fas fa-eye"></i> Consultar Localização
+                </strong>
 
-                <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
+                <?php if ($localizacao && $localizacao->ativo == 1): ?>
+                    <span class="badge bg-success">Ativa</span>
+                <?php elseif ($localizacao): ?>
+                    <span class="badge bg-secondary">Inativa</span>
+                <?php endif; ?>
+            </h2>
+
+            <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+
+        <hr>
+
+        <?php if (!empty($erro)): ?>
+            <div class="alert alert-danger text-center">
+                <?= e($erro) ?>
             </div>
+        <?php endif; ?>
 
-            <hr>
+        <?php if ($localizacao): ?>
 
             <div class="card mb-4">
                 <div class="card-body">
@@ -40,34 +149,32 @@ include __DIR__ . '/../../includes/sidebar.php';
                         <tbody>
                             <tr>
                                 <th>Categoria</th>
-                                <td>Área clínica crítica</td>
+                                <td><?= e($localizacao->categoria) ?></td>
                             </tr>
 
                             <tr>
                                 <th>Edifício</th>
-                                <td>Hospital Central</td>
+                                <td><?= e($localizacao->edificio) ?></td>
                             </tr>
 
                             <tr>
                                 <th>Piso</th>
-                                <td>Piso 2</td>
+                                <td><?= e($localizacao->piso) ?></td>
                             </tr>
 
                             <tr>
                                 <th>Serviço / Departamento</th>
-                                <td>Unidade de Cuidados Intensivos</td>
+                                <td><?= e($localizacao->servico) ?></td>
                             </tr>
 
                             <tr>
                                 <th>Sala / Gabinete</th>
-                                <td>Sala 1</td>
+                                <td><?= e($localizacao->sala) ?></td>
                             </tr>
 
                             <tr>
                                 <th>Observações</th>
-                                <td>
-                                    Localização destinada a equipamentos críticos e de suporte de vida.
-                                </td>
+                                <td><?= e($localizacao->observacoes ?: '-') ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -96,47 +203,37 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>004.002.00</td>
+                                <?php if (!empty($equipamentos)): ?>
 
-                                    <td>
-                                        <strong>Monitor Multiparamétrico</strong>
-                                    </td>
+                                    <?php foreach ($equipamentos as $equipamento): ?>
+                                        <tr>
+                                            <td><?= e($equipamento->codigoInterno) ?></td>
 
-                                    <td>MP5-2022-45873</td>
+                                            <td>
+                                                <strong><?= e($equipamento->designacao) ?></strong>
+                                            </td>
 
-                                    <td class="table-success fw-bold">Ativo</td>
+                                            <td><?= e($equipamento->numeroSerie) ?></td>
 
-                                    <td class="table-danger fw-bold">Suporte de vida</td>
-                                </tr>
+                                            <td class="<?= e(classe_estado_detalhes_localizacao($equipamento->estado)) ?>">
+                                                <?= e($equipamento->estado) ?>
+                                            </td>
 
-                                <tr>
-                                    <td>003.001.00</td>
+                                            <td class="<?= e(classe_criticidade_detalhes_localizacao($equipamento->criticidade)) ?>">
+                                                <?= e($equipamento->criticidade) ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
 
-                                    <td>
-                                        <strong>Ventilador Pulmonar</strong>
-                                    </td>
+                                <?php else: ?>
 
-                                    <td>EV500-2021-55210</td>
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            Não existem equipamentos ativos nesta localização.
+                                        </td>
+                                    </tr>
 
-                                    <td class="table-success fw-bold">Ativo</td>
-
-                                    <td class="table-warning fw-bold">Alta</td>
-                                </tr>
-
-                                <tr>
-                                    <td>007.001.00</td>
-
-                                    <td>
-                                        <strong>Bomba de Infusão</strong>
-                                    </td>
-
-                                    <td>INF-2020-88321</td>
-
-                                    <td class="table-warning fw-bold">Em manutenção</td>
-
-                                    <td class="table-warning fw-bold">Alta</td>
-                                </tr>
+                                <?php endif; ?>
                             </tbody>
 
                         </table>
@@ -145,7 +242,9 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </div>
             </div>
 
-        </section>
-    </main>
+        <?php endif; ?>
+
+    </section>
+</main>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>

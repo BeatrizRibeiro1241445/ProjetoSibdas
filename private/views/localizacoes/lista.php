@@ -279,7 +279,7 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                                 <td>
                                     <div class="acoes-tabela">
-                                        <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                        <a href="detalhes.php?id_localizacao=<?= aes_encrypt($localizacao->idLocalizacao) ?>" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
                                             <i class="fas fa-eye"></i>
                                         </a>
 
