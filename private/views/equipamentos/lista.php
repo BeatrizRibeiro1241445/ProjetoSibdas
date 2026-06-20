@@ -458,7 +458,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <i class="fas fa-pen-to-square"></i>
                                         </a>
 
-                                        <a href="apagar.php" class="btn btn-sm btn-acao btn-arquivar" title="Arquivar">
+                                        <a href="apagar.php?id_equipamento=<?= aes_encrypt($equipamento->idEquipamento) ?>" class="btn btn-sm btn-acao btn-arquivar" title="Arquivar">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
