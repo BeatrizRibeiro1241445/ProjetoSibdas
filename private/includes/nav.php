@@ -3,6 +3,28 @@ start_session();
 
 $nomeUtilizador = $_SESSION['nome'] ?? $_SESSION['utilizador'] ?? 'Utilizador';
 $perfilUtilizador = $_SESSION['perfil'] ?? 'utilizador';
+
+switch ($perfilUtilizador) {
+    case 'administrador':
+        $perfilTexto = 'Administrador';
+        break;
+
+    case 'tecnico':
+        $perfilTexto = 'Técnico';
+        break;
+
+    case 'gestor_hospitalar':
+        $perfilTexto = 'Gestor Hospitalar';
+        break;
+
+    case 'profissional_saude':
+        $perfilTexto = 'Profissional de Saúde';
+        break;
+
+    default:
+        $perfilTexto = 'Utilizador';
+        break;
+}
 ?>
 
 <header class="bng-navbar-menu">
@@ -18,7 +40,11 @@ $perfilUtilizador = $_SESSION['perfil'] ?? 'utilizador';
 
         <button class="utilizador-menu-botao" type="button">
             <i class="fas fa-user-circle"></i>
-            Utilizador
+
+            <span class="utilizador-menu-botao-texto">
+                <strong><?= e($nomeUtilizador) ?></strong>
+            </span>
+
             <i class="fas fa-chevron-down"></i>
         </button>
 
@@ -29,7 +55,7 @@ $perfilUtilizador = $_SESSION['perfil'] ?? 'utilizador';
 
                 <div class="utilizador-menu-texto">
                     <strong><?= e($nomeUtilizador) ?></strong>
-                    <span><?= e(ucfirst($perfilUtilizador)) ?></span>
+                    <span><?= e($perfilTexto) ?></span>
                 </div>
             </div>
 

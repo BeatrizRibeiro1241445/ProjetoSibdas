@@ -14,51 +14,9 @@ $body_class = 'login-page';
 $erro = '';
 $utilizadorPreenchido = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $utilizadorPreenchido = trim($_POST['utilizador'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if ($utilizadorPreenchido === '' || $password === '') {
-        $erro = 'Preencha o utilizador e a palavra-passe.';
-    } else {
-        try {
-            $ligacao = db_connect();
-
-            $stmt = $ligacao->prepare("
-                SELECT
-                    idUtilizador,
-                    username,
-                    email,
-                    nome,
-                    passwordHash,
-                    perfil
-                FROM Utilizador
-                WHERE ativo = true
-                  AND (username = :utilizador OR email = :utilizador)
-                LIMIT 1
-            ");
-
-            $stmt->bindValue(':utilizador', $utilizadorPreenchido, PDO::PARAM_STR);
-            $stmt->execute();
-
-            $utilizador = $stmt->fetch();
-
-            if ($utilizador && password_verify($password, $utilizador->passwordHash)) {
-                $_SESSION['idUtilizador'] = $utilizador->idUtilizador;
-                $_SESSION['utilizador'] = $utilizador->username;
-                $_SESSION['nome'] = $utilizador->nome;
-                $_SESSION['perfil'] = $utilizador->perfil;
-
-                header('Location: ' . BASE_URL . '/private/area_pessoal.php');
-                exit;
-            }
-
-            $erro = 'Utilizador ou palavra-passe inválidos.';
-
-        } catch (PDOException $e) {
-            $erro = 'Erro ao validar o utilizador.';
-        }
-    }
+if (!empty($_SESSION['server_error'])) {
+    $erro = $_SESSION['server_error'];
+    unset($_SESSION['server_error']);
 }
 
 include __DIR__ . '/../private/includes/header.php';
@@ -93,7 +51,7 @@ include __DIR__ . '/../private/includes/header.php';
                     <?php endif; ?>
 
                     <!-- Formulário de login -->
-                    <form action="login.php" method="post" novalidate>
+                    <form action="processa_login.php" method="post" novalidate>
 
                         <div class="mb-3">
                             <label for="utilizador" class="form-label">
