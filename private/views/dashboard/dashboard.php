@@ -29,6 +29,8 @@ $equipamentosCriticidadeElevada = [];
 $documentosExpirar = [];
 $documentosExpirados = [];
 $equipamentosAvariadosForaServico = [];
+$distribuicaoCategorias = [];
+$distribuicaoServicosGrafico = [];
 
 try {
     $ligacao = db_connect();
@@ -345,6 +347,37 @@ try {
             WHERE e.ativo = true
               AND ee.descricao IN ('Inativo', 'Abatido')
             ORDER BY e.codigoInterno
+        ")
+        ->fetchAll();
+
+    $distribuicaoCategorias = $ligacao
+        ->query("
+            SELECT
+                ce.descricao AS categoria,
+                COUNT(e.idEquipamento) AS total
+            FROM CategoriaEquipamento ce
+            LEFT JOIN Equipamento e
+                ON ce.idCategoriaEquipamento = e.idCategoriaEquipamento
+               AND e.ativo = true
+            GROUP BY ce.idCategoriaEquipamento, ce.descricao
+            HAVING total > 0
+            ORDER BY total DESC, ce.descricao
+        ")
+        ->fetchAll();
+
+    $distribuicaoServicosGrafico = $ligacao
+        ->query("
+            SELECT
+                l.servico,
+                COUNT(e.idEquipamento) AS total
+            FROM Localizacao l
+            LEFT JOIN Equipamento e
+                ON l.idLocalizacao = e.idLocalizacao
+               AND e.ativo = true
+            WHERE l.ativo = true
+            GROUP BY l.servico
+            HAVING total > 0
+            ORDER BY total DESC, l.servico
         ")
         ->fetchAll();
 } catch (PDOException $e) {
@@ -977,42 +1010,38 @@ include __DIR__ . '/../../includes/sidebar.php';
                             <i class="fas fa-chart-pie"></i> Distribuição por categoria
                         </h4>
 
-                        <div class="row align-items-center mt-4">
+                        <?php if (!empty($distribuicaoCategorias)): ?>
 
-                            <div class="col-12 col-md-6 text-center">
-                                <div class="grafico-pie grafico-categoria"></div>
-                            </div>
+                            <?php foreach ($distribuicaoCategorias as $linha): ?>
+                                <?php
+                                $totalCategoria = (int) $linha->total;
+                                $percentagemCategoria = $totalEquipamentos > 0 ? round(($totalCategoria / $totalEquipamentos) * 100, 1) : 0;
+                                ?>
 
-                            <div class="col-12 col-md-6 mt-4 mt-md-0">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong><?= e($linha->categoria) ?></strong>
+                                        <span><?= e($totalCategoria) ?> equipamento(s) - <?= e($percentagemCategoria) ?>%</span>
+                                    </div>
 
-                                <p class="legenda-grafico">
-                                    <span class="cor-grafico azul"></span>
-                                    <strong>Monitorização</strong><br>
-                                </p>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: <?= e($percentagemCategoria) ?>%;"
+                                            aria-valuenow="<?= e($percentagemCategoria) ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
 
-                                <p class="legenda-grafico">
-                                    <span class="cor-grafico verde"></span>
-                                    <strong>Suporte de vida</strong><br>
-                                </p>
+                        <?php else: ?>
 
-                                <p class="legenda-grafico">
-                                    <span class="cor-grafico amarelo"></span>
-                                    <strong>Infusão</strong><br>
-                                </p>
+                            <p class="text-center mb-0">
+                                Não existem equipamentos ativos para apresentar por categoria.
+                            </p>
 
-                                <p class="legenda-grafico">
-                                    <span class="cor-grafico vermelho"></span>
-                                    <strong>Diagnóstico</strong><br>
-                                </p>
-
-                                <p class="legenda-grafico">
-                                    <span class="cor-grafico cinzento"></span>
-                                    <strong>Outros</strong><br>
-                                </p>
-
-                            </div>
-
-                        </div>
+                        <?php endif; ?>
 
                     </div>
                 </div>
@@ -1023,30 +1052,41 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <div class="card-body">
 
                         <h4 id="secDistribuicaoLocalizacao" class="text-center">
-                            <i class="fas fa-chart-pie"></i> Distribuição por localização
+                            <i class="fas fa-chart-pie"></i> Distribuição por serviço
                         </h4>
 
-                        <div class="row align-items-center mt-4">
+                        <?php if (!empty($distribuicaoServicosGrafico)): ?>
 
-                            <div class="col-12 col-md-6 text-center">
-                                <div class="grafico-pie grafico-localizacao"></div>
-                            </div>
+                            <?php foreach ($distribuicaoServicosGrafico as $linha): ?>
+                                <?php
+                                $totalServico = (int) $linha->total;
+                                $percentagemServico = $totalEquipamentos > 0 ? round(($totalServico / $totalEquipamentos) * 100, 1) : 0;
+                                ?>
 
-                            <div class="col-12 col-md-6 mt-4 mt-md-0">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong><?= e($linha->servico) ?></strong>
+                                        <span><?= e($totalServico) ?> equipamento(s) - <?= e($percentagemServico) ?>%</span>
+                                    </div>
 
-                                <p class="legenda-grafico">
-                                    <span class="cor-grafico azul"></span>
-                                    <strong>Serviços hospitalares</strong><br>
-                                </p>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: <?= e($percentagemServico) ?>%;"
+                                            aria-valuenow="<?= e($percentagemServico) ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
 
-                                <p class="legenda-grafico">
-                                    <span class="cor-grafico verde"></span>
-                                    <strong>Localizações clínicas</strong><br>
-                                </p>
+                        <?php else: ?>
 
-                            </div>
+                            <p class="text-center mb-0">
+                                Não existem equipamentos ativos para apresentar por serviço.
+                            </p>
 
-                        </div>
+                        <?php endif; ?>
 
                     </div>
                 </div>

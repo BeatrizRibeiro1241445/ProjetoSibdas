@@ -3,6 +3,11 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
+if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico', 'gestor_hospitalar'])) {
+    header('Location: ' . BASE_URL . '/private/area_pessoal.php');
+    exit;
+}
+
 if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
     header('Location: ' . BASE_URL . '/public/login.php');
     exit;

@@ -3,6 +3,11 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
+if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico'])) {
+    header('Location: lista.php');
+    exit;
+}
+
 $idEncrypted = $_GET['id_equipamento'] ?? null;
 $idEquipamento = aes_decrypt($idEncrypted);
 

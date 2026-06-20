@@ -3,6 +3,11 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
+if (($_SESSION['perfil'] ?? '') !== 'administrador') {
+    header('Location: ' . BASE_URL . '/private/area_pessoal.php');
+    exit;
+}
+
 $page_title = APP_NAME . ' - Gestão de Conteúdos';
 $body_class = 'pagina-novo-equipamento';
 

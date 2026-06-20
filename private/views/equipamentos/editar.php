@@ -8,6 +8,11 @@ if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
     exit;
 }
 
+if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico'])) {
+    header('Location: lista.php');
+    exit;
+}
+
 $idEquipamentoEncrypted = $_GET['id_equipamento'] ?? null;
 $idEquipamento = aes_decrypt($idEquipamentoEncrypted);
 

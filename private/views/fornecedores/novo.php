@@ -3,6 +3,11 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
+if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico', 'gestor_hospitalar'])) {
+    header('Location: ' . BASE_URL . '/private/area_pessoal.php');
+    exit;
+}
+
 $page_title = APP_NAME . ' - Novo Fornecedor';
 $body_class = 'pagina-novo-equipamento';
 

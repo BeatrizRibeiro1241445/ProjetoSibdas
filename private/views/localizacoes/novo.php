@@ -3,6 +3,11 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
+if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico'])) {
+    header('Location: lista.php');
+    exit;
+}
+
 $page_title = APP_NAME . ' - Nova Localização';
 $body_class = 'pagina-novo-equipamento';
 
