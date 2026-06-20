@@ -450,7 +450,7 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                                 <td>
                                     <div class="acoes-tabela">
-                                        <a href="detalhes.php" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
+                                        <a href="detalhes.php?id_equipamento=<?= aes_encrypt($equipamento->idEquipamento) ?>" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
                                             <i class="fas fa-eye"></i>
                                         </a>
 
