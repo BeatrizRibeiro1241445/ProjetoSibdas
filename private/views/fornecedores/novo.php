@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefonePessoaContacto2 = preg_replace('/\s+/', '', $telefonePessoaContacto2);
 
     $padraoTelefone = '/^\+[0-9]{8,15}$/';
-    $padraoWebsite = '/^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/';
+    $padraoWebsite = '/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/';
 
     if ($designacao === '') {
         $erros[] = 'O nome da empresa é obrigatório.';
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mb_strlen($website) > 150) {
             $erros[] = 'O website não pode ter mais de 150 caracteres.';
         } elseif (!preg_match($padraoWebsite, $website)) {
-            $erros[] = 'O website deve ter um formato válido, começando por http:// ou https://.';
+            $erros[] = 'O website deve ter um formato válido.';
         }
     }
 
@@ -342,17 +342,9 @@ include __DIR__ . '/../../includes/sidebar.php';
                             <div class="mb-3">
                                 <label for="website" class="form-label">Website</label>
                                 <input type="text" class="form-control" id="website" name="website"
-                                    placeholder="Ex.: https://www.fornecedor.pt"
+                                    placeholder="Ex.: fornecedor.pt"
                                     value="<?= e($website) ?>">
                             </div>
-
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-primary"
-                                    onclick="avancarFornecedorContactos()">
-                                    Página seguinte
-                                </button>
-                            </div>
-
                         </div>
                     </div>
 
@@ -425,12 +417,9 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </div>
 
                             <div class="d-flex justify-content-end gap-2">
-
-                                <button type="button" class="btn btn-outline-secondary botao-anterior"
-                                    onclick="voltarFornecedorGeral()">
-                                    Página anterior
-                                </button>
-
+                                <a href="lista.php" class="btn btn-outline-secondary botao-anterior">
+                                    Cancelar
+                                </a>
                                 <button type="submit" class="btn btn-primary">
                                     Guardar fornecedor
                                 </button>

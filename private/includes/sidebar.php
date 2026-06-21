@@ -25,6 +25,12 @@ $perfil = $_SESSION['perfil'] ?? '';
         <?php endif; ?>
 
         <?php if ($perfil === 'administrador'): ?>
+            <a href="<?= BASE_URL ?>/private/views/utilizadores/lista.php">
+                <i class="fas fa-users"></i> Utilizadores
+            </a>
+        <?php endif; ?>
+
+        <?php if ($perfil === 'administrador'): ?>
             <a href="<?= BASE_URL ?>/private/views/gestao_conteudos/gestao_conteudos.php">
                 <i class="fas fa-pen-to-square"></i> Conteúdos do site
             </a>

@@ -1219,12 +1219,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     placeholder="Indique para que é utilizado o equipamento ou outra informação relevante."><?= e($observacoes) ?></textarea>
                             </div>
 
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-primary" onclick="avancarParaFornecedores()">
-                                    Página seguinte
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <button type="reset" class="btn btn-outline-secondary botao-anterior">
+                                    Repor
+                                </button>
+
+                                <button type="submit" class="btn btn-primary">
+                                    Guardar informações
                                 </button>
                             </div>
-
                         </div>
                     </div>
 
@@ -1280,7 +1283,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     placeholder="Ex.: entidade responsável pela manutenção preventiva deste equipamento."></textarea>
                             </div>
 
-                            <button type="button" class="btn btn-primary" onclick="associarFornecedor()">
+                            <button type="button" class="btn btn-primary" id="btn-associar-fornecedor">
                                 Associar fornecedor
                             </button>
 
@@ -1312,17 +1315,18 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                             <div id="paginacao_fornecedores_associados"></div>
 
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaGeral()">
-                                    Página anterior
-                                </button>
-
-                                <button type="button" class="btn btn-primary" onclick="avancarParaLocalizacao()">
-                                    Página seguinte
-                                </button>
-                            </div>
-
                         </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <button type="reset" class="btn btn-outline-secondary botao-anterior">
+                            Repor
+                        </button>
+
+                        <button type="submit" class="btn btn-primary">
+                            Guardar informações
+                        </button>
                     </div>
 
                 </div>
@@ -1387,7 +1391,7 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                             </div>
 
-                            <button type="button" class="btn btn-primary" onclick="associarLocalizacao()">
+                            <button type="button" class="btn btn-primary" id="btn-associar-localizacao">
                                 Associar localização
                             </button>
 
@@ -1420,17 +1424,18 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                             <div id="paginacao_localizacoes_associadas"></div>
 
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaFornecedores()">
-                                    Página anterior
-                                </button>
-
-                                <button type="button" class="btn btn-primary" onclick="avancarParaDocumentacao()">
-                                    Página seguinte
-                                </button>
-                            </div>
-
                         </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <button type="reset" class="btn btn-outline-secondary botao-anterior">
+                            Repor
+                        </button>
+
+                        <button type="submit" class="btn btn-primary">
+                            Guardar informações
+                        </button>
                     </div>
 
                 </div>
@@ -1502,7 +1507,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <input type="file" class="form-control" id="ficheiro_documento">
                             </div>
 
-                            <button type="button" class="btn btn-primary" onclick="adicionarDocumentoNovo()">
+                            <button type="button" class="btn btn-primary" id="btn-adicionar-documento">
                                 Adicionar documento
                             </button>
 
@@ -1537,17 +1542,18 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                             <div id="paginacao_documentos_adicionados"></div>
 
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaLocalizacao()">
-                                    Página anterior
-                                </button>
-
-                                <button type="button" class="btn btn-primary" onclick="avancarParaGarantias()">
-                                    Página seguinte
-                                </button>
-                            </div>
-
                         </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <button type="reset" class="btn btn-outline-secondary botao-anterior">
+                            Repor
+                        </button>
+
+                        <button type="submit" class="btn btn-primary">
+                            Guardar informações
+                        </button>
                     </div>
 
                 </div>
@@ -1645,16 +1651,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     name="observacoesGarantia" rows="4"><?= e($observacoesGarantia) ?></textarea>
                             </div>
 
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-outline-secondary botao-anterior" onclick="voltarParaDocumentacao()">
-                                    Página anterior
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <button type="reset" class="btn btn-outline-secondary botao-anterior">
+                                    Repor
                                 </button>
 
                                 <button type="submit" class="btn btn-primary">
-                                    Guardar alterações
+                                    Guardar informações
                                 </button>
                             </div>
-
                         </div>
                     </div>
 
@@ -1669,12 +1674,12 @@ include __DIR__ . '/../../includes/sidebar.php';
     </section>
 </main>
 
-<script>
-    window.medInventarioNovoEquipamento = {
-        fornecedoresAssociados: <?= json_encode($fornecedoresAssociadosJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
-        localizacoesAssociadas: <?= json_encode($localizacoesAssociadasJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
-        documentosAdicionados: <?= json_encode($documentosAdicionadosJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>
-    };
-</script>
+<input type="hidden" id="dados_fornecedores_associados"
+    value='<?= e(json_encode($fornecedoresAssociadosJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)) ?>'>
 
+<input type="hidden" id="dados_localizacoes_associadas"
+    value='<?= e(json_encode($localizacoesAssociadasJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)) ?>'>
+
+<input type="hidden" id="dados_documentos_adicionados"
+    value='<?= e(json_encode($documentosAdicionadosJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)) ?>'>
 <?php include __DIR__ . '/../../includes/footer.php'; ?>

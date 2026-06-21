@@ -76,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $fornecedor) {
     $telefonePessoaContacto2 = preg_replace('/\s+/', '', $telefonePessoaContacto2);
 
     $padraoTelefone = '/^\+[0-9]{8,15}$/';
+    $padraoWebsite = '/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/';
 
     if ($designacao === '') {
         $erros[] = 'O nome da empresa é obrigatório.';
@@ -110,8 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $fornecedor) {
     if ($website !== '') {
         if (mb_strlen($website) > 150) {
             $erros[] = 'O website não pode ter mais de 150 caracteres.';
-        } elseif (!filter_var($website, FILTER_VALIDATE_URL)) {
-            $erros[] = 'O website deve estar num formato válido, por exemplo https://www.fornecedor.pt.';
+        } elseif (!preg_match($padraoWebsite, $website)) {
+            $erros[] = 'O website deve estar num formato válido.';
         }
     }
 
@@ -316,9 +317,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     <input type="text" class="form-control campo-obrigatorio-fornecedor" id="nif"
                                         name="nif" value="<?= e($fornecedor->nif) ?>">
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
 
@@ -357,13 +356,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     name="website" value="<?= e($fornecedor->website ?? '') ?>">
                             </div>
 
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-primary"
-                                    onclick="avancarFornecedorContactos()">
-                                    Página seguinte
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <button type="reset" class="btn btn-outline-secondary botao-anterior">
+                                    Repor
+                                </button>
+
+                                <button type="submit" class="btn btn-primary">
+                                    Guardar informações
                                 </button>
                             </div>
-
                         </div>
                     </div>
 
@@ -434,19 +435,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     rows="4"><?= e($fornecedor->observacoes ?? '') ?></textarea>
                             </div>
 
-                            <div class="d-flex justify-content-end gap-2">
-
-                                <button type="button" class="btn btn-outline-secondary botao-anterior"
-                                    onclick="voltarFornecedorGeral()">
-                                    Página anterior
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <button type="reset" class="btn btn-outline-secondary botao-anterior">
+                                    Repor
                                 </button>
 
                                 <button type="submit" class="btn btn-primary">
-                                    Guardar alterações
+                                    Guardar informações
                                 </button>
-
                             </div>
-
                         </div>
                     </div>
 

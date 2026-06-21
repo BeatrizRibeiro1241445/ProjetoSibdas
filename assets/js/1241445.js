@@ -1,20 +1,3 @@
-// =====================================================
-// Mensagens simples
-// =====================================================
-
-function mostrarMensagemFormulario() {
-    const mensagem = document.getElementById("mensagem-formulario");
-
-    if (mensagem) {
-        mensagem.textContent = "Guardado com sucesso.";
-        mensagem.className = "alert alert-info p-2 text-center resultado-ferramenta";
-    }
-}
-
-function mostrarAreaUtilizador() {
-    alert("Área reservada do MedInventário");
-}
-
 function mostrarErroEtapa(texto) {
     const mensagem = document.getElementById("mensagem-formulario");
 
@@ -63,105 +46,15 @@ function prepararDashboard() {
     const cartoes = document.getElementsByClassName("dashboard-link");
 
     for (let i = 0; i < cartoes.length; i++) {
-        cartoes[i].onclick = function () {
+        cartoes[i].addEventListener("click", function () {
             const idSecao = this.getAttribute("data-secao");
             const idCollapse = this.getAttribute("data-collapse");
 
             abrirSecaoDashboard(idSecao, idCollapse);
-        };
-    }
-
-    const botaoUtilizador = document.getElementById("btn-utilizador");
-
-    if (botaoUtilizador && botaoUtilizador.getAttribute("onclick") === null) {
-        botaoUtilizador.onclick = mostrarAreaUtilizador;
+        });
     }
 }
 
-// =====================================================
-// Separadores Bootstrap
-// =====================================================
-
-function abrirSeparadorPorBotao(idBotao) {
-    const botao = document.getElementById(idBotao);
-
-    if (botao && typeof bootstrap !== "undefined") {
-        const separador = new bootstrap.Tab(botao);
-        separador.show();
-        limparMensagemEtapa();
-    }
-}
-
-// =====================================================
-// Separadores de fornecedores
-// =====================================================
-
-function abrirSeparadorFornecedor(idSeparador) {
-    abrirSeparadorPorBotao(idSeparador);
-}
-
-function validarCamposFornecedor() {
-    const campos = document.querySelectorAll(".campo-obrigatorio-fornecedor");
-    const mensagem = document.getElementById("mensagem-formulario");
-
-    for (let i = 0; i < campos.length; i++) {
-        if (campos[i].value.trim() === "") {
-            if (mensagem) {
-                mensagem.innerHTML = "Preencha todos os campos obrigatórios antes de avançar.";
-                mensagem.className = "alert alert-danger mt-3";
-            }
-
-            campos[i].focus();
-            return false;
-        }
-    }
-
-    if (mensagem) {
-        mensagem.innerHTML = "";
-        mensagem.className = "";
-    }
-
-    return true;
-}
-
-function avancarFornecedorContactos() {
-    if (validarCamposFornecedor()) {
-        abrirSeparadorFornecedor("fornecedor-contactos-tab");
-    }
-}
-
-function voltarFornecedorGeral() {
-    abrirSeparadorFornecedor("fornecedor-geral-tab");
-}
-
-// =====================================================
-// Localizações
-// =====================================================
-
-function validarLocalizacao() {
-    const campos = document.querySelectorAll(".campo-obrigatorio-localizacao");
-    const mensagem = document.getElementById("mensagem-formulario");
-
-    for (let i = 0; i < campos.length; i++) {
-        if (campos[i].value.trim() === "") {
-            if (mensagem) {
-                mensagem.innerHTML = "Preencha todos os campos obrigatórios antes de guardar.";
-                mensagem.className = "alert alert-danger mt-3";
-            }
-
-            campos[i].focus();
-            return false;
-        }
-    }
-
-    if (mensagem) {
-        mensagem.innerHTML = "";
-        mensagem.className = "";
-    }
-
-    mostrarMensagemFormulario();
-    return true;
-}
 
 // =====================================================
 // Novo equipamento - estrutura visual com tabelas
@@ -248,41 +141,6 @@ function criarPaginacaoInterna(totalRegistos, paginaAtual, idContainer, callback
         });
     }
 }
-// =====================================================
-// Navegação do novo equipamento
-// =====================================================
-
-function avancarParaFornecedores() {
-    abrirSeparadorPorBotao("fornecedores-tab");
-}
-
-function avancarParaLocalizacao() {
-    abrirSeparadorPorBotao("localizacao-tab");
-}
-
-function avancarParaDocumentacao() {
-    abrirSeparadorPorBotao("documentacao-tab");
-}
-
-function avancarParaGarantias() {
-    abrirSeparadorPorBotao("garantias-tab");
-}
-
-function voltarParaGeral() {
-    abrirSeparadorPorBotao("geral-tab");
-}
-
-function voltarParaFornecedores() {
-    abrirSeparadorPorBotao("fornecedores-tab");
-}
-
-function voltarParaLocalizacao() {
-    abrirSeparadorPorBotao("localizacao-tab");
-}
-
-function voltarParaDocumentacao() {
-    abrirSeparadorPorBotao("documentacao-tab");
-}
 
 // =====================================================
 // Fornecedores associados no novo equipamento
@@ -341,7 +199,7 @@ function renderFornecedoresNovo() {
                 "<td>" + limparHtml(item.tipoRelacao) + "</td>" +
                 "<td>" + limparHtml(item.observacoes || "-") + "</td>" +
                 "<td>" +
-                "<button type='button' class='btn btn-sm btn-acao btn-arquivar' title='Eliminar' onclick='removerFornecedorEquipamento(" + indexReal + ")'>" +
+                "<button type='button' class='btn btn-sm btn-acao btn-arquivar' title='Eliminar' data-acao='remover-fornecedor-equipamento' data-index='" + indexReal + "'>" +
                 "<i class='fas fa-trash'></i>" +
                 "</button>" +
                 "</td>" +
@@ -472,7 +330,7 @@ function renderLocalizacoesNovo() {
                 "<td>" + limparHtml(item.responsavel) + "</td>" +
                 "<td>" + limparHtml(item.motivo) + "</td>" +
                 "<td>" +
-                "<button type='button' class='btn btn-sm btn-acao btn-arquivar' title='Eliminar' onclick='removerLocalizacaoEquipamento(" + indexReal + ")'>" +
+                "<button type='button' class='btn btn-sm btn-acao btn-arquivar' title='Eliminar' data-acao='remover-localizacao-equipamento' data-index='" + indexReal + "'>" +
                 "<i class='fas fa-trash'></i>" +
                 "</button>" +
                 "</td>" +
@@ -623,7 +481,7 @@ function renderDocumentosNovo() {
                 "<td>" + limparHtml(item.fornecedorTexto || "-") + "</td>" +
                 "<td>" + limparHtml(item.nomeFicheiro || "-") + "</td>" +
                 "<td>" +
-                "<button type='button' class='btn btn-sm btn-acao btn-arquivar' title='Eliminar' onclick='removerDocumentoNovo(" + indexReal + ")'>" +
+                "<button type='button' class='btn btn-sm btn-acao btn-arquivar' title='Eliminar' data-acao='remover-documento-novo' data-index='" + indexReal + "'>" +
                 "<i class='fas fa-trash'></i>" +
                 "</button>" +
                 "</td>" +
@@ -739,6 +597,74 @@ function removerDocumentoNovo(index) {
     renderDocumentosNovo();
 }
 
+
+// =====================================================
+// Botões ligados por JavaScript
+// =====================================================
+
+function ligarClique(idBotao, funcao) {
+    const botao = document.getElementById(idBotao);
+
+    if (botao) {
+        botao.addEventListener("click", funcao);
+    }
+}
+
+function prepararBotoesEquipamento() {
+    ligarClique("btn-associar-fornecedor", associarFornecedor);
+    ligarClique("btn-associar-localizacao", associarLocalizacao);
+    ligarClique("btn-adicionar-documento", adicionarDocumentoNovo);
+}
+
+function prepararBotoesDinamicosEquipamento() {
+    document.addEventListener("click", function (evento) {
+        const botao = evento.target.closest("button[data-acao]");
+
+        if (!botao) {
+            return;
+        }
+
+        const acao = botao.getAttribute("data-acao");
+        const index = parseInt(botao.getAttribute("data-index"), 10);
+
+        if (Number.isNaN(index)) {
+            return;
+        }
+
+        if (acao === "remover-fornecedor-equipamento") {
+            removerFornecedorEquipamento(index);
+        }
+
+        if (acao === "remover-localizacao-equipamento") {
+            removerLocalizacaoEquipamento(index);
+        }
+
+        if (acao === "remover-documento-novo") {
+            removerDocumentoNovo(index);
+        }
+    });
+}
+
+function lerJsonInput(idCampo) {
+    const campo = document.getElementById(idCampo);
+
+    if (!campo || campo.value.trim() === "") {
+        return [];
+    }
+
+    try {
+        const dados = JSON.parse(campo.value);
+
+        if (Array.isArray(dados)) {
+            return dados;
+        }
+
+        return [];
+    } catch (erro) {
+        return [];
+    }
+}
+
 // =====================================================
 // Paginação das tabelas da dashboard
 // =====================================================
@@ -839,22 +765,13 @@ function prepararNovoEquipamento() {
         return;
     }
 
-    const dados = window.medInventarioNovoEquipamento || {};
+    fornecedoresAssociadosNovo = lerJsonInput("dados_fornecedores_associados");
+    localizacoesAssociadasNovo = lerJsonInput("dados_localizacoes_associadas");
+    documentosAdicionadosNovo = lerJsonInput("dados_documentos_adicionados");
 
-    if (Array.isArray(dados.fornecedoresAssociados)) {
-        fornecedoresAssociadosNovo = dados.fornecedoresAssociados;
-        paginaFornecedoresNovo = 1;
-    }
-
-    if (Array.isArray(dados.localizacoesAssociadas)) {
-        localizacoesAssociadasNovo = dados.localizacoesAssociadas;
-        paginaLocalizacoesNovo = 1;
-    }
-
-    if (Array.isArray(dados.documentosAdicionados)) {
-        documentosAdicionadosNovo = dados.documentosAdicionados;
-        paginaDocumentosNovo = 1;
-    }
+    paginaFornecedoresNovo = 1;
+    paginaLocalizacoesNovo = 1;
+    paginaDocumentosNovo = 1;
 
     renderFornecedoresNovo();
     renderLocalizacoesNovo();
@@ -877,6 +794,8 @@ function prepararNovoEquipamento() {
 
 window.addEventListener("load", function () {
     prepararDashboard();
+    prepararBotoesEquipamento();
+    prepararBotoesDinamicosEquipamento();
     prepararNovoEquipamento();
     prepararPaginacaoDashboard();
 });
