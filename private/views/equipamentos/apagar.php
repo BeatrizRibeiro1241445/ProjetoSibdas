@@ -88,6 +88,10 @@ include __DIR__ . '/../../includes/sidebar.php';
                         Deseja remover este equipamento da listagem?
                     </p>
 
+                    <p class="text-muted">
+                        O equipamento deixa de aparecer na lista principal e passa para a lista de equipamentos removidos.
+                    </p>
+
                     <h4 class="mb-4">
                         <strong><?= e($equipamento->designacao) ?></strong>
                     </h4>
@@ -106,7 +110,7 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                         <span class="d-block mb-2">
                             <i class="fas fa-circle-check me-2"></i>
-                            <strong>Estado:</strong> <?= e($equipamento->estado) ?>
+                            <strong>Estado atual:</strong> <?= e($equipamento->estado) ?>
                         </span>
 
                         <span class="d-block mb-2">

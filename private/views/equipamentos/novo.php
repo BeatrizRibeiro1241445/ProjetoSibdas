@@ -136,6 +136,7 @@ try {
     $estados = $ligacao->query("
         SELECT idEstadoEquipamento, descricao
         FROM EstadoEquipamento
+        WHERE descricao <> 'Abatido'
         ORDER BY descricao
     ")->fetchAll();
 
@@ -175,7 +176,7 @@ try {
         SELECT idUtilizador, nome
         FROM Utilizador
         WHERE ativo = true
-          AND perfil = 'tecnico'
+          AND LOWER(perfil) = 'tecnico'
         ORDER BY nome
     ")->fetchAll();
 } catch (PDOException $e) {

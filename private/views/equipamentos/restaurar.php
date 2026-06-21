@@ -12,7 +12,7 @@ $idEncrypted = $_GET['id_equipamento'] ?? null;
 $idEquipamento = aes_decrypt($idEncrypted);
 
 if (!$idEquipamento || !is_numeric($idEquipamento)) {
-    header('Location: lista.php');
+    header('Location: eliminados.php');
     exit;
 }
 
@@ -28,19 +28,14 @@ try {
         LIMIT 1
     ");
 
-    $stmtEstado->execute([':descricao' => 'Abatido']);
+    $stmtEstado->execute([':descricao' => 'Ativo']);
     $estado = $stmtEstado->fetch();
-
-    if (!$estado) {
-        $stmtEstado->execute([':descricao' => 'Inativo']);
-        $estado = $stmtEstado->fetch();
-    }
 
     if ($estado) {
         $stmt = $ligacao->prepare("
             UPDATE Equipamento
             SET
-                ativo = false,
+                ativo = true,
                 idEstadoEquipamento = :idEstadoEquipamento
             WHERE idEquipamento = :idEquipamento
         ");
@@ -51,7 +46,7 @@ try {
     } else {
         $stmt = $ligacao->prepare("
             UPDATE Equipamento
-            SET ativo = false
+            SET ativo = true
             WHERE idEquipamento = :idEquipamento
         ");
 
@@ -59,9 +54,9 @@ try {
         $stmt->execute();
     }
 
-    header('Location: eliminados.php');
+    header('Location: lista.php');
     exit;
 } catch (PDOException $e) {
-    echo "<p class='text-danger'>Erro ao remover o equipamento.</p>";
+    echo "<p class='text-danger'>Erro ao restaurar o equipamento.</p>";
     exit;
 }

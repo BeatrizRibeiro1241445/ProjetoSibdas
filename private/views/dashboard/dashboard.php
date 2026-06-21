@@ -12,6 +12,8 @@ $totalEquipamentos = 0;
 $totalAtivos = 0;
 $totalManutencao = 0;
 $totalInativos = 0;
+$totalAbatidos = 0;
+$totalDistribuicaoEstados = 0;
 
 $totalGarantiasExpiradas = 0;
 $totalGarantiasExpirar = 0;
@@ -86,10 +88,21 @@ try {
             INNER JOIN EstadoEquipamento ee
                 ON e.idEstadoEquipamento = ee.idEstadoEquipamento
             WHERE e.ativo = true
-              AND ee.descricao IN ('Inativo', 'Abatido')
+              AND ee.descricao = 'Inativo'
         ")
         ->fetch()
         ->total;
+
+    $totalAbatidos = (int) $ligacao
+        ->query("
+            SELECT COUNT(*) AS total
+            FROM Equipamento
+            WHERE ativo = false
+        ")
+        ->fetch()
+        ->total;
+
+    $totalDistribuicaoEstados = $totalEquipamentos + $totalAbatidos;
 
     $totalGarantiasExpiradas = (int) $ligacao
         ->query("
@@ -105,7 +118,7 @@ try {
                   AND e.ativo = true
                   AND gc.dataFim IS NOT NULL
                 GROUP BY gc.idEquipamento
-                HAVING ultimaDataFim < CURDATE()
+                HAVING ultimaDataFim <= CURDATE()
             ) AS garantias_expiradas
         ")
         ->fetch()
@@ -125,7 +138,7 @@ try {
                   AND e.ativo = true
                   AND gc.dataFim IS NOT NULL
                 GROUP BY gc.idEquipamento
-                HAVING ultimaDataFim BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+                HAVING ultimaDataFim BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
             ) AS garantias_expirar
         ")
         ->fetch()
@@ -167,7 +180,7 @@ try {
             WHERE d.ativo = true
               AND e.ativo = true
               AND d.dataValidade IS NOT NULL
-              AND d.dataValidade BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+              AND d.dataValidade BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
         ")
         ->fetch()
         ->total;
@@ -181,7 +194,7 @@ try {
             WHERE d.ativo = true
               AND e.ativo = true
               AND d.dataValidade IS NOT NULL
-              AND d.dataValidade < CURDATE()
+              AND d.dataValidade <= CURDATE()
         ")
         ->fetch()
         ->total;
@@ -205,7 +218,7 @@ try {
                 COUNT(e.idEquipamento) AS totalEquipamentos,
                 SUM(CASE WHEN ee.descricao = 'Ativo' THEN 1 ELSE 0 END) AS totalAtivos,
                 SUM(CASE WHEN ee.descricao = 'Em manutenção' THEN 1 ELSE 0 END) AS totalManutencao,
-                SUM(CASE WHEN ee.descricao IN ('Inativo', 'Abatido') THEN 1 ELSE 0 END) AS totalInativos,
+                SUM(CASE WHEN ee.descricao = 'Inativo' THEN 1 ELSE 0 END) AS totalInativos,
                 SUM(CASE WHEN cr.descricao = 'Suporte de vida' THEN 1 ELSE 0 END) AS totalSuporteVida
             FROM Localizacao l
             LEFT JOIN Equipamento e
@@ -246,7 +259,7 @@ try {
                 e.designacao,
                 l.servico,
                 localizacao
-            HAVING MAX(gc.dataFim) < CURDATE()
+            HAVING MAX(gc.dataFim) <= CURDATE()
             ORDER BY dataFim ASC
         ")
         ->fetchAll();
@@ -276,7 +289,7 @@ try {
                 e.designacao,
                 l.servico,
                 localizacao
-            HAVING MAX(gc.dataFim) BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+            HAVING MAX(gc.dataFim) BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
             ORDER BY dataFim ASC
         ")
         ->fetchAll();
@@ -356,7 +369,7 @@ try {
             WHERE d.ativo = true
               AND e.ativo = true
               AND d.dataValidade IS NOT NULL
-              AND d.dataValidade BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+              AND d.dataValidade BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
             ORDER BY d.dataValidade ASC, e.codigoInterno
         ")
         ->fetchAll();
@@ -382,7 +395,7 @@ try {
             WHERE d.ativo = true
               AND e.ativo = true
               AND d.dataValidade IS NOT NULL
-              AND d.dataValidade < CURDATE()
+              AND d.dataValidade <= CURDATE()
             ORDER BY d.dataValidade ASC, e.codigoInterno
         ")
         ->fetchAll();
@@ -449,7 +462,6 @@ try {
             FROM EstadoEquipamento ee
             LEFT JOIN Equipamento e
                 ON ee.idEstadoEquipamento = e.idEstadoEquipamento
-               AND e.ativo = true
             GROUP BY ee.idEstadoEquipamento, ee.descricao
             HAVING total > 0
             ORDER BY total DESC, ee.descricao
@@ -527,7 +539,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                             <i class="fas fa-laptop-medical"></i> Total
                         </h5>
                         <p class="card-text"><?= e($totalEquipamentos) ?></p>
-                        <p>Equipamentos registados</p>
+                        <p>Equipamentos ativos na listagem</p>
                     </div>
                 </div>
             </div>
@@ -567,6 +579,18 @@ include __DIR__ . '/../../includes/sidebar.php';
                         </h5>
                         <p class="card-text"><?= e($totalInativos) ?></p>
                         <p>Equipamentos fora de utilização</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-3 mb-3">
+                <div class="card text-center shadow-sm h-100 card-dashboard dashboard-inativos">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-box-archive"></i> Abatidos
+                        </h5>
+                        <p class="card-text"><?= e($totalAbatidos) ?></p>
+                        <p>Equipamentos removidos da listagem</p>
                     </div>
                 </div>
             </div>
@@ -1215,7 +1239,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                             <?php foreach ($distribuicaoEstados as $linha): ?>
                                 <?php
                                 $totalEstado = (int) $linha->total;
-                                $percentagemEstado = $totalEquipamentos > 0 ? round(($totalEstado / $totalEquipamentos) * 100, 1) : 0;
+                                $percentagemEstado = $totalDistribuicaoEstados > 0 ? round(($totalEstado / $totalDistribuicaoEstados) * 100, 1) : 0;
                                 ?>
 
                                 <div class="mb-3">
@@ -1238,7 +1262,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                         <?php else: ?>
 
                             <p class="text-center mb-0">
-                                Não existem equipamentos ativos para apresentar por estado.
+                                Não existem equipamentos para apresentar por estado.
                             </p>
 
                         <?php endif; ?>

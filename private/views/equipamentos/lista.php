@@ -203,9 +203,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </strong>
             </h2>
             <?php if ($podeGerirEquipamentos): ?>
-                <a href="novo.php" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Novo equipamento
-                </a>
+                <div class="d-flex gap-2">
+                    <a href="eliminados.php" class="btn btn-outline-secondary botao-anterior">
+                        <i class="fas fa-box-archive"></i> Equipamentos removidos
+                    </a>
+
+                    <a href="novo.php" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Novo equipamento
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
 
@@ -283,9 +289,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         Em calibração
                                     </option>
 
-                                    <option value="Abatido" <?= $filtroEstado === 'Abatido' ? 'selected' : '' ?>>
-                                        Abatido
-                                    </option>
                                 </select>
                             </div>
 
