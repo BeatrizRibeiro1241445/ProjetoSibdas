@@ -59,6 +59,11 @@ switch ($perfilUtilizador) {
                 </div>
             </div>
 
+            <a href="<?= BASE_URL ?>/private/alterar_password.php" class="utilizador-menu-sair">
+                <i class="fas fa-key"></i>
+                Alterar palavra-passe
+            </a>
+
             <a href="<?= BASE_URL ?>/public/logout.php" class="utilizador-menu-sair">
                 <i class="fas fa-right-from-bracket"></i>
                 Sair
