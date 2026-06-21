@@ -154,6 +154,10 @@ try {
                     FROM Documento d
                     WHERE d.idEquipamento = e.idEquipamento
                       AND d.ativo = true
+                      AND d.nomeFicheiro IS NOT NULL
+                      AND d.nomeFicheiro <> ''
+                      AND d.caminhoFicheiro IS NOT NULL
+                      AND d.caminhoFicheiro <> ''
               )
         ")
         ->fetch()
@@ -179,6 +183,10 @@ try {
                 ON d.idEquipamento = e.idEquipamento
             WHERE d.ativo = true
               AND e.ativo = true
+              AND d.nomeFicheiro IS NOT NULL
+              AND d.nomeFicheiro <> ''
+              AND d.caminhoFicheiro IS NOT NULL
+              AND d.caminhoFicheiro <> ''
               AND d.dataValidade IS NOT NULL
               AND d.dataValidade BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
         ")
@@ -193,6 +201,10 @@ try {
                 ON d.idEquipamento = e.idEquipamento
             WHERE d.ativo = true
               AND e.ativo = true
+              AND d.nomeFicheiro IS NOT NULL
+              AND d.nomeFicheiro <> ''
+              AND d.caminhoFicheiro IS NOT NULL
+              AND d.caminhoFicheiro <> ''
               AND d.dataValidade IS NOT NULL
               AND d.dataValidade <= CURDATE()
         ")
@@ -316,6 +328,10 @@ try {
                     FROM Documento d
                     WHERE d.idEquipamento = e.idEquipamento
                       AND d.ativo = true
+                      AND d.nomeFicheiro IS NOT NULL
+                      AND d.nomeFicheiro <> ''
+                      AND d.caminhoFicheiro IS NOT NULL
+                      AND d.caminhoFicheiro <> ''
               )
             ORDER BY e.codigoInterno
         ")
@@ -368,6 +384,10 @@ try {
                 ON d.idFornecedor = f.idFornecedor
             WHERE d.ativo = true
               AND e.ativo = true
+              AND d.nomeFicheiro IS NOT NULL
+              AND d.nomeFicheiro <> ''
+              AND d.caminhoFicheiro IS NOT NULL
+              AND d.caminhoFicheiro <> ''
               AND d.dataValidade IS NOT NULL
               AND d.dataValidade BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
             ORDER BY d.dataValidade ASC, e.codigoInterno
@@ -394,6 +414,10 @@ try {
                 ON d.idFornecedor = f.idFornecedor
             WHERE d.ativo = true
               AND e.ativo = true
+              AND d.nomeFicheiro IS NOT NULL
+              AND d.nomeFicheiro <> ''
+              AND d.caminhoFicheiro IS NOT NULL
+              AND d.caminhoFicheiro <> ''
               AND d.dataValidade IS NOT NULL
               AND d.dataValidade <= CURDATE()
             ORDER BY d.dataValidade ASC, e.codigoInterno

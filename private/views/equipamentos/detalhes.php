@@ -188,6 +188,10 @@ try {
             ON d.idFornecedor = f.idFornecedor
         WHERE d.idEquipamento = :idEquipamento
           AND d.ativo = true
+          AND d.nomeFicheiro IS NOT NULL
+          AND d.nomeFicheiro <> ''
+          AND d.caminhoFicheiro IS NOT NULL
+          AND d.caminhoFicheiro <> ''
         ORDER BY d.dataDocumento DESC, d.nomeDocumento
     ");
 
@@ -587,7 +591,15 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                                                 <td><?= e($documento->fornecedor) ?></td>
 
-                                                <td><?= e($documento->nomeFicheiro ?: '-') ?></td>
+                                                <td>
+                                                    <?php if (!empty($documento->caminhoFicheiro)): ?>
+                                                        <a href="<?= BASE_URL ?>/<?= e($documento->caminhoFicheiro) ?>" class="btn btn-sm btn-outline-secondary" target="_blank">
+                                                            <i class="fas fa-file-pdf"></i> <?= e($documento->nomeFicheiro ?: 'Abrir PDF') ?>
+                                                        </a>
+                                                    <?php else: ?>
+                                                        <?= e($documento->nomeFicheiro ?: '-') ?>
+                                                    <?php endif; ?>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
 

@@ -25,6 +25,36 @@ function limparHtml(valor) {
         .replace(/'/g, "&#039;");
 }
 
+function obterBaseUrl() {
+    const campoBaseUrl = document.getElementById("base_url");
+
+    if (campoBaseUrl) {
+        return campoBaseUrl.value.replace(/\/+$/, "");
+    }
+
+    return "";
+}
+
+function criarLigacaoFicheiroDocumento(item) {
+    const nome = limparHtml(item.nomeFicheiro || "Abrir PDF");
+    let caminho = "";
+
+    if (item.ficheiroUrl) {
+        caminho = item.ficheiroUrl;
+    } else if (item.caminhoFicheiro) {
+        const baseUrl = obterBaseUrl();
+        caminho = baseUrl + "/" + String(item.caminhoFicheiro).replace(/^\/+/, "");
+    }
+
+    if (caminho === "") {
+        return nome;
+    }
+
+    return "<a href='" + limparHtml(caminho) + "' class='btn btn-sm btn-outline-secondary' target='_blank' rel='noopener'>" +
+        "<i class='fas fa-file-pdf'></i> " + nome +
+        "</a>";
+}
+
 // =====================================================
 // Dashboard
 // =====================================================
@@ -420,6 +450,53 @@ function removerLocalizacaoEquipamento(index) {
 // Documentos adicionados visualmente no novo equipamento
 // =====================================================
 
+
+function criarTokenDocumento() {
+    return "doc_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+}
+
+function criarNovoInputFicheiroDocumento() {
+    const campo = document.getElementById("campo_ficheiro_documento");
+
+    if (!campo) {
+        return;
+    }
+
+    campo.innerHTML = "<label for='ficheiro_documento' class='form-label'>Ficheiro PDF</label>" +
+        "<input type='file' class='form-control' id='ficheiro_documento' accept='application/pdf'>";
+}
+
+function guardarInputFicheiroDocumento(token) {
+    const ficheiroDocumento = document.getElementById("ficheiro_documento");
+    const container = document.getElementById("inputs_ficheiros_documentos");
+
+    if (!ficheiroDocumento || !container || ficheiroDocumento.files.length === 0) {
+        return false;
+    }
+
+    ficheiroDocumento.removeAttribute("id");
+    ficheiroDocumento.setAttribute("name", "documentosFicheiros[" + token + "]");
+    ficheiroDocumento.setAttribute("data-token", token);
+    ficheiroDocumento.classList.add("d-none");
+
+    container.appendChild(ficheiroDocumento);
+    criarNovoInputFicheiroDocumento();
+
+    return true;
+}
+
+function removerInputFicheiroDocumento(token) {
+    if (!token) {
+        return;
+    }
+
+    const ficheiro = document.querySelector("input[type='file'][data-token='" + token + "']");
+
+    if (ficheiro) {
+        ficheiro.remove();
+    }
+}
+
 function atualizarInputsDocumentosNovo() {
     const container = document.getElementById("inputs_documentos_adicionados");
 
@@ -440,6 +517,8 @@ function atualizarInputsDocumentosNovo() {
         html += "<input type='hidden' name='documentosAdicionados[" + i + "][dataValidade]' value='" + limparHtml(item.dataValidade || "") + "'>";
         html += "<input type='hidden' name='documentosAdicionados[" + i + "][idFornecedor]' value='" + limparHtml(idFornecedor) + "'>";
         html += "<input type='hidden' name='documentosAdicionados[" + i + "][nomeFicheiro]' value='" + limparHtml(item.nomeFicheiro || "") + "'>";
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][caminhoFicheiro]' value='" + limparHtml(item.caminhoFicheiro || "") + "'>";
+        html += "<input type='hidden' name='documentosAdicionados[" + i + "][ficheiroToken]' value='" + limparHtml(item.ficheiroToken || "") + "'>";
     }
 
     container.innerHTML = html;
@@ -479,7 +558,7 @@ function renderDocumentosNovo() {
                 "<td>" + limparHtml(item.dataDocumento || "-") + "</td>" +
                 "<td>" + limparHtml(item.dataValidade || "-") + "</td>" +
                 "<td>" + limparHtml(item.fornecedorTexto || "-") + "</td>" +
-                "<td>" + limparHtml(item.nomeFicheiro || "-") + "</td>" +
+                "<td>" + criarLigacaoFicheiroDocumento(item) + "</td>" +
                 "<td>" +
                 "<button type='button' class='btn btn-sm btn-acao btn-arquivar' title='Eliminar' data-acao='remover-documento-novo' data-index='" + indexReal + "'>" +
                 "<i class='fas fa-trash'></i>" +
@@ -534,12 +613,6 @@ function adicionarDocumentoNovo() {
         ? fornecedorDocumento.options[fornecedorDocumento.selectedIndex].text
         : "";
 
-    let nomeFicheiro = ficheiroDocumento.value;
-
-    if (nomeFicheiro.lastIndexOf("\\") >= 0) {
-        nomeFicheiro = nomeFicheiro.substring(nomeFicheiro.lastIndexOf("\\") + 1);
-    }
-
     if (idTipoDocumento === "" || nome === "" || data === "") {
         mostrarErroEtapa("Preencha o tipo, o nome e a data do documento antes de adicionar.");
         return;
@@ -555,14 +628,41 @@ function adicionarDocumentoNovo() {
         return;
     }
 
+    if (validade !== "" && validade < data) {
+        mostrarErroEtapa("A validade do documento não pode ser anterior à data do documento.");
+        return;
+    }
+
+    if (ficheiroDocumento.files.length === 0) {
+        mostrarErroEtapa("Selecione o ficheiro PDF antes de adicionar o documento.");
+        return;
+    }
+
+    const ficheiro = ficheiroDocumento.files[0];
+    const nomeFicheiro = ficheiro.name;
+    const ficheiroUrl = URL.createObjectURL(ficheiro);
+
+    if (nomeFicheiro.toLowerCase().slice(-4) !== ".pdf") {
+        URL.revokeObjectURL(ficheiroUrl);
+        mostrarErroEtapa("O ficheiro do documento deve estar em formato PDF.");
+        return;
+    }
+
     const duplicado = documentosAdicionadosNovo.some(function (item) {
-        return String(item.idTipoDocumento || "") === String(idTipoDocumento) &&
-            String(item.nomeDocumento || "").toLowerCase() === nome.toLowerCase() &&
-            item.dataDocumento === data;
+        return String(item.nomeDocumento || "").toLowerCase() === nome.toLowerCase();
     });
 
     if (duplicado) {
-        mostrarErroEtapa("Esse documento já foi adicionado à tabela.");
+        URL.revokeObjectURL(ficheiroUrl);
+        mostrarErroEtapa("Já existe um documento com esse nome.");
+        return;
+    }
+
+    const token = criarTokenDocumento();
+
+    if (!guardarInputFicheiroDocumento(token)) {
+        URL.revokeObjectURL(ficheiroUrl);
+        mostrarErroEtapa("Não foi possível preparar o ficheiro para envio.");
         return;
     }
 
@@ -574,7 +674,10 @@ function adicionarDocumentoNovo() {
         dataValidade: validade,
         idFornecedor: idFornecedor,
         fornecedorTexto: idFornecedor === "" ? "" : fornecedorTexto,
-        nomeFicheiro: nomeFicheiro
+        nomeFicheiro: nomeFicheiro,
+        caminhoFicheiro: "",
+        ficheiroUrl: ficheiroUrl,
+        ficheiroToken: token
     });
 
     tipoDocumento.value = "";
@@ -582,7 +685,6 @@ function adicionarDocumentoNovo() {
     dataDocumento.value = "";
     dataValidade.value = "";
     fornecedorDocumento.value = "";
-    ficheiroDocumento.value = "";
 
     paginaDocumentosNovo = Math.ceil(
         documentosAdicionadosNovo.length / registosPorPaginaNovoEquipamento
@@ -593,6 +695,16 @@ function adicionarDocumentoNovo() {
 }
 
 function removerDocumentoNovo(index) {
+    const documento = documentosAdicionadosNovo[index];
+
+    if (documento && documento.ficheiroToken) {
+        removerInputFicheiroDocumento(documento.ficheiroToken);
+    }
+
+    if (documento && documento.ficheiroUrl) {
+        URL.revokeObjectURL(documento.ficheiroUrl);
+    }
+
     documentosAdicionadosNovo.splice(index, 1);
     renderDocumentosNovo();
 }

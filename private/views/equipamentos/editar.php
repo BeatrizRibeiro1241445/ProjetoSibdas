@@ -143,6 +143,91 @@ function data_valida_editar_equipamento($data)
     return $objetoData && $objetoData->format('Y-m-d') === $data;
 }
 
+function obter_ficheiro_documento($token)
+{
+    if ($token === '') {
+        return null;
+    }
+
+    if (!isset($_FILES['documentosFicheiros'])) {
+        return null;
+    }
+
+    if (!isset($_FILES['documentosFicheiros']['name'][$token])) {
+        return null;
+    }
+
+    return [
+        'name' => $_FILES['documentosFicheiros']['name'][$token],
+        'type' => $_FILES['documentosFicheiros']['type'][$token],
+        'tmp_name' => $_FILES['documentosFicheiros']['tmp_name'][$token],
+        'error' => $_FILES['documentosFicheiros']['error'][$token],
+        'size' => $_FILES['documentosFicheiros']['size'][$token]
+    ];
+}
+
+function validar_pdf_documento($ficheiro, $nomeDocumento, &$erros)
+{
+    if (!$ficheiro || $ficheiro['error'] === UPLOAD_ERR_NO_FILE) {
+        $erros[] = 'O documento "' . $nomeDocumento . '" deve ter um ficheiro PDF associado.';
+        return;
+    }
+
+    if ($ficheiro['error'] !== UPLOAD_ERR_OK) {
+        $erros[] = 'Não foi possível receber o ficheiro do documento "' . $nomeDocumento . '".';
+        return;
+    }
+
+    if ($ficheiro['size'] > 5 * 1024 * 1024) {
+        $erros[] = 'O ficheiro do documento "' . $nomeDocumento . '" não pode ter mais de 5 MB.';
+    }
+
+    $extensao = strtolower(pathinfo($ficheiro['name'], PATHINFO_EXTENSION));
+
+    if ($extensao !== 'pdf') {
+        $erros[] = 'O ficheiro do documento "' . $nomeDocumento . '" deve estar em formato PDF.';
+    }
+
+    if (function_exists('finfo_open') && is_uploaded_file($ficheiro['tmp_name'])) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $ficheiro['tmp_name']);
+        finfo_close($finfo);
+
+        if (!in_array($mime, ['application/pdf', 'application/x-pdf'], true)) {
+            $erros[] = 'O ficheiro do documento "' . $nomeDocumento . '" deve ser um PDF válido.';
+        }
+    }
+}
+
+function guardar_pdf_documento($ficheiro, $idEquipamento, $indice)
+{
+    $pastaDocumentos = __DIR__ . '/../../../assets/uploads/documentos/';
+
+    if (!is_dir($pastaDocumentos)) {
+        mkdir($pastaDocumentos, 0775, true);
+    }
+
+    $nomeOriginal = basename($ficheiro['name']);
+    $nomeOriginal = mb_substr($nomeOriginal, 0, 150);
+
+    if ($nomeOriginal === '') {
+        $nomeOriginal = 'documento.pdf';
+    }
+
+    $nomeFicheiro = 'equipamento_' . $idEquipamento . '_' . date('YmdHis') . '_' . $indice . '_' . uniqid() . '.pdf';
+    $caminhoCompleto = $pastaDocumentos . $nomeFicheiro;
+
+    if (!move_uploaded_file($ficheiro['tmp_name'], $caminhoCompleto)) {
+        throw new Exception('Erro ao guardar o ficheiro PDF.');
+    }
+
+    return [
+        'nomeFicheiro' => $nomeOriginal,
+        'caminhoFicheiro' => 'assets/uploads/documentos/' . $nomeFicheiro
+    ];
+}
+
+
 try {
     $ligacao = db_connect();
 
@@ -299,10 +384,15 @@ try {
             nomeDocumento,
             dataDocumento,
             dataValidade,
-            nomeFicheiro
+            nomeFicheiro,
+            caminhoFicheiro
         FROM Documento
         WHERE idEquipamento = :idEquipamento
           AND ativo = true
+          AND nomeFicheiro IS NOT NULL
+          AND nomeFicheiro <> ''
+          AND caminhoFicheiro IS NOT NULL
+          AND caminhoFicheiro <> ''
         ORDER BY dataDocumento DESC, nomeDocumento
     ");
 
@@ -317,7 +407,9 @@ try {
             'dataDocumento' => $documento->dataDocumento,
             'dataValidade' => $documento->dataValidade ?? '',
             'idFornecedor' => $documento->idFornecedor !== null ? (string) $documento->idFornecedor : '',
-            'nomeFicheiro' => $documento->nomeFicheiro ?? ''
+            'nomeFicheiro' => $documento->nomeFicheiro ?? '',
+            'caminhoFicheiro' => $documento->caminhoFicheiro ?? '',
+            'ficheiroToken' => ''
         ];
     }
 
@@ -343,7 +435,7 @@ try {
         $periodicidade = $garantiaContrato->periodicidade ?: 'Pontual';
         $observacoesGarantia = $garantiaContrato->observacoes;
     }
-} catch (PDOException $e) {
+} catch (Exception $e) {
     $erroSistema = 'Erro ao carregar os dados do equipamento.';
 }
 
@@ -562,6 +654,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dataDocumento = trim($documentoAdicionado['dataDocumento'] ?? '');
         $dataValidade = trim($documentoAdicionado['dataValidade'] ?? '');
         $idFornecedorDocumento = trim($documentoAdicionado['idFornecedor'] ?? '');
+        $ficheiroToken = trim($documentoAdicionado['ficheiroToken'] ?? '');
+        $caminhoFicheiroExistente = trim($documentoAdicionado['caminhoFicheiro'] ?? '');
 
         if ($idTipoDocumento === '' || $nomeDocumento === '' || $dataDocumento === '') {
             $erros[] = 'Existem documentos adicionados incompletos.';
@@ -578,6 +672,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!data_valida_editar_equipamento($dataDocumento)) {
             $erros[] = 'Existe uma data de documento inválida.';
+        } elseif ($dataDocumento > date('Y-m-d')) {
+            $erros[] = 'A data do documento não pode ser futura.';
         }
 
         if ($dataValidade !== '' && !data_valida_editar_equipamento($dataValidade)) {
@@ -592,10 +688,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erros[] = 'Existe um fornecedor de documento inválido.';
         }
 
-        $chaveDocumento = $idTipoDocumento . '|' . mb_strtolower($nomeDocumento) . '|' . $dataDocumento;
+        $ficheiroDocumento = obter_ficheiro_documento($ficheiroToken);
+
+        if ($ficheiroToken === '' && $caminhoFicheiroExistente === '') {
+            $erros[] = 'O documento "' . $nomeDocumento . '" deve ter um ficheiro PDF associado.';
+        } elseif ($ficheiroToken !== '' && !$ficheiroDocumento) {
+            $erros[] = 'Volte a selecionar o ficheiro PDF do documento "' . $nomeDocumento . '".';
+        } elseif ($ficheiroDocumento) {
+            validar_pdf_documento($ficheiroDocumento, $nomeDocumento, $erros);
+        }
+
+        $chaveDocumento = mb_strtolower($nomeDocumento);
 
         if (in_array($chaveDocumento, $documentosUnicos, true)) {
-            $erros[] = 'Não pode adicionar documentos duplicados à tabela.';
+            $erros[] = 'Não pode adicionar documentos com o mesmo nome.';
         }
 
         $documentosUnicos[] = $chaveDocumento;
@@ -797,8 +903,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':idEquipamento' => $idEquipamento
                 ]);
 
-                foreach ($documentosAdicionados as $documentoAdicionado) {
-                    $nomeFicheiro = trim($documentoAdicionado['nomeFicheiro'] ?? '');
+                foreach ($documentosAdicionados as $indiceDocumento => $documentoAdicionado) {
+                    $ficheiroToken = trim($documentoAdicionado['ficheiroToken'] ?? '');
+                    $ficheiroDocumento = obter_ficheiro_documento($ficheiroToken);
+
+                    if ($ficheiroDocumento) {
+                        $dadosFicheiro = guardar_pdf_documento($ficheiroDocumento, $idEquipamento, $indiceDocumento);
+                    } else {
+                        $dadosFicheiro = [
+                            'nomeFicheiro' => trim($documentoAdicionado['nomeFicheiro'] ?? ''),
+                            'caminhoFicheiro' => trim($documentoAdicionado['caminhoFicheiro'] ?? '')
+                        ];
+                    }
 
                     $stmtDocumento = $ligacao->prepare("
                         INSERT INTO Documento (
@@ -833,8 +949,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ':nomeDocumento' => trim($documentoAdicionado['nomeDocumento']),
                         ':dataDocumento' => trim($documentoAdicionado['dataDocumento']),
                         ':dataValidade' => trim($documentoAdicionado['dataValidade'] ?? '') !== '' ? trim($documentoAdicionado['dataValidade']) : null,
-                        ':nomeFicheiro' => $nomeFicheiro !== '' ? $nomeFicheiro : null,
-                        ':caminhoFicheiro' => $nomeFicheiro !== '' ? 'uploads/documentos/' . $nomeFicheiro : null
+                        ':nomeFicheiro' => $dadosFicheiro['nomeFicheiro'] !== '' ? $dadosFicheiro['nomeFicheiro'] : null,
+                        ':caminhoFicheiro' => $dadosFicheiro['caminhoFicheiro'] !== '' ? $dadosFicheiro['caminhoFicheiro'] : null
                     ]);
                 }
 
@@ -919,7 +1035,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: lista.php');
                 exit;
             }
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             if (isset($ligacao) && $ligacao->inTransaction()) {
                 $ligacao->rollBack();
             }
@@ -983,7 +1099,9 @@ foreach ($documentosAdicionados as $documentoAdicionado) {
         'dataValidade' => trim($documentoAdicionado['dataValidade'] ?? ''),
         'idFornecedor' => $idFornecedorDocumento,
         'fornecedorTexto' => $idFornecedorDocumento !== '' ? texto_fornecedor_editar_equipamento($idFornecedorDocumento, $fornecedores) : '',
-        'nomeFicheiro' => trim($documentoAdicionado['nomeFicheiro'] ?? '')
+        'nomeFicheiro' => trim($documentoAdicionado['nomeFicheiro'] ?? ''),
+        'caminhoFicheiro' => trim($documentoAdicionado['caminhoFicheiro'] ?? ''),
+        'ficheiroToken' => trim($documentoAdicionado['ficheiroToken'] ?? '')
     ];
 }
 
@@ -1072,6 +1190,7 @@ include __DIR__ . '/../../includes/sidebar.php';
             <div id="inputs_fornecedores_associados"></div>
             <div id="inputs_localizacoes_associadas"></div>
             <div id="inputs_documentos_adicionados"></div>
+            <div id="inputs_ficheiros_documentos"></div>
 
             <div class="tab-content" id="conteudoSeparadoresNovoEquipamento">
 
@@ -1469,7 +1588,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <div class="col-12 col-md-6">
                                     <label for="nome_documento" class="form-label">Nome do documento</label>
                                     <input type="text" class="form-control" id="nome_documento"
-                                        placeholder="Ex.: Manual Técnico do Equipamento">
+                                        placeholder="Ex.: Manual técnico do equipamento">
                                 </div>
 
                             </div>
@@ -1503,9 +1622,9 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                             </div>
 
-                            <div class="mb-3">
-                                <label for="ficheiro_documento" class="form-label">Ficheiro</label>
-                                <input type="file" class="form-control" id="ficheiro_documento">
+                            <div class="mb-3" id="campo_ficheiro_documento">
+                                <label for="ficheiro_documento" class="form-label">Ficheiro PDF</label>
+                                <input type="file" class="form-control" id="ficheiro_documento" accept="application/pdf">
                             </div>
 
                             <button type="button" class="btn btn-primary" id="btn-adicionar-documento">
@@ -1542,10 +1661,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </div>
 
                             <div id="paginacao_documentos_adicionados"></div>
-
                         </div>
                     </div>
-
 
                     <div class="d-flex justify-content-end gap-2 mt-4">
                         <button type="reset" class="btn btn-outline-secondary botao-anterior">
@@ -1674,6 +1791,8 @@ include __DIR__ . '/../../includes/sidebar.php';
 
     </section>
 </main>
+
+<input type="hidden" id="base_url" value="<?= BASE_URL ?>">
 
 <input type="hidden" id="dados_fornecedores_associados"
     value='<?= e(json_encode($fornecedoresAssociadosJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)) ?>'>
