@@ -32,6 +32,7 @@ try {
         SELECT *
         FROM Fornecedor
         WHERE idFornecedor = :idFornecedor
+          AND ativo = true
     ");
 
     $stmt->bindParam(':idFornecedor', $idFornecedor, PDO::PARAM_INT);
@@ -81,12 +82,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <strong>
                     <i class="fas fa-eye"></i> Consultar Fornecedor
                 </strong>
-
-                <?php if ($fornecedor && $fornecedor->ativo == 1): ?>
-                    <span class="badge bg-success">Ativo</span>
-                <?php elseif ($fornecedor): ?>
-                    <span class="badge bg-secondary">Inativo</span>
-                <?php endif; ?>
             </h2>
 
             <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
@@ -271,7 +266,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </h3>
 
                             <div class="table-responsive tabela-lista-container">
-                                <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                                    data-linhas-pagina="5">
 
                                     <thead>
                                         <tr>

@@ -64,6 +64,7 @@ try {
         SELECT *
         FROM Localizacao
         WHERE idLocalizacao = :idLocalizacao
+          AND ativo = true
     ");
 
     $stmt->bindParam(':idLocalizacao', $idLocalizacao, PDO::PARAM_INT);
@@ -115,12 +116,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <strong>
                     <i class="fas fa-eye"></i> Consultar Localização
                 </strong>
-
-                <?php if ($localizacao && $localizacao->ativo == 1): ?>
-                    <span class="badge bg-success">Ativa</span>
-                <?php elseif ($localizacao): ?>
-                    <span class="badge bg-secondary">Inativa</span>
-                <?php endif; ?>
             </h2>
 
             <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
@@ -190,7 +185,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                     </h3>
 
                     <div class="table-responsive tabela-lista-container">
-                        <table class="table table-bordered table-hover align-middle text-center tabela-lista">
+                        <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-paginada-dashboard"
+                            data-linhas-pagina="5">
 
                             <thead>
                                 <tr>

@@ -26,11 +26,6 @@ function conteudo_texto($conteudos, $chave, $fallback = '')
     return $conteudos[$chave]->texto ?? $fallback;
 }
 
-function conteudo_imagem($conteudos, $chave, $fallback = '')
-{
-    return $conteudos[$chave]->imagem ?? $fallback;
-}
-
 function conteudo_linha($conteudos, $chave, $posicao, $fallback = '')
 {
     $texto = $conteudos[$chave]->texto ?? '';
@@ -39,7 +34,7 @@ function conteudo_linha($conteudos, $chave, $posicao, $fallback = '')
     return $partes[$posicao] ?? $fallback;
 }
 
-function atualizar_conteudo_site($ligacao, $chave, $seccao, $titulo, $texto, $imagem)
+function atualizar_conteudo_site($ligacao, $chave, $seccao, $titulo, $texto)
 {
     $stmt = $ligacao->prepare("
         UPDATE ConteudoSite
@@ -47,7 +42,6 @@ function atualizar_conteudo_site($ligacao, $chave, $seccao, $titulo, $texto, $im
             seccao = :seccao,
             titulo = :titulo,
             texto = :texto,
-            imagem = :imagem,
             ativo = true
         WHERE chave = :chave
     ");
@@ -56,12 +50,6 @@ function atualizar_conteudo_site($ligacao, $chave, $seccao, $titulo, $texto, $im
     $stmt->bindValue(':seccao', $seccao, PDO::PARAM_STR);
     $stmt->bindValue(':titulo', $titulo, PDO::PARAM_STR);
     $stmt->bindValue(':texto', $texto, PDO::PARAM_STR);
-
-    if ($imagem === null || $imagem === '') {
-        $stmt->bindValue(':imagem', null, PDO::PARAM_NULL);
-    } else {
-        $stmt->bindValue(':imagem', $imagem, PDO::PARAM_STR);
-    }
 
     $stmt->execute();
 }
@@ -72,7 +60,6 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $nomeSite = trim($_POST['nome_site'] ?? '');
-        $logoSite = trim($_POST['logo_site'] ?? '');
         $navInicio = trim($_POST['nav_inicio'] ?? '');
         $navSeccao1 = trim($_POST['nav_seccao1'] ?? '');
         $navSeccao2 = trim($_POST['nav_seccao2'] ?? '');
@@ -80,46 +67,15 @@ try {
 
         $tituloInicio = trim($_POST['titulo_inicio'] ?? '');
         $textoInicio = trim($_POST['texto_inicio'] ?? '');
-        $imagemInicio = trim($_POST['imagem_inicio'] ?? '');
 
         $tituloSeccao1 = trim($_POST['titulo_seccao1'] ?? '');
         $textoSeccao1 = trim($_POST['texto_seccao1'] ?? '');
-        $imagemSeccao1 = trim($_POST['imagem_seccao1'] ?? '');
 
         $tituloSeccao2 = trim($_POST['titulo_seccao2'] ?? '');
         $textoSeccao2 = trim($_POST['texto_seccao2'] ?? '');
-        $imagemSeccao2 = trim($_POST['imagem_seccao2'] ?? '');
-
-        $tituloFuncionalidades = trim($_POST['titulo_funcionalidades'] ?? '');
-        $textoFuncionalidades = trim($_POST['texto_funcionalidades'] ?? '');
-
-        $iconeFuncionalidade1 = trim($_POST['icone_funcionalidade_1'] ?? '');
-        $tituloFuncionalidade1 = trim($_POST['titulo_funcionalidade_1'] ?? '');
-        $textoFuncionalidade1 = trim($_POST['texto_funcionalidade_1'] ?? '');
-
-        $iconeFuncionalidade2 = trim($_POST['icone_funcionalidade_2'] ?? '');
-        $tituloFuncionalidade2 = trim($_POST['titulo_funcionalidade_2'] ?? '');
-        $textoFuncionalidade2 = trim($_POST['texto_funcionalidade_2'] ?? '');
-
-        $iconeFuncionalidade3 = trim($_POST['icone_funcionalidade_3'] ?? '');
-        $tituloFuncionalidade3 = trim($_POST['titulo_funcionalidade_3'] ?? '');
-        $textoFuncionalidade3 = trim($_POST['texto_funcionalidade_3'] ?? '');
-
-        $iconeFuncionalidade4 = trim($_POST['icone_funcionalidade_4'] ?? '');
-        $tituloFuncionalidade4 = trim($_POST['titulo_funcionalidade_4'] ?? '');
-        $textoFuncionalidade4 = trim($_POST['texto_funcionalidade_4'] ?? '');
-
-        $iconeFuncionalidade5 = trim($_POST['icone_funcionalidade_5'] ?? '');
-        $tituloFuncionalidade5 = trim($_POST['titulo_funcionalidade_5'] ?? '');
-        $textoFuncionalidade5 = trim($_POST['texto_funcionalidade_5'] ?? '');
-
-        $iconeFuncionalidade6 = trim($_POST['icone_funcionalidade_6'] ?? '');
-        $tituloFuncionalidade6 = trim($_POST['titulo_funcionalidade_6'] ?? '');
-        $textoFuncionalidade6 = trim($_POST['texto_funcionalidade_6'] ?? '');
 
         $tituloSeccao4 = trim($_POST['titulo_seccao4'] ?? '');
         $textoSeccao4 = trim($_POST['texto_seccao4'] ?? '');
-        $imagemSeccao4 = trim($_POST['imagem_seccao4'] ?? '');
 
         $cidadePaisFooter = trim($_POST['cidade_pais_footer'] ?? '');
         $codigoPostalFooter = trim($_POST['codigo_postal_footer'] ?? '');
@@ -142,7 +98,6 @@ try {
         $tituloInicio = preg_replace('/\s+/', ' ', $tituloInicio);
         $tituloSeccao1 = preg_replace('/\s+/', ' ', $tituloSeccao1);
         $tituloSeccao2 = preg_replace('/\s+/', ' ', $tituloSeccao2);
-        $tituloFuncionalidades = preg_replace('/\s+/', ' ', $tituloFuncionalidades);
         $tituloSeccao4 = preg_replace('/\s+/', ' ', $tituloSeccao4);
 
         $cidadePaisFooter = preg_replace('/\s+/', ' ', $cidadePaisFooter);
@@ -157,25 +112,18 @@ try {
 
         $camposObrigatorios = [
             'nome do site' => $nomeSite,
-            'logo do site' => $logoSite,
             'link inicial' => $navInicio,
             'link da secção 1' => $navSeccao1,
             'link da secção 2' => $navSeccao2,
             'link da secção 3' => $navSeccao3,
             'título da secção início' => $tituloInicio,
             'texto da secção início' => $textoInicio,
-            'imagem da secção início' => $imagemInicio,
             'título da secção 1' => $tituloSeccao1,
             'texto da secção 1' => $textoSeccao1,
-            'imagem da secção 1' => $imagemSeccao1,
             'título da secção 2' => $tituloSeccao2,
             'texto da secção 2' => $textoSeccao2,
-            'imagem da secção 2' => $imagemSeccao2,
-            'título das funcionalidades' => $tituloFuncionalidades,
-            'texto das funcionalidades' => $textoFuncionalidades,
             'título da secção 4' => $tituloSeccao4,
             'texto da secção 4' => $textoSeccao4,
-            'imagem da secção 4' => $imagemSeccao4,
             'cidade e país do rodapé' => $cidadePaisFooter,
             'código postal do rodapé' => $codigoPostalFooter,
             'morada do rodapé' => $moradaFooter,
@@ -193,51 +141,17 @@ try {
             }
         }
 
-        for ($i = 1; $i <= 6; $i++) {
-            $icone = trim($_POST['icone_funcionalidade_' . $i] ?? '');
-            $titulo = trim($_POST['titulo_funcionalidade_' . $i] ?? '');
-            $texto = trim($_POST['texto_funcionalidade_' . $i] ?? '');
-
-            if ($icone === '' || $titulo === '' || $texto === '') {
-                $erros[] = 'A funcionalidade ' . $i . ' deve ter ícone, título e texto.';
-            }
-
-            if (mb_strlen($icone) > 150) {
-                $erros[] = 'O ícone da funcionalidade ' . $i . ' não pode ter mais de 150 caracteres.';
-            }
-
-            if (mb_strlen($titulo) > 150) {
-                $erros[] = 'O título da funcionalidade ' . $i . ' não pode ter mais de 150 caracteres.';
-            }
-        }
-
         $titulos = [
             $nomeSite,
             $tituloInicio,
             $tituloSeccao1,
             $tituloSeccao2,
-            $tituloFuncionalidades,
             $tituloSeccao4
         ];
 
         foreach ($titulos as $titulo) {
             if (mb_strlen($titulo) > 150) {
                 $erros[] = 'Os títulos não podem ter mais de 150 caracteres.';
-                break;
-            }
-        }
-
-        $imagens = [
-            $logoSite,
-            $imagemInicio,
-            $imagemSeccao1,
-            $imagemSeccao2,
-            $imagemSeccao4
-        ];
-
-        foreach ($imagens as $imagem) {
-            if (mb_strlen($imagem) > 150) {
-                $erros[] = 'Os nomes/caminhos das imagens não podem ter mais de 150 caracteres.';
                 break;
             }
         }
@@ -255,29 +169,20 @@ try {
         }
 
         if (empty($erros)) {
-            atualizar_conteudo_site($ligacao, 'site_nome', 'navbar', $nomeSite, $nomeSite, $logoSite);
-            atualizar_conteudo_site($ligacao, 'nav_inicio', 'navbar', $navInicio, $navInicio, null);
-            atualizar_conteudo_site($ligacao, 'nav_quem_somos', 'navbar', $navSeccao1, $navSeccao1, null);
-            atualizar_conteudo_site($ligacao, 'nav_solucao', 'navbar', $navSeccao2, $navSeccao2, null);
-            atualizar_conteudo_site($ligacao, 'nav_funcionalidades', 'navbar', $navSeccao3, $navSeccao3, null);
+            atualizar_conteudo_site($ligacao, 'site_nome', 'navbar', $nomeSite, $nomeSite);
+            atualizar_conteudo_site($ligacao, 'nav_inicio', 'navbar', $navInicio, $navInicio);
+            atualizar_conteudo_site($ligacao, 'nav_quem_somos', 'navbar', $navSeccao1, $navSeccao1);
+            atualizar_conteudo_site($ligacao, 'nav_solucao', 'navbar', $navSeccao2, $navSeccao2);
+            atualizar_conteudo_site($ligacao, 'nav_funcionalidades', 'navbar', $navSeccao3, $navSeccao3);
 
-            atualizar_conteudo_site($ligacao, 'inicio', 'inicio', $tituloInicio, $textoInicio, $imagemInicio);
-            atualizar_conteudo_site($ligacao, 'quem_somos', 'quem_somos', $tituloSeccao1, $textoSeccao1, $imagemSeccao1);
-            atualizar_conteudo_site($ligacao, 'solucao', 'solucao', $tituloSeccao2, $textoSeccao2, $imagemSeccao2);
+            atualizar_conteudo_site($ligacao, 'inicio', 'inicio', $tituloInicio, $textoInicio);
+            atualizar_conteudo_site($ligacao, 'quem_somos', 'quem_somos', $tituloSeccao1, $textoSeccao1);
+            atualizar_conteudo_site($ligacao, 'solucao', 'solucao', $tituloSeccao2, $textoSeccao2);
+            atualizar_conteudo_site($ligacao, 'dashboard_publico', 'dashboard_publico', $tituloSeccao4, $textoSeccao4);
 
-            atualizar_conteudo_site($ligacao, 'funcionalidades_intro', 'funcionalidades', $tituloFuncionalidades, $textoFuncionalidades, null);
-            atualizar_conteudo_site($ligacao, 'funcionalidade_1', 'funcionalidades', $tituloFuncionalidade1, $textoFuncionalidade1, $iconeFuncionalidade1);
-            atualizar_conteudo_site($ligacao, 'funcionalidade_2', 'funcionalidades', $tituloFuncionalidade2, $textoFuncionalidade2, $iconeFuncionalidade2);
-            atualizar_conteudo_site($ligacao, 'funcionalidade_3', 'funcionalidades', $tituloFuncionalidade3, $textoFuncionalidade3, $iconeFuncionalidade3);
-            atualizar_conteudo_site($ligacao, 'funcionalidade_4', 'funcionalidades', $tituloFuncionalidade4, $textoFuncionalidade4, $iconeFuncionalidade4);
-            atualizar_conteudo_site($ligacao, 'funcionalidade_5', 'funcionalidades', $tituloFuncionalidade5, $textoFuncionalidade5, $iconeFuncionalidade5);
-            atualizar_conteudo_site($ligacao, 'funcionalidade_6', 'funcionalidades', $tituloFuncionalidade6, $textoFuncionalidade6, $iconeFuncionalidade6);
-
-            atualizar_conteudo_site($ligacao, 'dashboard_publico', 'dashboard_publico', $tituloSeccao4, $textoSeccao4, $imagemSeccao4);
-
-            atualizar_conteudo_site($ligacao, 'footer_localizacao', 'rodape', 'Localização', $cidadePaisFooter . '|' . $moradaFooter . '|' . $codigoPostalFooter, null);
-            atualizar_conteudo_site($ligacao, 'footer_horario', 'rodape', 'Horário', $horarioSemanaFooter . '|' . $horarioSabadoFooter . '|' . $horarioDomingoFooter, null);
-            atualizar_conteudo_site($ligacao, 'footer_contactos', 'rodape', 'Contactos', $emailFooter . '|' . $telefone1Footer . '|' . $telefone2Footer, null);
+            atualizar_conteudo_site($ligacao, 'footer_localizacao', 'rodape', 'Localização', $cidadePaisFooter . '|' . $moradaFooter . '|' . $codigoPostalFooter);
+            atualizar_conteudo_site($ligacao, 'footer_horario', 'rodape', 'Horário', $horarioSemanaFooter . '|' . $horarioSabadoFooter . '|' . $horarioDomingoFooter);
+            atualizar_conteudo_site($ligacao, 'footer_contactos', 'rodape', 'Contactos', $emailFooter . '|' . $telefone1Footer . '|' . $telefone2Footer);
 
             $sucesso = 'Conteúdos atualizados com sucesso.';
         }
@@ -351,8 +256,9 @@ include __DIR__ . '/../../includes/sidebar.php';
                     </h4>
 
                     <p class="mb-0">
-                        Esta área permite preparar a alteração dos textos e imagens apresentados na página pública
-                        da MedInventário.
+                        Esta área permite alterar os textos principais apresentados na página pública da MedInventário.
+                        Os textos apresentados no formulário são carregados a partir da tabela ConteudoSite, a mesma
+                        fonte usada pela página pública.
                     </p>
 
                 </div>
@@ -378,28 +284,21 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="seccao1-tab" data-bs-toggle="tab" data-bs-target="#seccao1"
                         type="button" role="tab">
-                        Secção 1
+                        Quem Somos
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="seccao2-tab" data-bs-toggle="tab" data-bs-target="#seccao2"
                         type="button" role="tab">
-                        Secção 2
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="funcionalidades-tab" data-bs-toggle="tab"
-                        data-bs-target="#funcionalidades" type="button" role="tab">
-                        Funcionalidades
+                        Solução
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="seccao4-tab" data-bs-toggle="tab" data-bs-target="#seccao4"
                         type="button" role="tab">
-                        Secção 4
+                        Dashboard público
                     </button>
                 </li>
 
@@ -424,20 +323,10 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <i class="fas fa-bars"></i> Navbar da página pública
                             </h3>
 
-                            <div class="row mb-3">
-
-                                <div class="col-12 col-md-6">
-                                    <label for="nome_site" class="form-label">Nome do site</label>
-                                    <input type="text" class="form-control" id="nome_site" name="nome_site"
-                                        value="<?= e(conteudo_titulo($conteudos, 'site_nome', 'MedInventário')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <label for="logo_site" class="form-label">Nome do ficheiro do logo</label>
-                                    <input type="text" class="form-control" id="logo_site" name="logo_site"
-                                        value="<?= e(conteudo_imagem($conteudos, 'site_nome', 'assets/img/logo.png')) ?>">
-                                </div>
-
+                            <div class="mb-3">
+                                <label for="nome_site" class="form-label">Nome do site</label>
+                                <input type="text" class="form-control" id="nome_site" name="nome_site"
+                                    value="<?= e(conteudo_titulo($conteudos, 'site_nome', 'MedInventário')) ?>">
                             </div>
 
                             <div class="row mb-3">
@@ -449,19 +338,19 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 </div>
 
                                 <div class="col-12 col-md-3">
-                                    <label for="nav_seccao1" class="form-label">Nome do link da secção 1</label>
+                                    <label for="nav_seccao1" class="form-label">Nome do link Quem Somos</label>
                                     <input type="text" class="form-control" id="nav_seccao1" name="nav_seccao1"
                                         value="<?= e(conteudo_texto($conteudos, 'nav_quem_somos', 'Quem Somos')) ?>">
                                 </div>
 
                                 <div class="col-12 col-md-3">
-                                    <label for="nav_seccao2" class="form-label">Nome do link da secção 2</label>
+                                    <label for="nav_seccao2" class="form-label">Nome do link Solução</label>
                                     <input type="text" class="form-control" id="nav_seccao2" name="nav_seccao2"
                                         value="<?= e(conteudo_texto($conteudos, 'nav_solucao', 'Solução')) ?>">
                                 </div>
 
                                 <div class="col-12 col-md-3">
-                                    <label for="nav_seccao3" class="form-label">Nome do link da secção 3</label>
+                                    <label for="nav_seccao3" class="form-label">Nome do link Funcionalidades</label>
                                     <input type="text" class="form-control" id="nav_seccao3" name="nav_seccao3"
                                         value="<?= e(conteudo_texto($conteudos, 'nav_funcionalidades', 'Funcionalidades')) ?>">
                                 </div>
@@ -495,25 +384,19 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     rows="4"><?= e(conteudo_texto($conteudos, 'inicio', 'A MedInventário ajuda instituições de saúde a organizar, consultar e controlar equipamentos médicos de forma simples, centralizada e segura.')) ?></textarea>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="imagem_inicio" class="form-label">Imagem da secção inicial</label>
-                                <input type="text" class="form-control" id="imagem_inicio" name="imagem_inicio"
-                                    value="<?= e(conteudo_imagem($conteudos, 'inicio', 'assets/img/hospital-digital.png')) ?>">
-                            </div>
-
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Separador: Secção 1 -->
+                <!-- Separador: Quem Somos -->
                 <div class="tab-pane fade" id="seccao1" role="tabpanel">
 
                     <div class="card mb-4">
                         <div class="card-body">
 
                             <h3>
-                                <i class="fas fa-users"></i> Secção 1
+                                <i class="fas fa-users"></i> Quem Somos
                             </h3>
 
                             <div class="mb-3">
@@ -530,25 +413,19 @@ include __DIR__ . '/../../includes/sidebar.php';
 A plataforma centraliza informação essencial sobre equipamentos, fornecedores, localizações, documentação, garantias e contratos, facilitando o acesso rápido aos dados.')) ?></textarea>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="imagem_seccao1" class="form-label">Imagem da secção</label>
-                                <input type="text" class="form-control" id="imagem_seccao1" name="imagem_seccao1"
-                                    value="<?= e(conteudo_imagem($conteudos, 'quem_somos', 'assets/img/equipa-biomedica.png')) ?>">
-                            </div>
-
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Separador: Secção 2 -->
+                <!-- Separador: Solução -->
                 <div class="tab-pane fade" id="seccao2" role="tabpanel">
 
                     <div class="card mb-4">
                         <div class="card-body">
 
                             <h3>
-                                <i class="fas fa-network-wired"></i> Secção 2
+                                <i class="fas fa-network-wired"></i> Solução
                             </h3>
 
                             <div class="mb-3">
@@ -565,204 +442,19 @@ A plataforma centraliza informação essencial sobre equipamentos, fornecedores,
 A aplicação permite melhorar a rastreabilidade, facilitar a pesquisa de informação e apoiar decisões relacionadas com manutenção, garantias e documentação.')) ?></textarea>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="imagem_seccao2" class="form-label">Imagem da secção</label>
-                                <input type="text" class="form-control" id="imagem_seccao2" name="imagem_seccao2"
-                                    value="<?= e(conteudo_imagem($conteudos, 'solucao', 'assets/img/solução.png')) ?>">
-                            </div>
-
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Separador: Funcionalidades -->
-                <div class="tab-pane fade" id="funcionalidades" role="tabpanel">
-
-                    <div class="card mb-4">
-                        <div class="card-body">
-
-                            <h3>
-                                <i class="fas fa-list-check"></i> Funcionalidades
-                            </h3>
-
-                            <div class="mb-3">
-                                <label for="titulo_funcionalidades" class="form-label">Título</label>
-                                <input type="text" class="form-control" id="titulo_funcionalidades"
-                                    name="titulo_funcionalidades"
-                                    value="<?= e(conteudo_titulo($conteudos, 'funcionalidades_intro', 'Funcionalidades')) ?>">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="texto_funcionalidades" class="form-label">Texto da secção</label>
-                                <textarea class="form-control" id="texto_funcionalidades"
-                                    name="texto_funcionalidades"
-                                    rows="4"><?= e(conteudo_texto($conteudos, 'funcionalidades_intro', 'A MedInventário organiza os principais módulos necessários para uma gestão clara, simples e centralizada do inventário hospitalar.')) ?></textarea>
-                            </div>
-
-                            <div class="row mb-3">
-
-                                <div class="col-12 col-md-4">
-                                    <label for="icone_funcionalidade_1" class="form-label">Ícone 1</label>
-                                    <input type="text" class="form-control" id="icone_funcionalidade_1"
-                                        name="icone_funcionalidade_1"
-                                        value="<?= e(conteudo_imagem($conteudos, 'funcionalidade_1', 'fas fa-laptop-medical')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="titulo_funcionalidade_1" class="form-label">Título 1</label>
-                                    <input type="text" class="form-control" id="titulo_funcionalidade_1"
-                                        name="titulo_funcionalidade_1"
-                                        value="<?= e(conteudo_titulo($conteudos, 'funcionalidade_1', 'Equipamentos')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="texto_funcionalidade_1" class="form-label">Texto 1</label>
-                                    <input type="text" class="form-control" id="texto_funcionalidade_1"
-                                        name="texto_funcionalidade_1"
-                                        value="<?= e(conteudo_texto($conteudos, 'funcionalidade_1', 'Registo, consulta e atualização dos equipamentos médicos existentes.')) ?>">
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-
-                                <div class="col-12 col-md-4">
-                                    <label for="icone_funcionalidade_2" class="form-label">Ícone 2</label>
-                                    <input type="text" class="form-control" id="icone_funcionalidade_2"
-                                        name="icone_funcionalidade_2"
-                                        value="<?= e(conteudo_imagem($conteudos, 'funcionalidade_2', 'fas fa-location-dot')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="titulo_funcionalidade_2" class="form-label">Título 2</label>
-                                    <input type="text" class="form-control" id="titulo_funcionalidade_2"
-                                        name="titulo_funcionalidade_2"
-                                        value="<?= e(conteudo_titulo($conteudos, 'funcionalidade_2', 'Localizações')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="texto_funcionalidade_2" class="form-label">Texto 2</label>
-                                    <input type="text" class="form-control" id="texto_funcionalidade_2"
-                                        name="texto_funcionalidade_2"
-                                        value="<?= e(conteudo_texto($conteudos, 'funcionalidade_2', 'Associação dos equipamentos a edifícios, pisos, serviços e salas.')) ?>">
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-
-                                <div class="col-12 col-md-4">
-                                    <label for="icone_funcionalidade_3" class="form-label">Ícone 3</label>
-                                    <input type="text" class="form-control" id="icone_funcionalidade_3"
-                                        name="icone_funcionalidade_3"
-                                        value="<?= e(conteudo_imagem($conteudos, 'funcionalidade_3', 'fas fa-truck-medical')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="titulo_funcionalidade_3" class="form-label">Título 3</label>
-                                    <input type="text" class="form-control" id="titulo_funcionalidade_3"
-                                        name="titulo_funcionalidade_3"
-                                        value="<?= e(conteudo_titulo($conteudos, 'funcionalidade_3', 'Fornecedores')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="texto_funcionalidade_3" class="form-label">Texto 3</label>
-                                    <input type="text" class="form-control" id="texto_funcionalidade_3"
-                                        name="texto_funcionalidade_3"
-                                        value="<?= e(conteudo_texto($conteudos, 'funcionalidade_3', 'Gestão de empresas, contactos e associações aos equipamentos.')) ?>">
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-
-                                <div class="col-12 col-md-4">
-                                    <label for="icone_funcionalidade_4" class="form-label">Ícone 4</label>
-                                    <input type="text" class="form-control" id="icone_funcionalidade_4"
-                                        name="icone_funcionalidade_4"
-                                        value="<?= e(conteudo_imagem($conteudos, 'funcionalidade_4', 'fas fa-file-medical')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="titulo_funcionalidade_4" class="form-label">Título 4</label>
-                                    <input type="text" class="form-control" id="titulo_funcionalidade_4"
-                                        name="titulo_funcionalidade_4"
-                                        value="<?= e(conteudo_titulo($conteudos, 'funcionalidade_4', 'Documentação')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="texto_funcionalidade_4" class="form-label">Texto 4</label>
-                                    <input type="text" class="form-control" id="texto_funcionalidade_4"
-                                        name="texto_funcionalidade_4"
-                                        value="<?= e(conteudo_texto($conteudos, 'funcionalidade_4', 'Organização de manuais, certificados e documentos técnicos.')) ?>">
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-
-                                <div class="col-12 col-md-4">
-                                    <label for="icone_funcionalidade_5" class="form-label">Ícone 5</label>
-                                    <input type="text" class="form-control" id="icone_funcionalidade_5"
-                                        name="icone_funcionalidade_5"
-                                        value="<?= e(conteudo_imagem($conteudos, 'funcionalidade_5', 'fas fa-file-contract')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="titulo_funcionalidade_5" class="form-label">Título 5</label>
-                                    <input type="text" class="form-control" id="titulo_funcionalidade_5"
-                                        name="titulo_funcionalidade_5"
-                                        value="<?= e(conteudo_titulo($conteudos, 'funcionalidade_5', 'Garantias')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="texto_funcionalidade_5" class="form-label">Texto 5</label>
-                                    <input type="text" class="form-control" id="texto_funcionalidade_5"
-                                        name="texto_funcionalidade_5"
-                                        value="<?= e(conteudo_texto($conteudos, 'funcionalidade_5', 'Consulta de garantias, contratos e entidades responsáveis.')) ?>">
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-
-                                <div class="col-12 col-md-4">
-                                    <label for="icone_funcionalidade_6" class="form-label">Ícone 6</label>
-                                    <input type="text" class="form-control" id="icone_funcionalidade_6"
-                                        name="icone_funcionalidade_6"
-                                        value="<?= e(conteudo_imagem($conteudos, 'funcionalidade_6', 'fas fa-chart-simple')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="titulo_funcionalidade_6" class="form-label">Título 6</label>
-                                    <input type="text" class="form-control" id="titulo_funcionalidade_6"
-                                        name="titulo_funcionalidade_6"
-                                        value="<?= e(conteudo_titulo($conteudos, 'funcionalidade_6', 'Dashboard')) ?>">
-                                </div>
-
-                                <div class="col-12 col-md-4">
-                                    <label for="texto_funcionalidade_6" class="form-label">Texto 6</label>
-                                    <input type="text" class="form-control" id="texto_funcionalidade_6"
-                                        name="texto_funcionalidade_6"
-                                        value="<?= e(conteudo_texto($conteudos, 'funcionalidade_6', 'Indicadores, alertas e resumo do estado do inventário.')) ?>">
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Separador: Secção 4 -->
+                <!-- Separador: Dashboard público -->
                 <div class="tab-pane fade" id="seccao4" role="tabpanel">
 
                     <div class="card mb-4">
                         <div class="card-body">
 
                             <h3>
-                                <i class="fas fa-chart-line"></i> Secção 4
+                                <i class="fas fa-chart-line"></i> Dashboard público
                             </h3>
 
                             <div class="mb-3">
@@ -779,11 +471,6 @@ A aplicação permite melhorar a rastreabilidade, facilitar a pesquisa de inform
 Esta informação ajuda os serviços técnicos e administrativos a acompanhar o inventário de forma mais rápida e estruturada.')) ?></textarea>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="imagem_seccao4" class="form-label">Imagem da secção</label>
-                                <input type="text" class="form-control" id="imagem_seccao4" name="imagem_seccao4"
-                                    value="<?= e(conteudo_imagem($conteudos, 'dashboard_publico', 'assets/img/dashboard.png')) ?>">
-                            </div>
                         </div>
                     </div>
 
@@ -796,19 +483,30 @@ Esta informação ajuda os serviços técnicos e administrativos a acompanhar o 
                         <div class="card-body">
 
                             <h3>
-                                <i class="fas fa-location-dot"></i> Localização
+                                <i class="fas fa-shoe-prints"></i> Rodapé da página pública
                             </h3>
+
+                            <h4 class="mt-3">
+                                <i class="fas fa-location-dot"></i> Localização
+                            </h4>
 
                             <div class="row mb-3">
 
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-4">
                                     <label for="cidade_pais_footer" class="form-label">Cidade e país</label>
                                     <input type="text" class="form-control" id="cidade_pais_footer"
                                         name="cidade_pais_footer"
                                         value="<?= e(conteudo_linha($conteudos, 'footer_localizacao', 0, 'Porto, Portugal')) ?>">
                                 </div>
 
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-4">
+                                    <label for="morada_footer" class="form-label">Morada</label>
+                                    <input type="text" class="form-control" id="morada_footer"
+                                        name="morada_footer"
+                                        value="<?= e(conteudo_linha($conteudos, 'footer_localizacao', 1, 'Rua ************ 000')) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
                                     <label for="codigo_postal_footer" class="form-label">Código postal</label>
                                     <input type="text" class="form-control" id="codigo_postal_footer"
                                         name="codigo_postal_footer"
@@ -817,71 +515,64 @@ Esta informação ajuda os serviços técnicos e administrativos a acompanhar o 
 
                             </div>
 
-                            <div class="mb-3">
-                                <label for="morada_footer" class="form-label">Morada</label>
-                                <input type="text" class="form-control" id="morada_footer" name="morada_footer"
-                                    value="<?= e(conteudo_linha($conteudos, 'footer_localizacao', 1, 'Rua ************ 000')) ?>">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-4">
-                        <div class="card-body">
-
-                            <h3>
+                            <h4 class="mt-4">
                                 <i class="fas fa-clock"></i> Horário
-                            </h3>
+                            </h4>
 
-                            <div class="mb-3">
-                                <label for="horario_semana_footer" class="form-label">Horário semanal</label>
-                                <input type="text" class="form-control" id="horario_semana_footer"
-                                    name="horario_semana_footer"
-                                    value="<?= e(conteudo_linha($conteudos, 'footer_horario', 0, 'Segunda a sexta: 09:00 - 18:00')) ?>">
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="horario_semana_footer" class="form-label">Segunda a sexta</label>
+                                    <input type="text" class="form-control" id="horario_semana_footer"
+                                        name="horario_semana_footer"
+                                        value="<?= e(conteudo_linha($conteudos, 'footer_horario', 0, 'Segunda a sexta: 09:00 - 18:00')) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="horario_sabado_footer" class="form-label">Sábado</label>
+                                    <input type="text" class="form-control" id="horario_sabado_footer"
+                                        name="horario_sabado_footer"
+                                        value="<?= e(conteudo_linha($conteudos, 'footer_horario', 1, 'Sábado: 09:00 - 13:00')) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="horario_domingo_footer" class="form-label">Domingo</label>
+                                    <input type="text" class="form-control" id="horario_domingo_footer"
+                                        name="horario_domingo_footer"
+                                        value="<?= e(conteudo_linha($conteudos, 'footer_horario', 2, 'Domingo: encerrado')) ?>">
+                                </div>
+
                             </div>
 
-                            <div class="mb-3">
-                                <label for="horario_sabado_footer" class="form-label">Horário de sábado</label>
-                                <input type="text" class="form-control" id="horario_sabado_footer"
-                                    name="horario_sabado_footer"
-                                    value="<?= e(conteudo_linha($conteudos, 'footer_horario', 1, 'Sábado: 09:00 - 13:00')) ?>">
+                            <h4 class="mt-4">
+                                <i class="fas fa-address-book"></i> Contactos
+                            </h4>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-md-4">
+                                    <label for="email_footer" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email_footer"
+                                        name="email_footer"
+                                        value="<?= e(conteudo_linha($conteudos, 'footer_contactos', 0, 'geral@medinventario.pt')) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="telefone_1_footer" class="form-label">Telefone 1</label>
+                                    <input type="text" class="form-control" id="telefone_1_footer"
+                                        name="telefone_1_footer"
+                                        value="<?= e(conteudo_linha($conteudos, 'footer_contactos', 1, '+351 220 000 000')) ?>">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="telefone_2_footer" class="form-label">Telefone 2</label>
+                                    <input type="text" class="form-control" id="telefone_2_footer"
+                                        name="telefone_2_footer"
+                                        value="<?= e(conteudo_linha($conteudos, 'footer_contactos', 2, '+351 914 000 000')) ?>">
+                                </div>
+
                             </div>
 
-                            <div class="mb-3">
-                                <label for="horario_domingo_footer" class="form-label">Horário de domingo</label>
-                                <input type="text" class="form-control" id="horario_domingo_footer"
-                                    name="horario_domingo_footer"
-                                    value="<?= e(conteudo_linha($conteudos, 'footer_horario', 2, 'Domingo: encerrado')) ?>">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card mb-4">
-                        <div class="card-body">
-
-                            <h3>
-                                <i class="fas fa-address-card"></i> Contactos
-                            </h3>
-
-                            <div class="mb-3">
-                                <label for="email_footer" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email_footer" name="email_footer"
-                                    value="<?= e(conteudo_linha($conteudos, 'footer_contactos', 0, 'geral@medinventario.pt')) ?>">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="telefone_1_footer" class="form-label">Telefone 1</label>
-                                <input type="text" class="form-control" id="telefone_1_footer"
-                                    name="telefone_1_footer"
-                                    value="<?= e(conteudo_linha($conteudos, 'footer_contactos', 1, '+351 220 000 000')) ?>">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="telefone_2_footer" class="form-label">Telefone 2</label>
-                                <input type="text" class="form-control" id="telefone_2_footer"
-                                    name="telefone_2_footer"
-                                    value="<?= e(conteudo_linha($conteudos, 'footer_contactos', 2, '+351 914 000 000')) ?>">
-                            </div>
                         </div>
                     </div>
 

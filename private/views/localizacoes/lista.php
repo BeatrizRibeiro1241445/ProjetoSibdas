@@ -9,8 +9,8 @@ $body_class = '';
 $erro = '';
 $localizacoes = [];
 
-$filtroCodigoEquipamento = trim($_GET['filtro_codigo_equipamento'] ?? '');
-$filtroNomeEquipamento = trim($_GET['filtro_nome_equipamento'] ?? '');
+$podeGerirLocalizacoes = in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico']);
+
 $filtroCategoria = trim($_GET['filtro_categoria'] ?? '');
 $filtroEdificio = trim($_GET['filtro_edificio'] ?? '');
 $filtroPiso = trim($_GET['filtro_piso'] ?? '');
@@ -28,7 +28,7 @@ try {
     $ligacao = db_connect();
 
     $sql = "
-        SELECT DISTINCT
+        SELECT
             l.idLocalizacao,
             l.categoria,
             l.edificio,
@@ -36,22 +36,10 @@ try {
             l.servico,
             l.sala
         FROM Localizacao l
-        LEFT JOIN Equipamento e
-            ON e.idLocalizacao = l.idLocalizacao
         WHERE l.ativo = true
     ";
 
     $parametros = [];
-
-    if ($filtroCodigoEquipamento !== '') {
-        $sql .= " AND e.codigoInterno LIKE :codigoEquipamento";
-        $parametros[':codigoEquipamento'] = '%' . $filtroCodigoEquipamento . '%';
-    }
-
-    if ($filtroNomeEquipamento !== '') {
-        $sql .= " AND e.designacao LIKE :nomeEquipamento";
-        $parametros[':nomeEquipamento'] = '%' . $filtroNomeEquipamento . '%';
-    }
 
     if ($filtroCategoria !== '') {
         $sql .= " AND l.categoria LIKE :categoria";
@@ -81,9 +69,9 @@ try {
     $sqlSemOrdenacao = $sql;
 
     $stmtTotal = $ligacao->prepare("
-    SELECT COUNT(*) AS total
-    FROM ($sqlSemOrdenacao) AS resultado_total
-");
+        SELECT COUNT(*) AS total
+        FROM ($sqlSemOrdenacao) AS resultado_total
+    ");
 
     foreach ($parametros as $nome => $valor) {
         $stmtTotal->bindValue($nome, $valor, PDO::PARAM_STR);
@@ -100,12 +88,12 @@ try {
     }
 
     $sql .= "
-    ORDER BY
-        l.edificio,
-        l.piso,
-        l.servico,
-        l.sala
-";
+        ORDER BY
+            l.edificio,
+            l.piso,
+            l.servico,
+            l.sala
+    ";
 
     $sql .= " LIMIT :limite OFFSET :offset";
 
@@ -140,9 +128,11 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </strong>
             </h2>
 
-            <a href="novo.php" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Nova localização
-            </a>
+            <?php if ($podeGerirLocalizacoes): ?>
+                <a href="novo.php" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nova localização
+                </a>
+            <?php endif; ?>
         </div>
 
         <hr>
@@ -171,24 +161,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                         <form action="lista.php" method="get" class="filtros-equipamentos">
 
                             <div>
-                                <label for="filtro_codigo_equipamento" class="form-label fw-semibold">
-                                    Código do equipamento
-                                </label>
-                                <input type="text" class="form-control text-center" id="filtro_codigo_equipamento"
-                                    name="filtro_codigo_equipamento" placeholder="Ex.: 004.002.00"
-                                    value="<?= e($filtroCodigoEquipamento) ?>">
-                            </div>
-
-                            <div>
-                                <label for="filtro_nome_equipamento" class="form-label fw-semibold">
-                                    Nome do equipamento
-                                </label>
-                                <input type="text" class="form-control text-center" id="filtro_nome_equipamento"
-                                    name="filtro_nome_equipamento" placeholder="Ex.: Monitor Multiparamétrico"
-                                    value="<?= e($filtroNomeEquipamento) ?>">
-                            </div>
-
-                            <div>
                                 <label for="filtro_categoria" class="form-label fw-semibold">Categoria</label>
                                 <input type="text" class="form-control text-center" id="filtro_categoria"
                                     name="filtro_categoria" placeholder="Ex.: Área clínica crítica"
@@ -205,7 +177,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                             <div>
                                 <label for="filtro_piso" class="form-label fw-semibold">Piso</label>
                                 <input type="text" class="form-control text-center" id="filtro_piso"
-                                    name="filtro_piso" placeholder="Ex.: Piso 2"
+                                    name="filtro_piso" placeholder="Ex.: 2"
                                     value="<?= e($filtroPiso) ?>">
                             </div>
 
@@ -214,7 +186,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     Serviço / Departamento
                                 </label>
                                 <input type="text" class="form-control text-center" id="filtro_servico"
-                                    name="filtro_servico" placeholder="Ex.: UCI"
+                                    name="filtro_servico" placeholder="Ex.: Unidade de Cuidados Intensivos"
                                     value="<?= e($filtroServico) ?>">
                             </div>
 
@@ -283,13 +255,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-                                        <a href="editar.php?id_localizacao=<?= aes_encrypt($localizacao->idLocalizacao) ?>" class="btn btn-sm btn-acao btn-editar" title="Editar">
-                                            <i class="fas fa-pen-to-square"></i>
-                                        </a>
+                                        <?php if ($podeGerirLocalizacoes): ?>
+                                            <a href="editar.php?id_localizacao=<?= aes_encrypt($localizacao->idLocalizacao) ?>" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                                <i class="fas fa-pen-to-square"></i>
+                                            </a>
 
-                                        <a href="apagar.php?id_localizacao=<?= aes_encrypt($localizacao->idLocalizacao) ?>" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                            <a href="apagar.php?id_localizacao=<?= aes_encrypt($localizacao->idLocalizacao) ?>" class="btn btn-sm btn-acao btn-arquivar" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>

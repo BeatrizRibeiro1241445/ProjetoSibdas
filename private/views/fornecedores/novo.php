@@ -41,12 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefonePessoaContacto2 = trim($_POST['telefonePessoaContacto2'] ?? '');
     $observacoes = trim($_POST['observacoes'] ?? '');
 
-    $nif = preg_replace('/\s+/', ' ', $nif);
-    $email = preg_replace('/\s+/', ' ', $email);
+    $nif = preg_replace('/\s+/', '', $nif);
+    $email = preg_replace('/\s+/', '', $email);
     $designacao = preg_replace('/\s+/', ' ', $designacao);
     $telefone = preg_replace('/\s+/', '', $telefone);
     $morada = preg_replace('/\s+/', ' ', $morada);
-    $website = preg_replace('/\s+/', ' ', $website);
+    $website = preg_replace('/\s+/', '', $website);
     $pessoaContacto = preg_replace('/\s+/', ' ', $pessoaContacto);
     $telefonePessoaContacto = preg_replace('/\s+/', '', $telefonePessoaContacto);
     $pessoaContacto2 = preg_replace('/\s+/', ' ', $pessoaContacto2);
@@ -111,6 +111,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($telefonePessoaContacto2 !== '' && !preg_match($padraoTelefone, $telefonePessoaContacto2)) {
         $erros[] = 'O telefone da pessoa de contacto 2 deve começar por +, incluir o indicativo do país e conter apenas números.';
+    }
+
+    if ($pessoaContacto2 !== '' && $telefonePessoaContacto2 === '') {
+        $erros[] = 'Se preencher a pessoa de contacto 2, deve preencher também o respetivo telefone.';
+    }
+
+    if ($pessoaContacto2 === '' && $telefonePessoaContacto2 !== '') {
+        $erros[] = 'Se preencher o telefone da pessoa de contacto 2, deve preencher também o nome da pessoa.';
     }
 
     if (empty($erros)) {
@@ -251,15 +259,15 @@ include __DIR__ . '/../../includes/sidebar.php';
             <ul class="nav nav-tabs mb-4" id="separadoresFornecedor" role="tablist">
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="fornecedor-geral-tab" data-bs-target="#fornecedor-geral"
-                        type="button" role="tab">
+                    <button class="nav-link active" id="fornecedor-geral-tab" data-bs-toggle="tab"
+                        data-bs-target="#fornecedor-geral" type="button" role="tab">
                         Identificação e contactos
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="fornecedor-contactos-tab" data-bs-target="#fornecedor-contactos"
-                        type="button" role="tab">
+                    <button class="nav-link" id="fornecedor-contactos-tab" data-bs-toggle="tab"
+                        data-bs-target="#fornecedor-contactos" type="button" role="tab">
                         Pessoas de contacto e observações
                     </button>
                 </li>

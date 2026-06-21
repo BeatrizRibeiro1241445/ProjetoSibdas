@@ -19,7 +19,7 @@ $totalSemDocumentacao = 0;
 $totalCriticidadeElevada = 0;
 $totalDocumentosExpirar = 0;
 $totalDocumentosExpirados = 0;
-$totalAvariadosForaServico = 0;
+$totalEstadosAtencao = 0;
 
 $resumoServicos = [];
 $garantiasExpiradas = [];
@@ -28,15 +28,30 @@ $equipamentosSemDocumentacao = [];
 $equipamentosCriticidadeElevada = [];
 $documentosExpirar = [];
 $documentosExpirados = [];
-$equipamentosAvariadosForaServico = [];
+$equipamentosEstadosAtencao = [];
 $distribuicaoCategorias = [];
 $distribuicaoServicosGrafico = [];
+$distribuicaoEstados = [];
+$distribuicaoCriticidade = [];
+
+function formatar_data_dashboard($data)
+{
+    if (empty($data)) {
+        return '-';
+    }
+
+    return date('d/m/Y', strtotime($data));
+}
 
 try {
     $ligacao = db_connect();
 
     $totalEquipamentos = (int) $ligacao
-        ->query("SELECT COUNT(*) AS total FROM Equipamento WHERE ativo = true")
+        ->query("
+            SELECT COUNT(*) AS total
+            FROM Equipamento
+            WHERE ativo = true
+        ")
         ->fetch()
         ->total;
 
@@ -79,12 +94,19 @@ try {
     $totalGarantiasExpiradas = (int) $ligacao
         ->query("
             SELECT COUNT(*) AS total
-            FROM GarantiaContrato gc
-            INNER JOIN Equipamento e
-                ON gc.idEquipamento = e.idEquipamento
-            WHERE gc.ativo = true
-              AND e.ativo = true
-              AND gc.dataFim < CURDATE()
+            FROM (
+                SELECT
+                    gc.idEquipamento,
+                    MAX(gc.dataFim) AS ultimaDataFim
+                FROM GarantiaContrato gc
+                INNER JOIN Equipamento e
+                    ON gc.idEquipamento = e.idEquipamento
+                WHERE gc.ativo = true
+                  AND e.ativo = true
+                  AND gc.dataFim IS NOT NULL
+                GROUP BY gc.idEquipamento
+                HAVING ultimaDataFim < CURDATE()
+            ) AS garantias_expiradas
         ")
         ->fetch()
         ->total;
@@ -92,12 +114,19 @@ try {
     $totalGarantiasExpirar = (int) $ligacao
         ->query("
             SELECT COUNT(*) AS total
-            FROM GarantiaContrato gc
-            INNER JOIN Equipamento e
-                ON gc.idEquipamento = e.idEquipamento
-            WHERE gc.ativo = true
-              AND e.ativo = true
-              AND gc.dataFim BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+            FROM (
+                SELECT
+                    gc.idEquipamento,
+                    MAX(gc.dataFim) AS ultimaDataFim
+                FROM GarantiaContrato gc
+                INNER JOIN Equipamento e
+                    ON gc.idEquipamento = e.idEquipamento
+                WHERE gc.ativo = true
+                  AND e.ativo = true
+                  AND gc.dataFim IS NOT NULL
+                GROUP BY gc.idEquipamento
+                HAVING ultimaDataFim BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+            ) AS garantias_expirar
         ")
         ->fetch()
         ->total;
@@ -157,14 +186,14 @@ try {
         ->fetch()
         ->total;
 
-    $totalAvariadosForaServico = (int) $ligacao
+    $totalEstadosAtencao = (int) $ligacao
         ->query("
             SELECT COUNT(*) AS total
             FROM Equipamento e
             INNER JOIN EstadoEquipamento ee
                 ON e.idEstadoEquipamento = ee.idEstadoEquipamento
             WHERE e.ativo = true
-              AND ee.descricao IN ('Inativo', 'Abatido')
+              AND ee.descricao <> 'Ativo'
         ")
         ->fetch()
         ->total;
@@ -198,8 +227,9 @@ try {
                 e.codigoInterno,
                 e.designacao,
                 l.servico,
-                gc.dataFim,
-                COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
+                CONCAT(l.edificio, ' - Piso ', l.piso, ' - ', l.servico, ' - ', l.sala) AS localizacao,
+                MAX(gc.dataFim) AS dataFim,
+                GROUP_CONCAT(DISTINCT COALESCE(f.designacao, 'Sem fornecedor') SEPARATOR ', ') AS fornecedor
             FROM GarantiaContrato gc
             INNER JOIN Equipamento e
                 ON gc.idEquipamento = e.idEquipamento
@@ -209,8 +239,15 @@ try {
                 ON gc.idFornecedorResponsavel = f.idFornecedor
             WHERE gc.ativo = true
               AND e.ativo = true
-              AND gc.dataFim < CURDATE()
-            ORDER BY gc.dataFim ASC
+              AND gc.dataFim IS NOT NULL
+            GROUP BY
+                e.idEquipamento,
+                e.codigoInterno,
+                e.designacao,
+                l.servico,
+                localizacao
+            HAVING MAX(gc.dataFim) < CURDATE()
+            ORDER BY dataFim ASC
         ")
         ->fetchAll();
 
@@ -220,8 +257,9 @@ try {
                 e.codigoInterno,
                 e.designacao,
                 l.servico,
-                gc.dataFim,
-                COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
+                CONCAT(l.edificio, ' - Piso ', l.piso, ' - ', l.servico, ' - ', l.sala) AS localizacao,
+                MAX(gc.dataFim) AS dataFim,
+                GROUP_CONCAT(DISTINCT COALESCE(f.designacao, 'Sem fornecedor') SEPARATOR ', ') AS fornecedor
             FROM GarantiaContrato gc
             INNER JOIN Equipamento e
                 ON gc.idEquipamento = e.idEquipamento
@@ -231,8 +269,15 @@ try {
                 ON gc.idFornecedorResponsavel = f.idFornecedor
             WHERE gc.ativo = true
               AND e.ativo = true
-              AND gc.dataFim BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
-            ORDER BY gc.dataFim ASC
+              AND gc.dataFim IS NOT NULL
+            GROUP BY
+                e.idEquipamento,
+                e.codigoInterno,
+                e.designacao,
+                l.servico,
+                localizacao
+            HAVING MAX(gc.dataFim) BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+            ORDER BY dataFim ASC
         ")
         ->fetchAll();
 
@@ -241,10 +286,13 @@ try {
             SELECT
                 e.codigoInterno,
                 e.designacao,
+                ce.descricao AS categoria,
                 l.servico,
-                l.sala,
+                CONCAT(l.edificio, ' - Piso ', l.piso, ' - ', l.servico, ' - ', l.sala) AS localizacao,
                 ee.descricao AS estado
             FROM Equipamento e
+            INNER JOIN CategoriaEquipamento ce
+                ON e.idCategoriaEquipamento = ce.idCategoriaEquipamento
             INNER JOIN Localizacao l
                 ON e.idLocalizacao = l.idLocalizacao
             INNER JOIN EstadoEquipamento ee
@@ -265,11 +313,14 @@ try {
             SELECT
                 e.codigoInterno,
                 e.designacao,
+                ce.descricao AS categoria,
                 l.servico,
-                l.sala,
+                CONCAT(l.edificio, ' - Piso ', l.piso, ' - ', l.servico, ' - ', l.sala) AS localizacao,
                 cr.descricao AS criticidade,
                 ee.descricao AS estado
             FROM Equipamento e
+            INNER JOIN CategoriaEquipamento ce
+                ON e.idCategoriaEquipamento = ce.idCategoriaEquipamento
             INNER JOIN Localizacao l
                 ON e.idLocalizacao = l.idLocalizacao
             INNER JOIN CriticidadeEquipamento cr
@@ -278,7 +329,9 @@ try {
                 ON e.idEstadoEquipamento = ee.idEstadoEquipamento
             WHERE e.ativo = true
               AND cr.descricao IN ('Alta', 'Suporte de vida')
-            ORDER BY e.codigoInterno
+            ORDER BY
+                FIELD(cr.descricao, 'Suporte de vida', 'Alta'),
+                e.codigoInterno
         ")
         ->fetchAll();
 
@@ -289,7 +342,9 @@ try {
                 e.designacao AS equipamento,
                 d.nomeDocumento,
                 td.descricao AS tipoDocumento,
+                d.dataDocumento,
                 d.dataValidade,
+                d.nomeFicheiro,
                 COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
             FROM Documento d
             INNER JOIN Equipamento e
@@ -302,7 +357,7 @@ try {
               AND e.ativo = true
               AND d.dataValidade IS NOT NULL
               AND d.dataValidade BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
-            ORDER BY d.dataValidade ASC
+            ORDER BY d.dataValidade ASC, e.codigoInterno
         ")
         ->fetchAll();
 
@@ -313,7 +368,9 @@ try {
                 e.designacao AS equipamento,
                 d.nomeDocumento,
                 td.descricao AS tipoDocumento,
+                d.dataDocumento,
                 d.dataValidade,
+                d.nomeFicheiro,
                 COALESCE(f.designacao, 'Sem fornecedor') AS fornecedor
             FROM Documento d
             INNER JOIN Equipamento e
@@ -326,27 +383,30 @@ try {
               AND e.ativo = true
               AND d.dataValidade IS NOT NULL
               AND d.dataValidade < CURDATE()
-            ORDER BY d.dataValidade ASC
+            ORDER BY d.dataValidade ASC, e.codigoInterno
         ")
         ->fetchAll();
 
-    $equipamentosAvariadosForaServico = $ligacao
+    $equipamentosEstadosAtencao = $ligacao
         ->query("
             SELECT
                 e.codigoInterno,
                 e.designacao,
+                ce.descricao AS categoria,
                 l.servico,
-                l.sala,
+                CONCAT(l.edificio, ' - Piso ', l.piso, ' - ', l.servico, ' - ', l.sala) AS localizacao,
                 ee.descricao AS estado,
                 e.observacoes
             FROM Equipamento e
+            INNER JOIN CategoriaEquipamento ce
+                ON e.idCategoriaEquipamento = ce.idCategoriaEquipamento
             INNER JOIN Localizacao l
                 ON e.idLocalizacao = l.idLocalizacao
             INNER JOIN EstadoEquipamento ee
                 ON e.idEstadoEquipamento = ee.idEstadoEquipamento
             WHERE e.ativo = true
-              AND ee.descricao IN ('Inativo', 'Abatido')
-            ORDER BY e.codigoInterno
+              AND ee.descricao <> 'Ativo'
+            ORDER BY ee.descricao, e.codigoInterno
         ")
         ->fetchAll();
 
@@ -378,6 +438,38 @@ try {
             GROUP BY l.servico
             HAVING total > 0
             ORDER BY total DESC, l.servico
+        ")
+        ->fetchAll();
+
+    $distribuicaoEstados = $ligacao
+        ->query("
+            SELECT
+                ee.descricao AS estado,
+                COUNT(e.idEquipamento) AS total
+            FROM EstadoEquipamento ee
+            LEFT JOIN Equipamento e
+                ON ee.idEstadoEquipamento = e.idEstadoEquipamento
+               AND e.ativo = true
+            GROUP BY ee.idEstadoEquipamento, ee.descricao
+            HAVING total > 0
+            ORDER BY total DESC, ee.descricao
+        ")
+        ->fetchAll();
+
+    $distribuicaoCriticidade = $ligacao
+        ->query("
+            SELECT
+                cr.descricao AS criticidade,
+                COUNT(e.idEquipamento) AS total
+            FROM CriticidadeEquipamento cr
+            LEFT JOIN Equipamento e
+                ON cr.idCriticidadeEquipamento = e.idCriticidadeEquipamento
+               AND e.ativo = true
+            GROUP BY cr.idCriticidadeEquipamento, cr.descricao
+            HAVING total > 0
+            ORDER BY
+                FIELD(cr.descricao, 'Suporte de vida', 'Alta', 'Média', 'Baixa'),
+                cr.descricao
         ")
         ->fetchAll();
 } catch (PDOException $e) {
@@ -414,7 +506,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <h3>Resumo e indicadores</h3>
                 <p>
                     Consulta rápida dos principais números do inventário hospitalar,
-                    alertas de gestão e distribuição dos equipamentos.
+                    alertas de gestão e distribuição dos equipamentos registados.
                 </p>
             </div>
 
@@ -495,7 +587,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                             <i class="fas fa-calendar-xmark"></i> Garantia expirada
                         </h5>
                         <p class="card-text"><?= e($totalGarantiasExpiradas) ?></p>
-                        <p>Equipamentos com garantia expirada</p>
+                        <p>Equipamentos cuja última garantia/contrato expirou</p>
                     </div>
                 </div>
             </div>
@@ -521,7 +613,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                             <i class="fas fa-file-circle-exclamation"></i> Sem documentação
                         </h5>
                         <p class="card-text"><?= e($totalSemDocumentacao) ?></p>
-                        <p>Equipamentos sem documentação associada</p>
+                        <p>Equipamentos sem documentos ativos</p>
                     </div>
                 </div>
             </div>
@@ -571,13 +663,13 @@ include __DIR__ . '/../../includes/sidebar.php';
 
             <div class="col-12 col-md-3 mb-3">
                 <div class="card text-center shadow-sm h-100 card-dashboard dashboard-link dashboard-alerta-vermelho"
-                    data-secao="secAvariadosForaServico" data-collapse="collapseAvariadosForaServico">
+                    data-secao="secEstadosAtencao" data-collapse="collapseEstadosAtencao">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <i class="fas fa-screwdriver-wrench"></i> Avariados / fora de serviço
+                            <i class="fas fa-screwdriver-wrench"></i> Estados de atenção
                         </h5>
-                        <p class="card-text"><?= e($totalAvariadosForaServico) ?></p>
-                        <p>Equipamentos avariados ou fora de serviço</p>
+                        <p class="card-text"><?= e($totalEstadosAtencao) ?></p>
+                        <p>Equipamentos que não estão no estado Ativo</p>
                     </div>
                 </div>
             </div>
@@ -635,7 +727,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                         data-bs-target="#collapseGarantiasExpiradas" aria-expanded="false"
                         aria-controls="collapseGarantiasExpiradas">
                         <strong>
-                            <i class="fas fa-calendar-xmark"></i> Equipamentos com garantia expirada
+                            <i class="fas fa-calendar-xmark"></i> Equipamentos cuja última garantia/contrato expirou
                         </strong>
                     </button>
                 </h2>
@@ -652,7 +744,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     <th>Código interno</th>
                                     <th>Equipamento</th>
                                     <th>Serviço</th>
-                                    <th>Fim da garantia</th>
+                                    <th>Localização</th>
+                                    <th>Fim da garantia/contrato</th>
                                     <th>Fornecedor / Entidade</th>
                                 </tr>
                             </thead>
@@ -664,13 +757,14 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <td><?= e($linha->codigoInterno) ?></td>
                                             <td><?= e($linha->designacao) ?></td>
                                             <td><?= e($linha->servico) ?></td>
-                                            <td><?= e($linha->dataFim) ?></td>
+                                            <td><?= e($linha->localizacao) ?></td>
+                                            <td><?= e(formatar_data_dashboard($linha->dataFim)) ?></td>
                                             <td><?= e($linha->fornecedor) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="5" class="text-center">Não existem equipamentos com garantia expirada.</td>
+                                        <td colspan="6" class="text-center">Não existem equipamentos com garantia/contrato expirado.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -686,7 +780,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                         data-bs-target="#collapseGarantiasExpirar" aria-expanded="false"
                         aria-controls="collapseGarantiasExpirar">
                         <strong>
-                            <i class="fas fa-calendar-days"></i> Equipamentos com garantia a expirar nos próximos 30 dias
+                            <i class="fas fa-calendar-days"></i> Equipamentos com garantia/contrato a expirar nos próximos 30 dias
                         </strong>
                     </button>
                 </h2>
@@ -703,7 +797,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     <th>Código interno</th>
                                     <th>Equipamento</th>
                                     <th>Serviço</th>
-                                    <th>Fim da garantia</th>
+                                    <th>Localização</th>
+                                    <th>Fim da garantia/contrato</th>
                                     <th>Fornecedor / Entidade</th>
                                 </tr>
                             </thead>
@@ -715,13 +810,14 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <td><?= e($linha->codigoInterno) ?></td>
                                             <td><?= e($linha->designacao) ?></td>
                                             <td><?= e($linha->servico) ?></td>
-                                            <td><?= e($linha->dataFim) ?></td>
+                                            <td><?= e($linha->localizacao) ?></td>
+                                            <td><?= e(formatar_data_dashboard($linha->dataFim)) ?></td>
                                             <td><?= e($linha->fornecedor) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="5" class="text-center">Não existem garantias a expirar nos próximos 30 dias.</td>
+                                        <td colspan="6" class="text-center">Não existem garantias/contratos a expirar nos próximos 30 dias.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -753,6 +849,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <tr>
                                     <th>Código interno</th>
                                     <th>Equipamento</th>
+                                    <th>Categoria</th>
                                     <th>Serviço</th>
                                     <th>Localização</th>
                                     <th>Estado</th>
@@ -765,14 +862,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         <tr>
                                             <td><?= e($linha->codigoInterno) ?></td>
                                             <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->categoria) ?></td>
                                             <td><?= e($linha->servico) ?></td>
-                                            <td><?= e($linha->sala) ?></td>
+                                            <td><?= e($linha->localizacao) ?></td>
                                             <td><?= e($linha->estado) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="5" class="text-center">Todos os equipamentos ativos têm documentação associada.</td>
+                                        <td colspan="6" class="text-center">Todos os equipamentos ativos têm documentação associada.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -804,6 +902,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <tr>
                                     <th>Código interno</th>
                                     <th>Equipamento</th>
+                                    <th>Categoria</th>
                                     <th>Serviço</th>
                                     <th>Localização</th>
                                     <th>Criticidade</th>
@@ -817,15 +916,16 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         <tr>
                                             <td><?= e($linha->codigoInterno) ?></td>
                                             <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->categoria) ?></td>
                                             <td><?= e($linha->servico) ?></td>
-                                            <td><?= e($linha->sala) ?></td>
+                                            <td><?= e($linha->localizacao) ?></td>
                                             <td><?= e($linha->criticidade) ?></td>
                                             <td><?= e($linha->estado) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center">Não existem equipamentos de criticidade elevada.</td>
+                                        <td colspan="7" class="text-center">Não existem equipamentos de criticidade elevada.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -859,8 +959,10 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     <th>Equipamento</th>
                                     <th>Documento</th>
                                     <th>Tipo de documento</th>
-                                    <th>Data de validade</th>
+                                    <th>Data do documento</th>
+                                    <th>Validade</th>
                                     <th>Fornecedor associado</th>
+                                    <th>Ficheiro</th>
                                 </tr>
                             </thead>
 
@@ -872,13 +974,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <td><?= e($linha->equipamento) ?></td>
                                             <td><?= e($linha->nomeDocumento) ?></td>
                                             <td><?= e($linha->tipoDocumento) ?></td>
-                                            <td><?= e($linha->dataValidade) ?></td>
+                                            <td><?= e(formatar_data_dashboard($linha->dataDocumento)) ?></td>
+                                            <td><?= e(formatar_data_dashboard($linha->dataValidade)) ?></td>
                                             <td><?= e($linha->fornecedor) ?></td>
+                                            <td><?= e($linha->nomeFicheiro ?: '-') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center">Não existem documentos a expirar nos próximos 30 dias.</td>
+                                        <td colspan="8" class="text-center">Não existem documentos a expirar nos próximos 30 dias.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -912,8 +1016,10 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     <th>Equipamento</th>
                                     <th>Documento</th>
                                     <th>Tipo de documento</th>
-                                    <th>Data de validade</th>
+                                    <th>Data do documento</th>
+                                    <th>Validade</th>
                                     <th>Fornecedor associado</th>
+                                    <th>Ficheiro</th>
                                 </tr>
                             </thead>
 
@@ -925,13 +1031,15 @@ include __DIR__ . '/../../includes/sidebar.php';
                                             <td><?= e($linha->equipamento) ?></td>
                                             <td><?= e($linha->nomeDocumento) ?></td>
                                             <td><?= e($linha->tipoDocumento) ?></td>
-                                            <td><?= e($linha->dataValidade) ?></td>
+                                            <td><?= e(formatar_data_dashboard($linha->dataDocumento)) ?></td>
+                                            <td><?= e(formatar_data_dashboard($linha->dataValidade)) ?></td>
                                             <td><?= e($linha->fornecedor) ?></td>
+                                            <td><?= e($linha->nomeFicheiro ?: '-') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center">Não existem documentos expirados.</td>
+                                        <td colspan="8" class="text-center">Não existem documentos expirados.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -941,19 +1049,19 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </div>
             </div>
 
-            <div class="accordion-item" id="secAvariadosForaServico">
-                <h2 class="accordion-header" id="headingAvariadosForaServico">
+            <div class="accordion-item" id="secEstadosAtencao">
+                <h2 class="accordion-header" id="headingEstadosAtencao">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseAvariadosForaServico" aria-expanded="false"
-                        aria-controls="collapseAvariadosForaServico">
+                        data-bs-target="#collapseEstadosAtencao" aria-expanded="false"
+                        aria-controls="collapseEstadosAtencao">
                         <strong>
-                            <i class="fas fa-screwdriver-wrench"></i> Equipamentos avariados ou fora de serviço
+                            <i class="fas fa-screwdriver-wrench"></i> Equipamentos em estados de atenção
                         </strong>
                     </button>
                 </h2>
 
-                <div id="collapseAvariadosForaServico" class="accordion-collapse collapse"
-                    aria-labelledby="headingAvariadosForaServico" data-bs-parent="#accordionDashboard">
+                <div id="collapseEstadosAtencao" class="accordion-collapse collapse"
+                    aria-labelledby="headingEstadosAtencao" data-bs-parent="#accordionDashboard">
 
                     <div class="accordion-body">
 
@@ -963,6 +1071,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <tr>
                                     <th>Código interno</th>
                                     <th>Equipamento</th>
+                                    <th>Categoria</th>
                                     <th>Serviço</th>
                                     <th>Localização</th>
                                     <th>Estado</th>
@@ -971,20 +1080,21 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </thead>
 
                             <tbody>
-                                <?php if (!empty($equipamentosAvariadosForaServico)): ?>
-                                    <?php foreach ($equipamentosAvariadosForaServico as $linha): ?>
+                                <?php if (!empty($equipamentosEstadosAtencao)): ?>
+                                    <?php foreach ($equipamentosEstadosAtencao as $linha): ?>
                                         <tr>
                                             <td><?= e($linha->codigoInterno) ?></td>
                                             <td><?= e($linha->designacao) ?></td>
+                                            <td><?= e($linha->categoria) ?></td>
                                             <td><?= e($linha->servico) ?></td>
-                                            <td><?= e($linha->sala) ?></td>
+                                            <td><?= e($linha->localizacao) ?></td>
                                             <td><?= e($linha->estado) ?></td>
                                             <td><?= e($linha->observacoes ?: '-') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center">Não existem equipamentos inativos ou abatidos.</td>
+                                        <td colspan="7" class="text-center">Todos os equipamentos ativos estão no estado Ativo.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -1084,6 +1194,96 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                             <p class="text-center mb-0">
                                 Não existem equipamentos ativos para apresentar por serviço.
+                            </p>
+
+                        <?php endif; ?>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card shadow-sm h-100 dashboard-grafico-card">
+                    <div class="card-body">
+
+                        <h4 class="text-center">
+                            <i class="fas fa-chart-simple"></i> Distribuição por estado
+                        </h4>
+
+                        <?php if (!empty($distribuicaoEstados)): ?>
+
+                            <?php foreach ($distribuicaoEstados as $linha): ?>
+                                <?php
+                                $totalEstado = (int) $linha->total;
+                                $percentagemEstado = $totalEquipamentos > 0 ? round(($totalEstado / $totalEquipamentos) * 100, 1) : 0;
+                                ?>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong><?= e($linha->estado) ?></strong>
+                                        <span><?= e($totalEstado) ?> equipamento(s) - <?= e($percentagemEstado) ?>%</span>
+                                    </div>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: <?= e($percentagemEstado) ?>%;"
+                                            aria-valuenow="<?= e($percentagemEstado) ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+
+                        <?php else: ?>
+
+                            <p class="text-center mb-0">
+                                Não existem equipamentos ativos para apresentar por estado.
+                            </p>
+
+                        <?php endif; ?>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card shadow-sm h-100 dashboard-grafico-card">
+                    <div class="card-body">
+
+                        <h4 class="text-center">
+                            <i class="fas fa-chart-simple"></i> Distribuição por criticidade
+                        </h4>
+
+                        <?php if (!empty($distribuicaoCriticidade)): ?>
+
+                            <?php foreach ($distribuicaoCriticidade as $linha): ?>
+                                <?php
+                                $totalCriticidade = (int) $linha->total;
+                                $percentagemCriticidade = $totalEquipamentos > 0 ? round(($totalCriticidade / $totalEquipamentos) * 100, 1) : 0;
+                                ?>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <strong><?= e($linha->criticidade) ?></strong>
+                                        <span><?= e($totalCriticidade) ?> equipamento(s) - <?= e($percentagemCriticidade) ?>%</span>
+                                    </div>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: <?= e($percentagemCriticidade) ?>%;"
+                                            aria-valuenow="<?= e($percentagemCriticidade) ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+
+                        <?php else: ?>
+
+                            <p class="text-center mb-0">
+                                Não existem equipamentos ativos para apresentar por criticidade.
                             </p>
 
                         <?php endif; ?>

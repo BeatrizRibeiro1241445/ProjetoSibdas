@@ -9,6 +9,8 @@ $body_class = '';
 $erro = '';
 $equipamentos = [];
 
+$podeGerirEquipamentos = in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico']);
+
 $filtroCodigo = trim($_GET['filtro_codigo'] ?? '');
 $filtroDesignacao = trim($_GET['filtro_designacao'] ?? '');
 $filtroSerie = trim($_GET['filtro_serie'] ?? '');
@@ -16,7 +18,6 @@ $filtroMarca = trim($_GET['filtro_marca'] ?? '');
 $filtroEstado = trim($_GET['filtro_estado'] ?? '');
 $filtroCriticidade = trim($_GET['filtro_criticidade'] ?? '');
 $filtroCategoria = trim($_GET['filtro_categoria'] ?? '');
-$filtroLocalizacao = trim($_GET['filtro_localizacao'] ?? '');
 $ordenarPor = trim($_GET['ordenar_por'] ?? '');
 
 $paginaAtual = max(1, (int) ($_GET['pagina'] ?? 1));
@@ -90,11 +91,6 @@ try {
         $parametros[':categoria'] = '%' . $filtroCategoria . '%';
     }
 
-    if ($filtroLocalizacao !== '') {
-        $sql .= " AND CONCAT(l.edificio, ' ', l.piso, ' ', l.servico, ' ', l.sala) LIKE :localizacao";
-        $parametros[':localizacao'] = '%' . $filtroLocalizacao . '%';
-    }
-
     $sqlSemOrdenacao = $sql;
 
     $stmtTotal = $ligacao->prepare("
@@ -132,18 +128,6 @@ try {
         case 'designacao_za':
             $sql .= " ORDER BY e.designacao DESC";
             break;
-
-        case 'criticidade':
-            $sql .= "
-                ORDER BY FIELD(cr.descricao, 'Suporte de vida', 'Alta', 'Média', 'Baixa'),
-                         e.designacao ASC
-            ";
-            break;
-
-        case 'estado':
-            $sql .= " ORDER BY ee.descricao ASC, e.designacao ASC";
-            break;
-
         default:
             $sql .= " ORDER BY e.codigoInterno ASC";
             break;
@@ -218,10 +202,11 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <i class="fas fa-laptop-medical"></i> Gestão de Equipamentos
                 </strong>
             </h2>
-
-            <a href="novo.php" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Novo equipamento
-            </a>
+            <?php if ($podeGerirEquipamentos): ?>
+                <a href="novo.php" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Novo equipamento
+                </a>
+            <?php endif; ?>
         </div>
 
         <hr>
@@ -337,14 +322,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     name="filtro_categoria" placeholder="Ex.: Monitorização"
                                     value="<?= e($filtroCategoria) ?>">
                             </div>
-
-                            <div>
-                                <label for="filtro_localizacao" class="form-label fw-semibold">Localização</label>
-                                <input type="text" class="form-control text-center" id="filtro_localizacao"
-                                    name="filtro_localizacao" placeholder="Ex.: UCI"
-                                    value="<?= e($filtroLocalizacao) ?>">
-                            </div>
-
                             <div>
                                 <label for="ordenar_por" class="form-label fw-semibold">Ordenar por</label>
                                 <select class="form-select text-center" id="ordenar_por" name="ordenar_por">
@@ -366,13 +343,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         Designação Z-A
                                     </option>
 
-                                    <option value="criticidade" <?= $ordenarPor === 'criticidade' ? 'selected' : '' ?>>
-                                        Criticidade
-                                    </option>
-
-                                    <option value="estado" <?= $ordenarPor === 'estado' ? 'selected' : '' ?>>
-                                        Estado
-                                    </option>
                                 </select>
                             </div>
 
@@ -453,14 +423,16 @@ include __DIR__ . '/../../includes/sidebar.php';
                                         <a href="detalhes.php?id_equipamento=<?= aes_encrypt($equipamento->idEquipamento) ?>" class="btn btn-sm btn-acao btn-consultar" title="Consultar">
                                             <i class="fas fa-eye"></i>
                                         </a>
+                                        <?php if ($podeGerirEquipamentos): ?>
 
-                                        <a href="editar.php?id_equipamento=<?= aes_encrypt($equipamento->idEquipamento) ?>" class="btn btn-sm btn-acao btn-editar" title="Editar">
-                                            <i class="fas fa-pen-to-square"></i>
-                                        </a>
+                                            <a href="editar.php?id_equipamento=<?= aes_encrypt($equipamento->idEquipamento) ?>" class="btn btn-sm btn-acao btn-editar" title="Editar">
+                                                <i class="fas fa-pen-to-square"></i>
+                                            </a>
 
-                                        <a href="apagar.php?id_equipamento=<?= aes_encrypt($equipamento->idEquipamento) ?>" class="btn btn-sm btn-acao btn-arquivar" title="Arquivar">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                            <a href="apagar.php?id_equipamento=<?= aes_encrypt($equipamento->idEquipamento) ?>" class="btn btn-sm btn-acao btn-arquivar" title="Arquivar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>

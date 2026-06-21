@@ -34,7 +34,7 @@ try {
             e.designacao,
             ee.descricao AS estado,
             cr.descricao AS criticidade,
-            CONCAT(l.edificio, ' - ', l.piso, ' - ', l.servico, ' - ', l.sala) AS localizacao
+            CONCAT(l.edificio, ' - Piso ', l.piso, ' - ', l.servico, ' - ', l.sala) AS localizacao
         FROM Equipamento e
         INNER JOIN EstadoEquipamento ee
             ON e.idEstadoEquipamento = ee.idEstadoEquipamento
@@ -43,6 +43,7 @@ try {
         INNER JOIN Localizacao l
             ON e.idLocalizacao = l.idLocalizacao
         WHERE e.idEquipamento = :idEquipamento
+          AND e.ativo = true
     ");
 
     $stmt->bindParam(':idEquipamento', $idEquipamento, PDO::PARAM_INT);

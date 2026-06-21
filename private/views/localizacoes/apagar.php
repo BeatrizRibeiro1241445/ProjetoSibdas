@@ -36,6 +36,7 @@ try {
             sala
         FROM Localizacao
         WHERE idLocalizacao = :idLocalizacao
+          AND ativo = true
     ");
 
     $stmt->bindParam(':idLocalizacao', $idLocalizacao, PDO::PARAM_INT);

@@ -36,6 +36,7 @@ try {
             morada
         FROM Fornecedor
         WHERE idFornecedor = :idFornecedor
+          AND ativo = true
     ");
 
     $stmt->bindParam(':idFornecedor', $idFornecedor, PDO::PARAM_INT);

@@ -36,6 +36,7 @@ $tiposEntrada = [];
 $localizacoes = [];
 $fornecedores = [];
 $tiposDocumento = [];
+$tecnicos = [];
 
 $codigoInterno = '';
 $numeroSerie = '';
@@ -189,6 +190,14 @@ try {
         ORDER BY descricao
     ")->fetchAll();
 
+    $tecnicos = $ligacao->query("
+        SELECT idUtilizador, nome
+        FROM Utilizador
+        WHERE ativo = true
+          AND perfil = 'tecnico'
+        ORDER BY nome
+    ")->fetchAll();
+
     $stmtEquipamento = $ligacao->prepare("
         SELECT *
         FROM Equipamento
@@ -246,7 +255,34 @@ try {
         ];
     }
 
-    if (!empty($equipamento->idLocalizacao)) {
+    $stmtMovimentacoes = $ligacao->prepare("
+        SELECT
+            me.idLocalizacao,
+            me.dataLocalizacao,
+            me.responsavel,
+            me.motivo
+        FROM MovimentacaoEquipamento me
+        INNER JOIN Localizacao l
+            ON me.idLocalizacao = l.idLocalizacao
+        WHERE me.idEquipamento = :idEquipamento
+          AND me.ativo = true
+        ORDER BY me.dataLocalizacao ASC, me.idMovimentacaoEquipamento ASC
+    ");
+
+    $stmtMovimentacoes->bindValue(':idEquipamento', $idEquipamento, PDO::PARAM_INT);
+    $stmtMovimentacoes->execute();
+    $movimentacoesBaseDados = $stmtMovimentacoes->fetchAll();
+
+    if (!empty($movimentacoesBaseDados)) {
+        foreach ($movimentacoesBaseDados as $movimentacao) {
+            $localizacoesAssociadas[] = [
+                'idLocalizacao' => (string) $movimentacao->idLocalizacao,
+                'dataLocalizacao' => $movimentacao->dataLocalizacao,
+                'responsavel' => $movimentacao->responsavel,
+                'motivo' => $movimentacao->motivo
+            ];
+        }
+    } elseif (!empty($equipamento->idLocalizacao)) {
         $localizacoesAssociadas[] = [
             'idLocalizacao' => (string) $equipamento->idLocalizacao,
             'dataLocalizacao' => $equipamento->dataAquisicao ?? date('Y-m-d'),
@@ -674,6 +710,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':idEquipamento' => $idEquipamento
                 ]);
 
+
+                $stmtApagarMovimentacoes = $ligacao->prepare("
+                    UPDATE MovimentacaoEquipamento
+                    SET ativo = false
+                    WHERE idEquipamento = :idEquipamento
+                ");
+
+                $stmtApagarMovimentacoes->execute([
+                    ':idEquipamento' => $idEquipamento
+                ]);
+
+                foreach ($localizacoesAssociadas as $localizacaoAssociada) {
+                    $stmtMovimentacao = $ligacao->prepare("
+                        INSERT INTO MovimentacaoEquipamento (
+                            idEquipamento,
+                            idLocalizacao,
+                            dataLocalizacao,
+                            responsavel,
+                            motivo,
+                            ativo
+                        ) VALUES (
+                            :idEquipamento,
+                            :idLocalizacao,
+                            :dataLocalizacao,
+                            :responsavel,
+                            :motivo,
+                            true
+                        )
+                    ");
+
+                    $stmtMovimentacao->execute([
+                        ':idEquipamento' => $idEquipamento,
+                        ':idLocalizacao' => trim($localizacaoAssociada['idLocalizacao']),
+                        ':dataLocalizacao' => trim($localizacaoAssociada['dataLocalizacao']),
+                        ':responsavel' => trim($localizacaoAssociada['responsavel']),
+                        ':motivo' => trim($localizacaoAssociada['motivo'])
+                    ]);
+                }
+
                 $stmtApagarFornecedores = $ligacao->prepare("
                     DELETE FROM EquipamentoFornecedor
                     WHERE idEquipamento = :idEquipamento
@@ -973,7 +1048,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="localizacao-tab" data-bs-toggle="tab"
                         data-bs-target="#localizacao" type="button" role="tab">
-                        Localização atual
+                        Localização
                     </button>
                 </li>
 
@@ -1220,7 +1295,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </h3>
 
                             <div class="table-responsive tabela-lista-container">
-                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario tabela-paginada-dashboard"
+                                    data-linhas-pagina="5">
                                     <thead>
                                         <tr>
                                             <th>Fornecedor</th>
@@ -1251,14 +1327,14 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                 </div>
 
-                <!-- Separador: Localização atual -->
+                <!-- Separador: Localização -->
                 <div class="tab-pane fade" id="localizacao" role="tabpanel">
 
                     <div class="card mb-4">
                         <div class="card-body">
 
                             <h3>
-                                <i class="fas fa-location-dot"></i> Selecionar localização existente
+                                <i class="fas fa-location-dot"></i> Selecionar localização
                             </h3>
 
                             <div class="row mb-3">
@@ -1292,8 +1368,15 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                                 <div class="col-12 col-md-6">
                                     <label for="responsavelLocalizacao" class="form-label">Responsável</label>
-                                    <input type="text" class="form-control" id="responsavelLocalizacao"
-                                        placeholder="Ex.: Técnico responsável">
+                                    <select class="form-select" id="responsavelLocalizacao">
+                                        <option value="">Selecione o técnico responsável</option>
+
+                                        <?php foreach ($tecnicos as $tecnico): ?>
+                                            <option value="<?= e($tecnico->nome) ?>">
+                                                <?= e($tecnico->nome) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
 
                                 <div class="col-12 col-md-6">
@@ -1315,11 +1398,12 @@ include __DIR__ . '/../../includes/sidebar.php';
                         <div class="card-body">
 
                             <h3>
-                                <i class="fas fa-list"></i> Localização associada
+                                <i class="fas fa-list"></i> Histórico de movimentações
                             </h3>
 
                             <div class="table-responsive tabela-lista-container">
-                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario tabela-paginada-dashboard"
+                                    data-linhas-pagina="5">
                                     <thead>
                                         <tr>
                                             <th>Localização</th>
@@ -1433,7 +1517,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                             </h3>
 
                             <div class="table-responsive tabela-lista-container">
-                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario tabela-paginada-dashboard"
+                                    data-linhas-pagina="5">
                                     <thead>
                                         <tr>
                                             <th>Tipo</th>

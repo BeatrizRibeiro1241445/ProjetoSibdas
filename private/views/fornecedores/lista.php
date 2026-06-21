@@ -18,7 +18,6 @@ $filtroNif = trim($_GET['filtro_nif'] ?? '');
 $filtroDesignacao = trim($_GET['filtro_designacao'] ?? '');
 $filtroEmail = trim($_GET['filtro_email'] ?? '');
 $filtroTelefone = trim($_GET['filtro_telefone'] ?? '');
-$filtroEquipamento = trim($_GET['filtro_equipamento'] ?? '');
 
 $paginaAtual = max(1, (int) ($_GET['pagina'] ?? 1));
 $registosPorPagina = 5;
@@ -31,7 +30,7 @@ try {
     $ligacao = db_connect();
 
     $sql = "
-        SELECT DISTINCT
+        SELECT
             f.idFornecedor,
             f.nif,
             f.email,
@@ -44,10 +43,6 @@ try {
             f.pessoaContacto2,
             f.telefonePessoaContacto2
         FROM Fornecedor f
-        LEFT JOIN EquipamentoFornecedor ef
-            ON f.idFornecedor = ef.idFornecedor
-        LEFT JOIN Equipamento e
-            ON ef.idEquipamento = e.idEquipamento
         WHERE f.ativo = true
     ";
 
@@ -73,17 +68,12 @@ try {
         $parametros[':telefone'] = '%' . $filtroTelefone . '%';
     }
 
-    if ($filtroEquipamento !== '') {
-        $sql .= " AND e.designacao LIKE :equipamento";
-        $parametros[':equipamento'] = '%' . $filtroEquipamento . '%';
-    }
-
     $sqlSemOrdenacao = $sql;
 
     $stmtTotal = $ligacao->prepare("
-    SELECT COUNT(*) AS total
-    FROM ($sqlSemOrdenacao) AS resultado_total
-");
+        SELECT COUNT(*) AS total
+        FROM ($sqlSemOrdenacao) AS resultado_total
+    ");
 
     foreach ($parametros as $nome => $valor) {
         $stmtTotal->bindValue($nome, $valor, PDO::PARAM_STR);
@@ -200,18 +190,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 </label>
 
                                 <input type="text" class="form-control text-center" id="filtro_telefone"
-                                    name="filtro_telefone" placeholder="Ex.: +351 220 000 000"
+                                    name="filtro_telefone" placeholder="Ex.: +351220000000"
                                     value="<?= e($filtroTelefone) ?>">
-                            </div>
-
-                            <div>
-                                <label for="filtro_equipamento" class="form-label fw-semibold">
-                                    Equipamento associado
-                                </label>
-
-                                <input type="text" class="form-control text-center" id="filtro_equipamento"
-                                    name="filtro_equipamento" placeholder="Ex.: Monitor Multiparamétrico"
-                                    value="<?= e($filtroEquipamento) ?>">
                             </div>
 
                             <div class="filtros-botoes">

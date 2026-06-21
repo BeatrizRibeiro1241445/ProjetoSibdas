@@ -20,6 +20,7 @@ $erro = '';
 $equipamento = null;
 $fornecedoresAssociados = [];
 $documentosAssociados = [];
+$movimentacoesLocalizacao = [];
 $garantiaContrato = null;
 
 function classe_estado_detalhes_equipamento($estado)
@@ -96,6 +97,7 @@ try {
         INNER JOIN Localizacao l
             ON e.idLocalizacao = l.idLocalizacao
         WHERE e.idEquipamento = :idEquipamento
+          AND e.ativo = true
     ");
 
     $stmt->bindParam(':idEquipamento', $idEquipamento, PDO::PARAM_INT);
@@ -132,6 +134,43 @@ try {
     $stmtFornecedores->execute();
 
     $fornecedoresAssociados = $stmtFornecedores->fetchAll();
+
+
+    $stmtMovimentacoes = $ligacao->prepare("
+        SELECT
+            me.dataLocalizacao,
+            me.responsavel,
+            me.motivo,
+            l.categoria,
+            l.edificio,
+            l.piso,
+            l.servico,
+            l.sala
+        FROM MovimentacaoEquipamento me
+        INNER JOIN Localizacao l
+            ON me.idLocalizacao = l.idLocalizacao
+        WHERE me.idEquipamento = :idEquipamento
+          AND me.ativo = true
+        ORDER BY me.dataLocalizacao ASC, me.idMovimentacaoEquipamento ASC
+    ");
+
+    $stmtMovimentacoes->bindParam(':idEquipamento', $idEquipamento, PDO::PARAM_INT);
+    $stmtMovimentacoes->execute();
+
+    $movimentacoesLocalizacao = $stmtMovimentacoes->fetchAll();
+
+    if (empty($movimentacoesLocalizacao)) {
+        $movimentacoesLocalizacao[] = (object) [
+            'dataLocalizacao' => $equipamento->dataAquisicao,
+            'responsavel' => 'Registo existente',
+            'motivo' => 'Localização',
+            'categoria' => $equipamento->categoriaLocalizacao,
+            'edificio' => $equipamento->edificio,
+            'piso' => $equipamento->piso,
+            'servico' => $equipamento->servico,
+            'sala' => $equipamento->sala
+        ];
+    }
 
     $stmtDocumentos = $ligacao->prepare("
         SELECT
@@ -192,12 +231,6 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <strong>
                     <i class="fas fa-eye"></i> Consultar Equipamento
                 </strong>
-
-                <?php if ($equipamento && $equipamento->ativo == 1): ?>
-                    <span class="badge bg-success">Ativo</span>
-                <?php elseif ($equipamento): ?>
-                    <span class="badge bg-secondary">Inativo</span>
-                <?php endif; ?>
             </h2>
 
             <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar à lista">
@@ -234,7 +267,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="localizacao-tab" data-bs-toggle="tab" data-bs-target="#localizacao"
                         type="button" role="tab">
-                        Localização atual
+                        Localização
                     </button>
                 </li>
 
@@ -359,7 +392,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <i class="fas fa-truck-medical"></i> Fornecedores associados
                             </h3>
 
-                            <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario tabela-paginada-dashboard"
+                                data-linhas-pagina="5">
                                 <thead>
                                     <tr>
                                         <th>Empresa</th>
@@ -421,20 +455,20 @@ include __DIR__ . '/../../includes/sidebar.php';
 
                 </div>
 
-                <!-- Separador: Localização atual -->
+                <!-- Separador: Localização -->
                 <div class="tab-pane fade" id="localizacao" role="tabpanel">
 
                     <div class="card mb-4">
                         <div class="card-body">
 
                             <h3>
-                                <i class="fas fa-location-dot"></i> Localização atual
+                                <i class="fas fa-location-dot"></i> Localização
                             </h3>
 
                             <table class="table table-bordered table-hover align-middle tabela-detalhes">
                                 <tbody>
                                     <tr>
-                                        <th>Localização</th>
+                                        <th>Localização atual</th>
                                         <td>
                                             <?= e($equipamento->edificio) ?> -
                                             Piso <?= e($equipamento->piso) ?> -
@@ -449,21 +483,66 @@ include __DIR__ . '/../../includes/sidebar.php';
                                     </tr>
 
                                     <tr>
-                                        <th>Data da localização</th>
-                                        <td><?= e(formato_data_detalhes_equipamento($equipamento->dataAquisicao)) ?></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>Responsável</th>
-                                        <td>Registo existente</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>Motivo / observação</th>
-                                        <td><?= e($equipamento->observacoesLocalizacao ?: 'Localização atual do equipamento') ?></td>
+                                        <th>Observações da localização</th>
+                                        <td><?= e($equipamento->observacoesLocalizacao ?: '-') ?></td>
                                     </tr>
                                 </tbody>
                             </table>
+
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h3>
+                                <i class="fas fa-clock-rotate-left"></i> Histórico de movimentações
+                            </h3>
+
+                            <div class="table-responsive tabela-lista-container">
+                                <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario tabela-paginada-dashboard"
+                                    data-linhas-pagina="5">
+                                    <thead>
+                                        <tr>
+                                            <th>Localização</th>
+                                            <th>Data</th>
+                                            <th>Responsável</th>
+                                            <th>Motivo / observação</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php if (!empty($movimentacoesLocalizacao)): ?>
+
+                                            <?php foreach ($movimentacoesLocalizacao as $movimentacao): ?>
+                                                <tr>
+                                                    <td>
+                                                        <?= e($movimentacao->edificio) ?> -
+                                                        Piso <?= e($movimentacao->piso) ?> -
+                                                        <?= e($movimentacao->servico) ?> -
+                                                        <?= e($movimentacao->sala) ?>
+                                                    </td>
+
+                                                    <td><?= e(formato_data_detalhes_equipamento($movimentacao->dataLocalizacao)) ?></td>
+
+                                                    <td><?= e($movimentacao->responsavel ?: '-') ?></td>
+
+                                                    <td><?= e($movimentacao->motivo ?: '-') ?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+
+                                        <?php else: ?>
+
+                                            <tr>
+                                                <td colspan="4" class="text-center">
+                                                    Não existem movimentações registadas para este equipamento.
+                                                </td>
+                                            </tr>
+
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
 
                         </div>
                     </div>
@@ -480,7 +559,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                                 <i class="fas fa-file-medical"></i> Documentação associada
                             </h3>
 
-                            <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario">
+                            <table class="table table-bordered table-hover align-middle text-center tabela-lista tabela-formulario tabela-paginada-dashboard"
+                                data-linhas-pagina="5">
                                 <thead>
                                     <tr>
                                         <th>Tipo</th>
