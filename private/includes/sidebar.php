@@ -12,12 +12,6 @@ $perfil = $_SESSION['perfil'] ?? '';
             </a>
         <?php endif; ?>
 
-        <?php if (in_array($perfil, ['administrador', 'tecnico'])): ?>
-            <a href="<?= BASE_URL ?>/private/views/equipamentos/eliminados.php">
-                <i class="fas fa-box-archive"></i> Equipamentos removidos
-            </a>
-        <?php endif; ?>
-
         <?php if (in_array($perfil, ['administrador', 'tecnico', 'gestor_hospitalar'])): ?>
             <a href="<?= BASE_URL ?>/private/views/fornecedores/lista.php">
                 <i class="fas fa-truck-medical"></i> Fornecedores

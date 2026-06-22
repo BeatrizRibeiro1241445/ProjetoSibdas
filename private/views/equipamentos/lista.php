@@ -9,7 +9,7 @@ $body_class = '';
 $erro = '';
 $equipamentos = [];
 
-$podeGerirEquipamentos = in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico']);
+$podeGerirEquipamentos = in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico', 'gestor_hospitalar']);
 
 $filtroCodigo = trim($_GET['filtro_codigo'] ?? '');
 $filtroDesignacao = trim($_GET['filtro_designacao'] ?? '');

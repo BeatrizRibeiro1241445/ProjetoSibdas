@@ -9,7 +9,7 @@ $body_class = '';
 $erro = '';
 $localizacoes = [];
 
-$podeGerirLocalizacoes = in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico']);
+$podeGerirLocalizacoes = in_array($_SESSION['perfil'] ?? '', ['administrador', 'gestor_hospitalar']);
 
 $filtroCategoria = trim($_GET['filtro_categoria'] ?? '');
 $filtroEdificio = trim($_GET['filtro_edificio'] ?? '');

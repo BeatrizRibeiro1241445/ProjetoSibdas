@@ -8,7 +8,7 @@ if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
     exit;
 }
 
-if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico'])) {
+if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico', 'gestor_hospitalar'])) {
     header('Location: lista.php');
     exit;
 }

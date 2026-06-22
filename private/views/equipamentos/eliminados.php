@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 
 redirect_if_not_logged();
 
-if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico'])) {
+if (!in_array($_SESSION['perfil'] ?? '', ['administrador', 'tecnico', 'gestor_hospitalar'])) {
     header('Location: lista.php');
     exit;
 }
@@ -168,8 +168,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </strong>
             </h2>
 
-            <a href="lista.php" class="btn btn-outline-secondary botao-anterior">
-                <i class="fas fa-arrow-left"></i> Voltar aos equipamentos
+            <a href="lista.php" class="btn btn-outline-secondary botao-anterior" title="Voltar aos equipamentos">
+                <i class="fas fa-arrow-left"></i>
             </a>
         </div>
 
