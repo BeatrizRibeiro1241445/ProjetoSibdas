@@ -13,21 +13,21 @@ Unidade curricular:
 SIBDAS
 
 Descrição da aplicação:
-O MedInventário é uma aplicação web criada para apoiar a gestão do inventário hospitalar de equipamentos médicos. O projeto tem 
-uma área pública, onde é apresentada a solução e as suas funcionalidades, e uma área privada, onde os utilizadores autenticados 
+O MedInventário é uma aplicação web criada para apoiar a gestão do inventário hospitalar de equipamentos médicos. O projeto tem
+uma área pública, onde é apresentada a solução e as suas funcionalidades, e uma área privada, onde os utilizadores autenticados
 podem gerir os dados do sistema.
 
-Na área reservada é possível registar, consultar, editar e remover equipamentos, fornecedores e localizações. Cada equipamento 
-pode ter informação sobre categoria, estado, criticidade, localização, fornecedores associados, documentos PDF e dados de 
-garantias ou contratos. A aplicação inclui ainda gestão de utilizadores, gestão dos conteúdos apresentados no site público, 
-exportação de dados e um dashboard com indicadores e gráficos estatísticos.
+Na área reservada é possível registar, consultar, editar e remover equipamentos, fornecedores e localizações. Cada equipamento
+pode ter informação sobre categoria, estado, criticidade, localização, fornecedores associados, documentos PDF e dados de
+garantias ou contratos. A aplicação inclui ainda gestão de utilizadores, gestão dos conteúdos apresentados no site público,
+exportação de dados, registo de eventos do sistema e um dashboard com indicadores e gráficos estatísticos.
 
-O objetivo principal foi criar uma aplicação simples, organizada e funcional, que centralize a informação dos equipamentos 
+O objetivo principal foi criar uma aplicação simples, organizada e funcional, que centralize a informação dos equipamentos
 médicos e facilite a consulta, pesquisa e acompanhamento do estado do inventário hospitalar.
 
-A aplicação foi pensada para simular uma situação real numa unidade hospitalar, em que é necessário consultar rapidamente onde 
+A aplicação foi pensada para simular uma situação real numa unidade hospitalar, em que é necessário consultar rapidamente onde
 se encontra um equipamento, qual o seu estado, que documentação tem associada, que fornecedor está relacionado com esse equipamento
-e se existem garantias ou contratos a acompanhar. Desta forma, o sistema ajuda a organizar informação que, de outra forma, poderia 
+e se existem garantias ou contratos a acompanhar. Desta forma, o sistema ajuda a organizar informação que, de outra forma, poderia
 estar dispersa por folhas de cálculo, pastas físicas ou documentos separados.
 
 Estrutura de diretorias adotada:
@@ -54,16 +54,15 @@ medinventario/
 │   ├── 1241445.S02.INSERT.sql           # Script de inserção dos dados de teste
 │   ├── 1241445.S03.ConsultasSQL.sql     # Consultas SQL de teste e validação
 │   ├── 1241445.medinventario.dbml       # Representação da base de dados em DBML
-│   ├── 1241445.modelo-relacional.drawio # Modelo relacional editável
+│   ├── 1241445.modelo-relacional.drawio # Modelo relacional editável em notação Crow's Foot
 │   └── 1241445.modelo-relacional.png    # Imagem do modelo relacional
 │
 ├── private/                             # Área reservada da aplicação
 │   ├── area_pessoal.php                 # Página inicial da área privada
 │   ├── alterar_password.php             # Alteração da palavra-passe do utilizador autenticado
-│   ├── processa_login.php               # Processamento do login
 │   ├── includes/                        # Ficheiros reutilizáveis da área privada
 │   │   ├── footer.php                   # Rodapé comum
-│   │   ├── funcoes.php                  # Funções reutilizáveis, ligação à BD e segurança
+│   │   ├── funcoes.php                  # Funções reutilizáveis, ligação à BD, segurança e logs
 │   │   ├── header.php                   # Cabeçalho comum
 │   │   ├── nav.php                      # Barra superior da área privada
 │   │   ├── public_footer.php            # Rodapé da área pública
@@ -75,26 +74,26 @@ medinventario/
 │       ├── fornecedores/                # Gestão de fornecedores
 │       ├── gestao_conteudos/            # Gestão dos conteúdos da área pública
 │       ├── localizacoes/                # Gestão de localizações
+│       ├── logs/                        # Consulta do registo de eventos do sistema
 │       └── utilizadores/                # Gestão de utilizadores
 │
 ├── public/                              # Área pública da aplicação
 │   ├── index.php                        # Página pública principal
 │   ├── login.php                        # Página de login
 │   ├── logout.php                       # Terminar sessão
-│   └── processa_login.php               # Processamento do login público
+│   └── processa_login.php               # Processamento do login
 │
 ├── index.php                            # Redireciona a raiz do projeto para public/index.php
 ├── README.txt                           # Instruções de instalação, execução, testes e credenciais
-├── index.php                            # Redireciona a raiz do projeto para public/index.php
-└── commits.txt                          # Commits 
+└── commits.txt                          # Lista de commits do projeto
 
 Nota sobre o ficheiro index.php da raiz:
 O ficheiro index.php colocado na raiz do projeto serve para encaminhar automaticamente o utilizador para a página pública principal,
-localizada em public/index.php. 
+localizada em public/index.php.
 Este ficheiro permite que o projeto abra corretamente quando é acedido através do endereço obrigatório:
 http://127.0.0.1/sibdas/1241445/medinventario
 
-Sem este ficheiro, seria necessário escrever manualmente /public/index.php no endereço do browser. Assim, ao abrir a raiz do 
+Sem este ficheiro, seria necessário escrever manualmente /public/index.php no endereço do browser. Assim, ao abrir a raiz do
 projeto, a aplicação redireciona automaticamente para a página inicial pública.
 
 Tecnologias e bibliotecas utilizadas:
@@ -117,17 +116,6 @@ Separação de responsabilidades:
 * As bibliotecas externas usadas localmente encontram-se em assets/bootstrap, assets/fontawesome e assets/chartjs.
 * Os ficheiros PDF associados à documentação dos equipamentos ficam em assets/uploads/documentos.
 * Os ficheiros relativos à base de dados encontram-se na pasta database.
-
-Tecnologias utilizadas:
-* PHP
-* MySQL
-* HTML5
-* CSS3
-* JavaScript
-* Bootstrap
-* Font Awesome
-* Chart.js
-* PDO para ligação segura à base de dados
 
 Instalação e execução:
 1. Instalar o Laragon ou outro ambiente local compatível com PHP e MySQL.
@@ -177,9 +165,8 @@ Utilizador: carla.santos
 Palavra-passe: carla1234
 
 Nota:
-As palavras-passe encontram-se guardadas na base de dados através de password_hash(). 
-No formulário de login deve ser usada a 
-palavra-passe original indicada acima.
+As palavras-passe encontram-se guardadas na base de dados através de password_hash().
+No formulário de login deve ser usada a palavra-passe original indicada acima.
 
 Manual de utilização resumido:
 1. Aceder à aplicação através de:
@@ -195,6 +182,7 @@ Manual de utilização resumido:
    * Localizações;
    * Utilizadores;
    * Conteúdos do site;
+   * Registo de eventos;
    * Dashboard.
 
 5. Nas listagens, usar os campos de pesquisa e filtros para encontrar os registos pretendidos.
@@ -203,31 +191,30 @@ Manual de utilização resumido:
 
 7. No módulo de equipamentos, é possível associar fornecedores, documentação PDF, garantias/contratos e localização ao equipamento.
 
-8. No dashboard, consultar os indicadores principais, alertas de gestão e gráficos estatísticos baseados nos dados registados na base de dados.
+8. No módulo Registo de eventos, disponível apenas para administrador, é possível consultar eventos importantes registados automaticamente pela aplicação, como login, logout, criação, edição, remoção e restauro de equipamentos.
+
+9. No dashboard, consultar os indicadores principais, alertas de gestão e gráficos estatísticos baseados nos dados registados na base de dados.
 
 Principais testes a realizar:
 1. Teste da área pública:
-
    * Aceder a http://127.0.0.1/sibdas/1241445/medinventario.
    * Confirmar que a página pública carrega corretamente.
    * Confirmar que a navegação por secções funciona.
    * Confirmar que os conteúdos apresentados vêm da base de dados.
 
 2. Teste de autenticação:
-
    * Aceder à página de login.
    * Testar login com credenciais inválidas.
    * Testar login com cada um dos perfis existentes.
    * Confirmar que o logout termina corretamente a sessão.
 
 3. Teste de permissões:
-
    * Confirmar que páginas privadas não abrem sem login.
    * Confirmar que a gestão de utilizadores só está disponível para administrador.
+   * Confirmar que o registo de eventos só está disponível para administrador.
    * Confirmar que os perfis apresentam apenas as opções permitidas no menu.
 
 4. Teste do módulo de equipamentos:
-
    * Listar equipamentos.
    * Pesquisar e filtrar equipamentos.
    * Criar novo equipamento.
@@ -238,7 +225,6 @@ Principais testes a realizar:
    * Confirmar que documentação PDF associada abre corretamente.
 
 5. Teste do módulo de fornecedores:
-
    * Listar fornecedores.
    * Criar fornecedor.
    * Editar fornecedor.
@@ -246,7 +232,6 @@ Principais testes a realizar:
    * Remover fornecedor.
 
 6. Teste do módulo de localizações:
-
    * Listar localizações.
    * Criar localização com perfil autorizado.
    * Editar localização com perfil autorizado.
@@ -254,40 +239,43 @@ Principais testes a realizar:
    * Confirmar que perfis sem permissões não conseguem alterar dados.
 
 7. Teste do módulo de utilizadores:
-
    * Aceder como administrador.
    * Criar novo utilizador.
    * Confirmar validações de username, email, perfil, palavra-passe e data de fim de contrato.
    * Remover utilizador antigo/inativo.
 
 8. Teste da gestão de conteúdos:
-
    * Aceder ao backoffice de conteúdos.
    * Alterar textos ou informações da área pública.
    * Confirmar que a página pública reflete as alterações.
 
-9. Teste do dashboard:
+9. Teste do registo de eventos:
+   * Fazer login com dados incorretos.
+   * Fazer login com dados corretos.
+   * Criar, editar, remover e restaurar um equipamento.
+   * Entrar como administrador no módulo Registo de eventos.
+   * Confirmar que os eventos foram registados na tabela LogSistema.
 
+10. Teste do dashboard:
    * Confirmar que os indicadores são apresentados.
    * Confirmar que os gráficos estatísticos carregam corretamente.
    * Confirmar que os dados apresentados vêm da base de dados.
    * Confirmar que os alertas de garantias, documentação e criticidade são coerentes.
 
-10. Teste de exportação:
-
+11. Teste de exportação:
    * Testar a exportação de dados nas listagens onde a funcionalidade está disponível.
    * Confirmar que o ficheiro exportado contém os dados apresentados na lista.
 
 Informação adicional:
-A aplicação foi organizada de forma modular, separando ficheiros de configuração, funções reutilizáveis, layouts comuns, 
-páginas públicas, páginas privadas, recursos visuais e scripts próprios. 
-A base de dados encontra-se normalizada e representada através de SQL, DBML e modelo relacional. 
+A aplicação foi organizada de forma modular, separando ficheiros de configuração, funções reutilizáveis, layouts comuns,
+páginas públicas, páginas privadas, recursos visuais e scripts próprios.
+A base de dados encontra-se normalizada e representada através de SQL, DBML e modelo relacional em notação Crow's Foot.
 O projeto utiliza Bootstrap, Font Awesome e Chart.js localmente, evitando dependências externas durante a execução.
 
 Informação adicional para avaliação:
-O projeto inclui uma área pública e uma área privada, cumprindo a separação entre front office e back office. 
-A área pública apresenta a solução MedInventário e os seus conteúdos podem ser geridos através da área reservada. 
-A área privada permite gerir os principais dados do inventário hospitalar, incluindo equipamentos, fornecedores, localizações, documentação, garantias/contratos, utilizadores e indicadores de gestão.
+O projeto inclui uma área pública e uma área privada, cumprindo a separação entre front office e back office.
+A área pública apresenta a solução MedInventário e os seus conteúdos podem ser geridos através da área reservada.
+A área privada permite gerir os principais dados do inventário hospitalar, incluindo equipamentos, fornecedores, localizações, documentação, garantias/contratos, utilizadores, registo de eventos e indicadores de gestão.
 
 Foram implementadas funcionalidades adicionais de valorização, nomeadamente:
 * upload real de documentos PDF;
@@ -296,6 +284,8 @@ Foram implementadas funcionalidades adicionais de valorização, nomeadamente:
 * dashboard com gráficos estatísticos;
 * equipamentos removidos com possibilidade de restauro;
 * gestão dinâmica dos conteúdos públicos;
+* registo de eventos do sistema através da tabela LogSistema;
+* consulta de eventos no backoffice pelo administrador;
 * preparação estrutural para futura manutenção preventiva.
 
 Observação final:

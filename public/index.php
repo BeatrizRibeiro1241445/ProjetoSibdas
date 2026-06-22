@@ -9,7 +9,11 @@ $conteudos = [];
 try {
     $ligacao = db_connect();
 
-    $stmt = $ligacao->query("\n        SELECT chave, seccao, titulo, texto, imagem\n        FROM ConteudoSite\n        WHERE ativo = true\n    ");
+    $stmt = $ligacao->query("
+        SELECT chave, seccao, titulo, texto, imagem
+        FROM ConteudoSite
+        WHERE ativo = true
+    ");
 
     foreach ($stmt->fetchAll() as $conteudo) {
         $conteudos[$conteudo->chave] = $conteudo;
@@ -119,34 +123,44 @@ include __DIR__ . '/../private/includes/public_nav.php';
 
         <div class="public-cards">
 
-            <?php for ($i = 1; $i <= 6; $i++): ?>
+            <?php for ($i = 1; $i <= 8; $i++): ?>
                 <?php
                 $chave = 'funcionalidade_' . $i;
+
                 $iconesFallback = [
                     1 => 'fas fa-laptop-medical',
-                    2 => 'fas fa-location-dot',
-                    3 => 'fas fa-truck-medical',
-                    4 => 'fas fa-file-medical',
+                    2 => 'fas fa-truck-medical',
+                    3 => 'fas fa-location-dot',
+                    4 => 'fas fa-file-pdf',
                     5 => 'fas fa-file-contract',
-                    6 => 'fas fa-chart-simple'
+                    6 => 'fas fa-chart-simple',
+                    7 => 'fas fa-file-export',
+                    8 => 'fas fa-clock-rotate-left'
                 ];
+
                 $titulosFallback = [
                     1 => 'Equipamentos',
-                    2 => 'Localizações',
-                    3 => 'Fornecedores',
-                    4 => 'Documentação',
-                    5 => 'Garantias',
-                    6 => 'Dashboard'
+                    2 => 'Fornecedores',
+                    3 => 'Localizações',
+                    4 => 'Documentação PDF',
+                    5 => 'Garantias e contratos',
+                    6 => 'Dashboard',
+                    7 => 'Exportação de dados',
+                    8 => 'Registo de eventos'
                 ];
+
                 $textosFallback = [
-                    1 => 'Registo, consulta e atualização dos equipamentos médicos existentes.',
-                    2 => 'Associação dos equipamentos a edifícios, pisos, serviços e salas.',
-                    3 => 'Gestão de empresas, contactos e associações aos equipamentos.',
-                    4 => 'Organização de manuais, certificados e documentos técnicos.',
-                    5 => 'Consulta de garantias, contratos e entidades responsáveis.',
-                    6 => 'Indicadores, alertas e resumo do estado do inventário.'
+                    1 => 'Registo, consulta, edição, remoção e restauro de equipamentos médicos.',
+                    2 => 'Gestão de fornecedores, contactos e relações com os equipamentos.',
+                    3 => 'Associação dos equipamentos a edifícios, pisos, serviços e salas.',
+                    4 => 'Upload e consulta de manuais, certificados e documentos técnicos em PDF.',
+                    5 => 'Acompanhamento de garantias, contratos, datas de fim e entidades responsáveis.',
+                    6 => 'Indicadores, alertas e gráficos estatísticos sobre o inventário.',
+                    7 => 'Exportação das listagens principais para consulta e análise externa.',
+                    8 => 'Registo de ações importantes do sistema para consulta pelo administrador.'
                 ];
                 ?>
+
                 <div class="public-card">
                     <i class="<?= e(public_conteudo_imagem($conteudos, $chave, $iconesFallback[$i])) ?>"></i>
                     <h3><?= e(public_conteudo_titulo($conteudos, $chave, $titulosFallback[$i])) ?></h3>
