@@ -18,6 +18,11 @@ Table TipoEntrada {
   descricao varchar(80) [not null, unique]
 }
 
+Table TipoDocumento {
+  idTipoDocumento int [pk, increment]
+  descricao varchar(100) [not null, unique]
+}
+
 Table Localizacao {
   idLocalizacao int [pk, increment]
   categoria varchar(100) [not null]
@@ -26,6 +31,44 @@ Table Localizacao {
   servico varchar(120) [not null]
   sala varchar(80) [not null]
   observacoes text [null]
+  ativo boolean [not null, default: true]
+}
+
+Table Fornecedor {
+  idFornecedor int [pk, increment]
+  nif varchar(20) [not null, unique]
+  email varchar(120) [not null, unique]
+  designacao varchar(150) [not null]
+  telefone varchar(30) [not null, unique]
+  morada varchar(200) [null]
+  website varchar(150) [null]
+  pessoaContacto varchar(120) [not null]
+  telefonePessoaContacto varchar(30) [not null]
+  pessoaContacto2 varchar(120) [null]
+  telefonePessoaContacto2 varchar(30) [null]
+  observacoes text [null]
+  ativo boolean [not null, default: true]
+}
+
+Table Utilizador {
+  idUtilizador int [pk, increment]
+  username varchar(80) [not null, unique]
+  email varchar(120) [not null, unique]
+  nome varchar(120) [not null]
+  passwordHash varchar(255) [not null]
+  perfil varchar(50) [not null]
+  ativo boolean [not null, default: true]
+  lastLogin datetime [null]
+  dataFimContrato date [null]
+}
+
+Table ConteudoSite {
+  idConteudoSite int [pk, increment]
+  chave varchar(100) [not null, unique]
+  seccao varchar(100) [not null]
+  titulo varchar(150) [not null]
+  texto text [not null]
+  imagem varchar(150) [null]
   ativo boolean [not null, default: true]
 }
 
@@ -47,22 +90,11 @@ Table Equipamento {
   custoAquisicao decimal(10,2) [null]
   observacoes text [null]
   ativo boolean [not null, default: true]
-}
 
-Table Fornecedor {
-  idFornecedor int [pk, increment]
-  nif varchar(20) [not null, unique]
-  email varchar(120) [not null, unique]
-  designacao varchar(150) [not null]
-  telefone varchar(30) [null]
-  morada varchar(200) [null]
-  website varchar(150) [null]
-  pessoaContacto varchar(120) [null] // Pessoa de contacto 1
-  telefonePessoaContacto varchar(30) [null] // Telefone da pessoa de contacto 1
-  pessoaContacto2 varchar(120) [null] // Pessoa de contacto 2
-  telefonePessoaContacto2 varchar(30) [null] // Telefone da pessoa de contacto 2
-  observacoes text [null]
-  ativo boolean [not null, default: true]
+  checks {
+    `anoFabrico IS NULL OR anoFabrico >= 1900`
+    `custoAquisicao IS NULL OR custoAquisicao >= 0`
+  }
 }
 
 Table EquipamentoFornecedor {
@@ -77,11 +109,20 @@ Table EquipamentoFornecedor {
   indexes {
     (idEquipamento, idFornecedor, tipoRelacao) [unique]
   }
+
+  checks {
+    `dataFim IS NULL OR dataInicio IS NULL OR dataFim >= dataInicio`
+  }
 }
 
-Table TipoDocumento {
-  idTipoDocumento int [pk, increment]
-  descricao varchar(100) [not null, unique]
+Table MovimentacaoEquipamento {
+  idMovimentacaoEquipamento int [pk, increment]
+  idEquipamento int [not null]
+  idLocalizacao int [not null]
+  dataLocalizacao date [not null]
+  responsavel varchar(120) [not null]
+  motivo varchar(200) [not null]
+  ativo boolean [not null, default: true]
 }
 
 Table Documento {
@@ -96,6 +137,10 @@ Table Documento {
   caminhoFicheiro varchar(255) [null]
   observacoes text [null]
   ativo boolean [not null, default: true]
+
+  checks {
+    `dataValidade IS NULL OR dataDocumento IS NULL OR dataValidade >= dataDocumento`
+  }
 }
 
 Table GarantiaContrato {
@@ -109,26 +154,10 @@ Table GarantiaContrato {
   periodicidade varchar(80) [null]
   observacoes text [null]
   ativo boolean [not null, default: true]
-}
 
-Table Utilizador {
-  idUtilizador int [pk, increment]
-  username varchar(80) [not null, unique]
-  email varchar(120) [not null, unique]
-  nome varchar(120) [not null]
-  passwordHash varchar(255) [not null]
-  perfil varchar(50) [not null]
-  ativo boolean [not null, default: true]
-}
-
-Table ConteudoSite {
-  idConteudoSite int [pk, increment]
-  chave varchar(100) [not null, unique]
-  seccao varchar(100) [not null]
-  titulo varchar(150) [not null]
-  texto text [not null]
-  imagem varchar(150) [null]
-  ativo boolean [not null, default: true]
+  checks {
+    `dataFim >= dataInicio`
+  }
 }
 
 Ref fk_Equipamento_CategoriaEquipamento {
@@ -157,6 +186,14 @@ Ref fk_EquipamentoFornecedor_Equipamento {
 
 Ref fk_EquipamentoFornecedor_Fornecedor {
   EquipamentoFornecedor.idFornecedor > Fornecedor.idFornecedor
+}
+
+Ref fk_MovimentacaoEquipamento_Equipamento {
+  MovimentacaoEquipamento.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fk_MovimentacaoEquipamento_Localizacao {
+  MovimentacaoEquipamento.idLocalizacao > Localizacao.idLocalizacao
 }
 
 Ref fk_Documento_Equipamento {

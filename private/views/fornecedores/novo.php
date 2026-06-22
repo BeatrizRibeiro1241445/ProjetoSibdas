@@ -53,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefonePessoaContacto2 = preg_replace('/\s+/', '', $telefonePessoaContacto2);
 
     $padraoTelefone = '/^\+[0-9]{8,15}$/';
-    $padraoWebsite = '/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/';
 
     if ($designacao === '') {
         $erros[] = 'O nome da empresa é obrigatório.';
@@ -86,10 +85,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($website !== '') {
-        if (mb_strlen($website) > 150) {
+
+        $websiteValidacao = $website;
+
+        if (!preg_match('/^https?:\/\//i', $websiteValidacao)) {
+            $websiteValidacao = 'https://' . $websiteValidacao;
+        }
+
+        if (mb_strlen($websiteValidacao) > 150) {
             $erros[] = 'O website não pode ter mais de 150 caracteres.';
-        } elseif (!preg_match($padraoWebsite, $website)) {
-            $erros[] = 'O website deve ter um formato válido.';
+        } elseif (!filter_var($websiteValidacao, FILTER_VALIDATE_URL)) {
+            $erros[] = 'O website deve estar num formato válido.';
+        } else {
+            $website = $websiteValidacao;
         }
     }
 
@@ -254,7 +262,7 @@ include __DIR__ . '/../../includes/sidebar.php';
             </div>
         <?php endif; ?>
 
-        <form action="#" method="post" class="formulario-equipamento" novalidate>
+        <form action="novo.php" method="post" class="formulario-equipamento" novalidate>
 
             <ul class="nav nav-tabs mb-4" id="separadoresFornecedor" role="tablist">
 

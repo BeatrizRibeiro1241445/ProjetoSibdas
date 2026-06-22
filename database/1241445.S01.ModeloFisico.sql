@@ -1,7 +1,17 @@
+/* =========================================================
+   SIBDAS - Projeto MedInventário
+   Ficheiro: 1241445.S01.ModeloFisico.sql
+   Objetivo: Criação da estrutura física da base de dados
+   ========================================================= */
+
+CREATE DATABASE IF NOT EXISTS `db1241445` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `db1241445`;
+
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `GarantiaContrato`;
 DROP TABLE IF EXISTS `Documento`;
+DROP TABLE IF EXISTS `MovimentacaoEquipamento`;
 DROP TABLE IF EXISTS `EquipamentoFornecedor`;
 DROP TABLE IF EXISTS `Equipamento`;
 DROP TABLE IF EXISTS `ConteudoSite`;
@@ -16,197 +26,245 @@ DROP TABLE IF EXISTS `CategoriaEquipamento`;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
+/* =========================================================
+   Tabela CategoriaEquipamento
+   ========================================================= */
 CREATE TABLE `CategoriaEquipamento` (
-  `idCategoriaEquipamento` INT PRIMARY KEY AUTO_INCREMENT,
-  `descricao` VARCHAR(80) UNIQUE NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idCategoriaEquipamento` int NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(80) NOT NULL,
+  PRIMARY KEY (`idCategoriaEquipamento`),
+  UNIQUE KEY `descricao` (`descricao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela EstadoEquipamento
+   ========================================================= */
 CREATE TABLE `EstadoEquipamento` (
-  `idEstadoEquipamento` INT PRIMARY KEY AUTO_INCREMENT,
-  `descricao` VARCHAR(80) UNIQUE NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idEstadoEquipamento` int NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(80) NOT NULL,
+  PRIMARY KEY (`idEstadoEquipamento`),
+  UNIQUE KEY `descricao` (`descricao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela CriticidadeEquipamento
+   ========================================================= */
 CREATE TABLE `CriticidadeEquipamento` (
-  `idCriticidadeEquipamento` INT PRIMARY KEY AUTO_INCREMENT,
-  `descricao` VARCHAR(80) UNIQUE NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idCriticidadeEquipamento` int NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(80) NOT NULL,
+  PRIMARY KEY (`idCriticidadeEquipamento`),
+  UNIQUE KEY `descricao` (`descricao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela TipoEntrada
+   ========================================================= */
 CREATE TABLE `TipoEntrada` (
-  `idTipoEntrada` INT PRIMARY KEY AUTO_INCREMENT,
-  `descricao` VARCHAR(80) UNIQUE NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idTipoEntrada` int NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(80) NOT NULL,
+  PRIMARY KEY (`idTipoEntrada`),
+  UNIQUE KEY `descricao` (`descricao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela Localizacao
+   ========================================================= */
 CREATE TABLE `Localizacao` (
-  `idLocalizacao` INT PRIMARY KEY AUTO_INCREMENT,
-  `categoria` VARCHAR(100) NOT NULL,
-  `edificio` VARCHAR(100) NOT NULL,
-  `piso` VARCHAR(50) NOT NULL,
-  `servico` VARCHAR(120) NOT NULL,
-  `sala` VARCHAR(80) NOT NULL,
-  `observacoes` TEXT,
-  `ativo` BOOLEAN NOT NULL DEFAULT TRUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idLocalizacao` int NOT NULL AUTO_INCREMENT,
+  `categoria` varchar(100) NOT NULL,
+  `edificio` varchar(100) NOT NULL,
+  `piso` varchar(50) NOT NULL,
+  `servico` varchar(120) NOT NULL,
+  `sala` varchar(80) NOT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idLocalizacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela Fornecedor
+   ========================================================= */
 CREATE TABLE `Fornecedor` (
-  `idFornecedor` INT PRIMARY KEY AUTO_INCREMENT,
-  `nif` VARCHAR(20) UNIQUE NOT NULL,
-  `email` VARCHAR(120) UNIQUE NOT NULL,
-  `designacao` VARCHAR(150) NOT NULL,
-  `telefone` VARCHAR(30) UNIQUE NOT NULL,
-  `morada` VARCHAR(200),
-  `website` VARCHAR(150),
-  `pessoaContacto` VARCHAR(120) NOT NULL,
-  `telefonePessoaContacto` VARCHAR(30) NOT NULL,
-  `pessoaContacto2` VARCHAR(120),
-  `telefonePessoaContacto2` VARCHAR(30),
-  `observacoes` TEXT,
-  `ativo` BOOLEAN NOT NULL DEFAULT TRUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idFornecedor` int NOT NULL AUTO_INCREMENT,
+  `nif` varchar(20) NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `designacao` varchar(150) NOT NULL,
+  `telefone` varchar(30) NOT NULL,
+  `morada` varchar(200) DEFAULT NULL,
+  `website` varchar(150) DEFAULT NULL,
+  `pessoaContacto` varchar(120) NOT NULL,
+  `telefonePessoaContacto` varchar(30) NOT NULL,
+  `pessoaContacto2` varchar(120) DEFAULT NULL,
+  `telefonePessoaContacto2` varchar(30) DEFAULT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idFornecedor`),
+  UNIQUE KEY `nif` (`nif`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `uq_Fornecedor_Telefone` (`telefone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela TipoDocumento
+   ========================================================= */
 CREATE TABLE `TipoDocumento` (
-  `idTipoDocumento` INT PRIMARY KEY AUTO_INCREMENT,
-  `descricao` VARCHAR(100) UNIQUE NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idTipoDocumento` int NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(100) NOT NULL,
+  PRIMARY KEY (`idTipoDocumento`),
+  UNIQUE KEY `descricao` (`descricao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela Utilizador
+   ========================================================= */
 CREATE TABLE `Utilizador` (
-  `idUtilizador` INT PRIMARY KEY AUTO_INCREMENT,
-  `username` VARCHAR(80) UNIQUE NOT NULL,
-  `email` VARCHAR(120) UNIQUE NOT NULL,
-  `nome` VARCHAR(120) NOT NULL,
-  `passwordHash` VARCHAR(255) NOT NULL,
-  `perfil` VARCHAR(50) NOT NULL,
-  `ativo` BOOLEAN NOT NULL DEFAULT TRUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idUtilizador` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(80) NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `nome` varchar(120) NOT NULL,
+  `passwordHash` varchar(255) NOT NULL,
+  `perfil` varchar(50) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `lastLogin` datetime DEFAULT NULL,
+  `dataFimContrato` date DEFAULT NULL,
+  PRIMARY KEY (`idUtilizador`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela ConteudoSite
+   ========================================================= */
 CREATE TABLE `ConteudoSite` (
-  `idConteudoSite` INT PRIMARY KEY AUTO_INCREMENT,
-  `chave` VARCHAR(100) UNIQUE NOT NULL,
-  `seccao` VARCHAR(100) NOT NULL,
-  `titulo` VARCHAR(150) NOT NULL,
-  `texto` TEXT NOT NULL,
-  `imagem` VARCHAR(150),
-  `ativo` BOOLEAN NOT NULL DEFAULT TRUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idConteudoSite` int NOT NULL AUTO_INCREMENT,
+  `chave` varchar(100) NOT NULL,
+  `seccao` varchar(100) NOT NULL,
+  `titulo` varchar(150) NOT NULL,
+  `texto` text NOT NULL,
+  `imagem` varchar(150) DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idConteudoSite`),
+  UNIQUE KEY `chave` (`chave`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+/* =========================================================
+   Tabela Equipamento
+   ========================================================= */
 CREATE TABLE `Equipamento` (
-  `idEquipamento` INT PRIMARY KEY AUTO_INCREMENT,
-  `codigoInterno` VARCHAR(30) UNIQUE NOT NULL,
-  `numeroSerie` VARCHAR(80) UNIQUE NOT NULL,
-  `idCategoriaEquipamento` INT NOT NULL,
-  `idEstadoEquipamento` INT NOT NULL,
-  `idCriticidadeEquipamento` INT NOT NULL,
-  `idTipoEntrada` INT NOT NULL,
-  `idLocalizacao` INT NOT NULL,
-  `designacao` VARCHAR(150) NOT NULL,
-  `marca` VARCHAR(100),
-  `modelo` VARCHAR(100),
-  `fabricante` VARCHAR(120),
-  `dataAquisicao` DATE,
-  `anoFabrico` INT,
-  `custoAquisicao` DECIMAL(10,2),
-  `observacoes` TEXT,
-  `ativo` BOOLEAN NOT NULL DEFAULT TRUE,
+  `idEquipamento` int NOT NULL AUTO_INCREMENT,
+  `codigoInterno` varchar(30) NOT NULL,
+  `numeroSerie` varchar(80) NOT NULL,
+  `idCategoriaEquipamento` int NOT NULL,
+  `idEstadoEquipamento` int NOT NULL,
+  `idCriticidadeEquipamento` int NOT NULL,
+  `idTipoEntrada` int NOT NULL,
+  `idLocalizacao` int NOT NULL,
+  `designacao` varchar(150) NOT NULL,
+  `marca` varchar(100) DEFAULT NULL,
+  `modelo` varchar(100) DEFAULT NULL,
+  `fabricante` varchar(120) DEFAULT NULL,
+  `dataAquisicao` date DEFAULT NULL,
+  `anoFabrico` int DEFAULT NULL,
+  `custoAquisicao` decimal(10,2) DEFAULT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idEquipamento`),
+  UNIQUE KEY `codigoInterno` (`codigoInterno`),
+  UNIQUE KEY `numeroSerie` (`numeroSerie`),
+  KEY `fk_Equipamento_CategoriaEquipamento` (`idCategoriaEquipamento`),
+  KEY `fk_Equipamento_EstadoEquipamento` (`idEstadoEquipamento`),
+  KEY `fk_Equipamento_CriticidadeEquipamento` (`idCriticidadeEquipamento`),
+  KEY `fk_Equipamento_TipoEntrada` (`idTipoEntrada`),
+  KEY `fk_Equipamento_Localizacao` (`idLocalizacao`),
+  CONSTRAINT `fk_Equipamento_CategoriaEquipamento` FOREIGN KEY (`idCategoriaEquipamento`) REFERENCES `CategoriaEquipamento` (`idCategoriaEquipamento`),
+  CONSTRAINT `fk_Equipamento_CriticidadeEquipamento` FOREIGN KEY (`idCriticidadeEquipamento`) REFERENCES `CriticidadeEquipamento` (`idCriticidadeEquipamento`),
+  CONSTRAINT `fk_Equipamento_EstadoEquipamento` FOREIGN KEY (`idEstadoEquipamento`) REFERENCES `EstadoEquipamento` (`idEstadoEquipamento`),
+  CONSTRAINT `fk_Equipamento_Localizacao` FOREIGN KEY (`idLocalizacao`) REFERENCES `Localizacao` (`idLocalizacao`),
+  CONSTRAINT `fk_Equipamento_TipoEntrada` FOREIGN KEY (`idTipoEntrada`) REFERENCES `TipoEntrada` (`idTipoEntrada`),
+  CONSTRAINT `ck_Equipamento_AnoFabrico` CHECK (((`anoFabrico` is null) or (`anoFabrico` >= 1900))),
+  CONSTRAINT `ck_Equipamento_CustoAquisicao` CHECK (((`custoAquisicao` is null) or (`custoAquisicao` >= 0)))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-  CONSTRAINT `fk_Equipamento_CategoriaEquipamento`
-    FOREIGN KEY (`idCategoriaEquipamento`)
-    REFERENCES `CategoriaEquipamento` (`idCategoriaEquipamento`),
-
-  CONSTRAINT `fk_Equipamento_EstadoEquipamento`
-    FOREIGN KEY (`idEstadoEquipamento`)
-    REFERENCES `EstadoEquipamento` (`idEstadoEquipamento`),
-
-  CONSTRAINT `fk_Equipamento_CriticidadeEquipamento`
-    FOREIGN KEY (`idCriticidadeEquipamento`)
-    REFERENCES `CriticidadeEquipamento` (`idCriticidadeEquipamento`),
-
-  CONSTRAINT `fk_Equipamento_TipoEntrada`
-    FOREIGN KEY (`idTipoEntrada`)
-    REFERENCES `TipoEntrada` (`idTipoEntrada`),
-
-  CONSTRAINT `fk_Equipamento_Localizacao`
-    FOREIGN KEY (`idLocalizacao`)
-    REFERENCES `Localizacao` (`idLocalizacao`),
-
-  CONSTRAINT `ck_Equipamento_AnoFabrico`
-    CHECK (`anoFabrico` IS NULL OR `anoFabrico` >= 1900),
-
-  CONSTRAINT `ck_Equipamento_CustoAquisicao`
-    CHECK (`custoAquisicao` IS NULL OR `custoAquisicao` >= 0)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+/* =========================================================
+   Tabela EquipamentoFornecedor
+   ========================================================= */
 CREATE TABLE `EquipamentoFornecedor` (
-  `idEquipamentoFornecedor` INT PRIMARY KEY AUTO_INCREMENT,
-  `idEquipamento` INT NOT NULL,
-  `idFornecedor` INT NOT NULL,
-  `tipoRelacao` VARCHAR(80) NOT NULL,
-  `dataInicio` DATE,
-  `dataFim` DATE,
-  `observacoes` TEXT,
+  `idEquipamentoFornecedor` int NOT NULL AUTO_INCREMENT,
+  `idEquipamento` int NOT NULL,
+  `idFornecedor` int NOT NULL,
+  `tipoRelacao` varchar(80) NOT NULL,
+  `dataInicio` date DEFAULT NULL,
+  `dataFim` date DEFAULT NULL,
+  `observacoes` text,
+  PRIMARY KEY (`idEquipamentoFornecedor`),
+  UNIQUE KEY `uq_EquipamentoFornecedor_Tipo` (`idEquipamento`,`idFornecedor`,`tipoRelacao`),
+  KEY `fk_EquipamentoFornecedor_Fornecedor` (`idFornecedor`),
+  CONSTRAINT `fk_EquipamentoFornecedor_Equipamento` FOREIGN KEY (`idEquipamento`) REFERENCES `Equipamento` (`idEquipamento`),
+  CONSTRAINT `fk_EquipamentoFornecedor_Fornecedor` FOREIGN KEY (`idFornecedor`) REFERENCES `Fornecedor` (`idFornecedor`),
+  CONSTRAINT `ck_EquipamentoFornecedor_Datas` CHECK (((`dataFim` is null) or (`dataInicio` is null) or (`dataFim` >= `dataInicio`)))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-  CONSTRAINT `fk_EquipamentoFornecedor_Equipamento`
-    FOREIGN KEY (`idEquipamento`)
-    REFERENCES `Equipamento` (`idEquipamento`),
+/* =========================================================
+   Tabela MovimentacaoEquipamento
+   ========================================================= */
+CREATE TABLE `MovimentacaoEquipamento` (
+  `idMovimentacaoEquipamento` int NOT NULL AUTO_INCREMENT,
+  `idEquipamento` int NOT NULL,
+  `idLocalizacao` int NOT NULL,
+  `dataLocalizacao` date NOT NULL,
+  `responsavel` varchar(120) COLLATE utf8mb4_bin NOT NULL,
+  `motivo` varchar(200) COLLATE utf8mb4_bin NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idMovimentacaoEquipamento`),
+  KEY `fk_movimentacao_equipamento` (`idEquipamento`),
+  KEY `fk_movimentacao_localizacao` (`idLocalizacao`),
+  CONSTRAINT `fk_movimentacao_equipamento` FOREIGN KEY (`idEquipamento`) REFERENCES `Equipamento` (`idEquipamento`),
+  CONSTRAINT `fk_movimentacao_localizacao` FOREIGN KEY (`idLocalizacao`) REFERENCES `Localizacao` (`idLocalizacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-  CONSTRAINT `fk_EquipamentoFornecedor_Fornecedor`
-    FOREIGN KEY (`idFornecedor`)
-    REFERENCES `Fornecedor` (`idFornecedor`),
-
-  CONSTRAINT `uq_EquipamentoFornecedor_Tipo`
-    UNIQUE (`idEquipamento`, `idFornecedor`, `tipoRelacao`),
-
-  CONSTRAINT `ck_EquipamentoFornecedor_Datas`
-    CHECK (`dataFim` IS NULL OR `dataInicio` IS NULL OR `dataFim` >= `dataInicio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+/* =========================================================
+   Tabela Documento
+   ========================================================= */
 CREATE TABLE `Documento` (
-  `idDocumento` INT PRIMARY KEY AUTO_INCREMENT,
-  `idEquipamento` INT NOT NULL,
-  `idTipoDocumento` INT NOT NULL,
-  `idFornecedor` INT,
-  `nomeDocumento` VARCHAR(150) NOT NULL,
-  `dataDocumento` DATE,
-  `dataValidade` DATE,
-  `nomeFicheiro` VARCHAR(150),
-  `caminhoFicheiro` VARCHAR(255),
-  `observacoes` TEXT,
-  `ativo` BOOLEAN NOT NULL DEFAULT TRUE,
+  `idDocumento` int NOT NULL AUTO_INCREMENT,
+  `idEquipamento` int NOT NULL,
+  `idTipoDocumento` int NOT NULL,
+  `idFornecedor` int DEFAULT NULL,
+  `nomeDocumento` varchar(150) NOT NULL,
+  `dataDocumento` date DEFAULT NULL,
+  `dataValidade` date DEFAULT NULL,
+  `nomeFicheiro` varchar(150) DEFAULT NULL,
+  `caminhoFicheiro` varchar(255) DEFAULT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idDocumento`),
+  KEY `fk_Documento_Equipamento` (`idEquipamento`),
+  KEY `fk_Documento_TipoDocumento` (`idTipoDocumento`),
+  KEY `fk_Documento_Fornecedor` (`idFornecedor`),
+  CONSTRAINT `fk_Documento_Equipamento` FOREIGN KEY (`idEquipamento`) REFERENCES `Equipamento` (`idEquipamento`),
+  CONSTRAINT `fk_Documento_Fornecedor` FOREIGN KEY (`idFornecedor`) REFERENCES `Fornecedor` (`idFornecedor`),
+  CONSTRAINT `fk_Documento_TipoDocumento` FOREIGN KEY (`idTipoDocumento`) REFERENCES `TipoDocumento` (`idTipoDocumento`),
+  CONSTRAINT `ck_Documento_DataValidade` CHECK (((`dataValidade` is null) or (`dataDocumento` is null) or (`dataValidade` >= `dataDocumento`)))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-  CONSTRAINT `fk_Documento_Equipamento`
-    FOREIGN KEY (`idEquipamento`)
-    REFERENCES `Equipamento` (`idEquipamento`),
-
-  CONSTRAINT `fk_Documento_TipoDocumento`
-    FOREIGN KEY (`idTipoDocumento`)
-    REFERENCES `TipoDocumento` (`idTipoDocumento`),
-
-  CONSTRAINT `fk_Documento_Fornecedor`
-    FOREIGN KEY (`idFornecedor`)
-    REFERENCES `Fornecedor` (`idFornecedor`),
-
-  CONSTRAINT `ck_Documento_DataValidade`
-    CHECK (`dataValidade` IS NULL OR `dataDocumento` IS NULL OR `dataValidade` >= `dataDocumento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+/* =========================================================
+   Tabela GarantiaContrato
+   ========================================================= */
 CREATE TABLE `GarantiaContrato` (
-  `idGarantiaContrato` INT PRIMARY KEY AUTO_INCREMENT,
-  `idEquipamento` INT NOT NULL,
-  `idFornecedorResponsavel` INT,
-  `tipo` VARCHAR(80) NOT NULL,
-  `numeroContrato` VARCHAR(80),
-  `dataInicio` DATE NOT NULL,
-  `dataFim` DATE NOT NULL,
-  `periodicidade` VARCHAR(80),
-  `observacoes` TEXT,
-  `ativo` BOOLEAN NOT NULL DEFAULT TRUE,
-
-  CONSTRAINT `fk_GarantiaContrato_Equipamento`
-    FOREIGN KEY (`idEquipamento`)
-    REFERENCES `Equipamento` (`idEquipamento`),
-
-  CONSTRAINT `fk_GarantiaContrato_Fornecedor`
-    FOREIGN KEY (`idFornecedorResponsavel`)
-    REFERENCES `Fornecedor` (`idFornecedor`),
-
-  CONSTRAINT `ck_GarantiaContrato_Datas`
-    CHECK (`dataFim` >= `dataInicio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idGarantiaContrato` int NOT NULL AUTO_INCREMENT,
+  `idEquipamento` int NOT NULL,
+  `idFornecedorResponsavel` int DEFAULT NULL,
+  `tipo` varchar(80) NOT NULL,
+  `numeroContrato` varchar(80) DEFAULT NULL,
+  `dataInicio` date NOT NULL,
+  `dataFim` date NOT NULL,
+  `periodicidade` varchar(80) DEFAULT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idGarantiaContrato`),
+  KEY `fk_GarantiaContrato_Equipamento` (`idEquipamento`),
+  KEY `fk_GarantiaContrato_Fornecedor` (`idFornecedorResponsavel`),
+  CONSTRAINT `fk_GarantiaContrato_Equipamento` FOREIGN KEY (`idEquipamento`) REFERENCES `Equipamento` (`idEquipamento`),
+  CONSTRAINT `fk_GarantiaContrato_Fornecedor` FOREIGN KEY (`idFornecedorResponsavel`) REFERENCES `Fornecedor` (`idFornecedor`),
+  CONSTRAINT `ck_GarantiaContrato_Datas` CHECK ((`dataFim` >= `dataInicio`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

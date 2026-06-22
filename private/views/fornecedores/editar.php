@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $fornecedor) {
     $telefonePessoaContacto2 = preg_replace('/\s+/', '', $telefonePessoaContacto2);
 
     $padraoTelefone = '/^\+[0-9]{8,15}$/';
-    $padraoWebsite = '/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/';
 
     if ($designacao === '') {
         $erros[] = 'O nome da empresa é obrigatório.';
@@ -109,13 +108,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $fornecedor) {
     }
 
     if ($website !== '') {
-        if (mb_strlen($website) > 150) {
+
+        $websiteValidacao = $website;
+
+        if (!preg_match('/^https?:\/\//i', $websiteValidacao)) {
+            $websiteValidacao = 'https://' . $websiteValidacao;
+        }
+
+        if (mb_strlen($websiteValidacao) > 150) {
             $erros[] = 'O website não pode ter mais de 150 caracteres.';
-        } elseif (!preg_match($padraoWebsite, $website)) {
+        } elseif (!filter_var($websiteValidacao, FILTER_VALIDATE_URL)) {
             $erros[] = 'O website deve estar num formato válido.';
+        } else {
+            $website = $websiteValidacao;
         }
     }
-
+    
     if ($pessoaContacto === '') {
         $erros[] = 'A pessoa de contacto 1 é obrigatória.';
     } elseif (mb_strlen($pessoaContacto) > 120) {
