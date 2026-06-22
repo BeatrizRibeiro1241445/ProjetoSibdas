@@ -13,6 +13,11 @@ $password = $_POST['password'] ?? '';
 
 if ($utilizador === '' || $password === '') {
     $_SESSION['server_error'] = 'Preencha o utilizador e a palavra-passe.';
+
+    if (function_exists('registar_log')) {
+        registar_log('LOGIN_FALHADO', 'Campos de login vazios.');
+    }
+
     header('Location: ' . BASE_URL . '/public/login.php');
     exit;
 }
@@ -20,39 +25,38 @@ if ($utilizador === '' || $password === '') {
 try {
     $ligacao = db_connect();
 
-    $parametros = [
-        ':u' => $utilizador,
-        ':p' => $password
-    ];
-
     $comando = $ligacao->prepare("
         SELECT *
         FROM Utilizador
         WHERE ativo = 1
-          AND (username = :u OR email = :u)
-          AND passwordHash = :p
+          AND (username = :utilizador OR email = :utilizador)
         LIMIT 1
     ");
 
-    $comando->execute($parametros);
+    $comando->bindValue(':utilizador', $utilizador, PDO::PARAM_STR);
+    $comando->execute();
 
-    $resultados = $comando->fetchAll(PDO::FETCH_OBJ);
+    $agente = $comando->fetch();
 
-    if (count($resultados) === 0) {
+    if (!$agente || !password_verify($password, $agente->passwordHash)) {
         $_SESSION['server_error'] = 'Login inválido';
+
+        if (function_exists('registar_log')) {
+            registar_log('LOGIN_FALHADO', 'Tentativa com utilizador/email: ' . $utilizador);
+        }
+
         header('Location: ' . BASE_URL . '/public/login.php');
         exit;
     }
 
-    $agente = $resultados[0];
-
     $stmt = $ligacao->prepare("
         UPDATE Utilizador
         SET lastLogin = NOW()
-        WHERE idUtilizador = ?
+        WHERE idUtilizador = :idUtilizador
     ");
 
-    $stmt->execute([$agente->idUtilizador]);
+    $stmt->bindValue(':idUtilizador', $agente->idUtilizador, PDO::PARAM_INT);
+    $stmt->execute();
 
     $_SESSION['idUtilizador'] = $agente->idUtilizador;
     $_SESSION['utilizador'] = $agente->username;
@@ -60,10 +64,19 @@ try {
     $_SESSION['perfil'] = $agente->perfil;
     $_SESSION['profile'] = $agente->perfil;
 
+    if (function_exists('registar_log')) {
+        registar_log('LOGIN_SUCESSO', 'Utilizador: ' . $agente->username . ' | Perfil: ' . $agente->perfil);
+    }
+
     header('Location: ' . BASE_URL . '/private/area_pessoal.php');
     exit;
 } catch (PDOException $e) {
     $_SESSION['server_error'] = 'Erro ao ligar à base de dados.';
+
+    if (function_exists('registar_log')) {
+        registar_log('ERRO_BD', 'Erro no processamento do login.');
+    }
+
     header('Location: ' . BASE_URL . '/public/login.php');
     exit;
 }

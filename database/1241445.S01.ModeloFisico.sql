@@ -129,7 +129,9 @@ CREATE TABLE `Utilizador` (
   `dataFimContrato` date DEFAULT NULL,
   PRIMARY KEY (`idUtilizador`),
   UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`),
+  CONSTRAINT `ck_Utilizador_Perfil`
+    CHECK (`perfil` IN ('administrador', 'tecnico', 'gestor_hospitalar', 'profissional_saude'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /* =========================================================
@@ -212,15 +214,15 @@ CREATE TABLE `MovimentacaoEquipamento` (
   `idEquipamento` int NOT NULL,
   `idLocalizacao` int NOT NULL,
   `dataLocalizacao` date NOT NULL,
-  `responsavel` varchar(120) COLLATE utf8mb4_bin NOT NULL,
-  `motivo` varchar(200) COLLATE utf8mb4_bin NOT NULL,
+  `responsavel` varchar(120) NOT NULL,
+  `motivo` varchar(200) NOT NULL,
   `ativo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idMovimentacaoEquipamento`),
   KEY `fk_movimentacao_equipamento` (`idEquipamento`),
   KEY `fk_movimentacao_localizacao` (`idLocalizacao`),
   CONSTRAINT `fk_movimentacao_equipamento` FOREIGN KEY (`idEquipamento`) REFERENCES `Equipamento` (`idEquipamento`),
   CONSTRAINT `fk_movimentacao_localizacao` FOREIGN KEY (`idLocalizacao`) REFERENCES `Localizacao` (`idLocalizacao`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /* =========================================================
    Tabela Documento

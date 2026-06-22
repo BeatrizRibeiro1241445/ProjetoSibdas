@@ -78,18 +78,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
 
-            if ($utilizador->passwordHash !== $passwordAtual) {
+            if (!password_verify($passwordAtual, $utilizador->passwordHash)) {
                 $erros[] = 'A palavra-passe atual não está correta.';
+
+                if (function_exists('registar_log')) {
+                    registar_log('ALTERAR_PASSWORD_FALHOU', 'Palavra-passe atual incorreta.');
+                }
             } else {
+                $novaPasswordHash = password_hash($novaPassword, PASSWORD_DEFAULT);
+
                 $stmtUpdate = $ligacao->prepare("
                     UPDATE Utilizador
                     SET passwordHash = :novaPassword
                     WHERE idUtilizador = :idUtilizador
                 ");
 
-                $stmtUpdate->bindValue(':novaPassword', $novaPassword, PDO::PARAM_STR);
+                $stmtUpdate->bindValue(':novaPassword', $novaPasswordHash, PDO::PARAM_STR);
                 $stmtUpdate->bindValue(':idUtilizador', $idUtilizador, PDO::PARAM_INT);
                 $stmtUpdate->execute();
+
+                if (function_exists('registar_log')) {
+                    registar_log('PASSWORD_ALTERADA', 'Utilizador alterou a própria palavra-passe.');
+                }
 
                 $sucesso = 'Palavra-passe alterada com sucesso.';
 
@@ -99,6 +109,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } catch (PDOException $e) {
             $erro = 'Erro ao alterar a palavra-passe.';
+
+            if (function_exists('registar_log')) {
+                registar_log('ERRO_BD', 'Erro ao alterar palavra-passe.');
+            }
         }
     }
 }

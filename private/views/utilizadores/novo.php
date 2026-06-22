@@ -126,6 +126,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($existe > 0) {
                 $erros[] = 'Já existe um utilizador com esse username ou email.';
             } else {
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
                 $stmt = $ligacao->prepare("
                     INSERT INTO Utilizador
                         (username, email, nome, passwordHash, perfil, ativo, lastLogin, dataFimContrato)
@@ -136,10 +138,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bindValue(':username', $username, PDO::PARAM_STR);
                 $stmt->bindValue(':email', $email, PDO::PARAM_STR);
                 $stmt->bindValue(':nome', $nome, PDO::PARAM_STR);
-                $stmt->bindValue(':passwordHash', $password, PDO::PARAM_STR);
+                $stmt->bindValue(':passwordHash', $passwordHash, PDO::PARAM_STR);
                 $stmt->bindValue(':perfil', $perfil, PDO::PARAM_STR);
                 $stmt->bindValue(':dataFimContrato', $dataFimContrato, PDO::PARAM_STR);
                 $stmt->execute();
+
+                if (function_exists('registar_log')) {
+                    registar_log('UTILIZADOR_CRIADO', 'Username: ' . $username . ' | Perfil: ' . $perfil);
+                }
 
                 $sucesso = 'Utilizador registado com sucesso.';
 
@@ -152,6 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } catch (PDOException $e) {
             $erroSistema = 'Erro ao guardar o utilizador.';
+
+            if (function_exists('registar_log')) {
+                registar_log('ERRO_BD', 'Erro ao criar utilizador.');
+            }
         }
     }
 }
@@ -203,7 +213,7 @@ include __DIR__ . '/../../includes/sidebar.php';
             </div>
         <?php endif; ?>
 
-        <form action="#" method="post" class="formulario-equipamento" novalidate>
+        <form action="novo.php" method="post" class="formulario-equipamento" novalidate>
 
             <div class="card mb-4">
                 <div class="card-body">
@@ -242,8 +252,7 @@ include __DIR__ . '/../../includes/sidebar.php';
                         <div class="col-12 col-md-4">
                             <label for="password" class="form-label">Palavra-passe</label>
                             <input type="password" class="form-control" id="password" name="password"
-                                placeholder="Mínimo 6 caracteres"
-                                value="<?= e($password) ?>">
+                                placeholder="Mínimo 6 caracteres">
                         </div>
 
                         <div class="col-12 col-md-4">

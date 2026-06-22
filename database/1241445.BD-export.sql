@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `Documento` (
   CONSTRAINT `ck_Documento_DataValidade` CHECK (((`dataValidade` is null) or (`dataDocumento` is null) or (`dataValidade` >= `dataDocumento`)))
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- A despejar dados para tabela db1241445.Documento: ~8 rows (aproximadamente)
+-- A despejar dados para tabela db1241445.Documento: ~7 rows (aproximadamente)
 INSERT INTO `Documento` (`idDocumento`, `idEquipamento`, `idTipoDocumento`, `idFornecedor`, `nomeDocumento`, `dataDocumento`, `dataValidade`, `nomeFicheiro`, `caminhoFicheiro`, `observacoes`, `ativo`) VALUES
 	(1, 1, 1, 2, 'Manual de utilizador do Monitor Multiparamétrico', '2022-03-15', NULL, 'manual_monitor_multiparametrico.pdf', 'assets/uploads/documentos/manual_monitor_multiparametrico.pdf', 'Manual de utilizador fornecido pelo fabricante.', 1),
 	(2, 1, 3, 1, 'Certificado de calibração do Monitor Multiparamétrico', '2024-01-10', '2025-01-10', 'certificado_calibracao_monitor.pdf', 'assets/uploads/documentos/certificado_calibracao_monitor.pdf', 'Certificado de calibração anual.', 1),
@@ -221,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `Fornecedor` (
   UNIQUE KEY `uq_Fornecedor_Telefone` (`telefone`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- A despejar dados para tabela db1241445.Fornecedor: ~5 rows (aproximadamente)
+-- A despejar dados para tabela db1241445.Fornecedor: ~4 rows (aproximadamente)
 INSERT INTO `Fornecedor` (`idFornecedor`, `nif`, `email`, `designacao`, `telefone`, `morada`, `website`, `pessoaContacto`, `telefonePessoaContacto`, `pessoaContacto2`, `telefonePessoaContacto2`, `observacoes`, `ativo`) VALUES
 	(1, '509000000', 'geral@medtech.pt', 'MedTech Portugal', '+351220000000', 'Rua da Saúde, Porto, Portugal', 'https://www.medtech.pt', 'Ana Martins', '+351914000000', NULL, NULL, 'Fornecedor associado a equipamentos de monitorização e manutenção hospitalar.', 1),
 	(2, '508111111', 'contacto@philipsmedical.pt', 'Philips Medical Systems', '+351210000000', 'Avenida da Tecnologia, Lisboa, Portugal', 'https://www.philips.pt', 'Carlos Ferreira', '+351913000000', NULL, NULL, 'Fabricante de equipamentos médicos de monitorização.', 1),
@@ -346,16 +346,17 @@ CREATE TABLE IF NOT EXISTS `Utilizador` (
   `dataFimContrato` date DEFAULT NULL,
   PRIMARY KEY (`idUtilizador`),
   UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`),
+  CONSTRAINT `ck_Utilizador_Perfil` CHECK ((`perfil` in (_utf8mb4'administrador',_utf8mb4'tecnico',_utf8mb4'gestor_hospitalar',_utf8mb4'profissional_saude')))
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- A despejar dados para tabela db1241445.Utilizador: ~7 rows (aproximadamente)
+-- A despejar dados para tabela db1241445.Utilizador: ~5 rows (aproximadamente)
 INSERT INTO `Utilizador` (`idUtilizador`, `username`, `email`, `nome`, `passwordHash`, `perfil`, `ativo`, `lastLogin`, `dataFimContrato`) VALUES
-	(1, 'beatriz.ribeiro', 'beatriz.ribeiro@medinventario.pt', 'Beatriz Ribeiro', '111111', 'administrador', 1, '2026-06-22 02:54:36', '2026-12-31'),
-	(2, 'miguel.ferreira', 'miguel.ferreira@medinventario.pt', 'Miguel Ferreira', 'miguel1234', 'tecnico', 1, '2026-06-22 00:31:56', '2026-09-30'),
-	(3, 'helena.costa', 'helena.costa@medinventario.pt', 'Helena Costa', 'helena1234', 'gestor_hospitalar', 1, '2026-06-22 00:17:12', '2027-01-31'),
-	(4, 'carla.santos', 'carla.santos@medinventario.pt', 'Carla Santos', 'carla11234', 'profissional_saude', 1, '2026-06-20 23:14:49', '2026-07-31'),
-	(5, 'joao.santos', 'joao.santos@medinventario.pt', 'João Santos', 'joao1234', 'profissional_saude', 1, '2026-06-22 00:19:12', '2026-06-30');
+	(1, 'beatriz.ribeiro', 'beatriz.ribeiro@medinventario.pt', 'Beatriz Ribeiro', '$2y$10$6GU4Ocq2NrSpomoO9/xC5.yHYgdlH8Xb9aMP8o8OnMKt6Ri5i/OA.', 'administrador', 1, '2026-06-22 02:54:36', '2026-12-31'),
+	(2, 'miguel.ferreira', 'miguel.ferreira@medinventario.pt', 'Miguel Ferreira', '$2y$10$k3YbWGzEKOTnIqXLkc77P.ATebkRRgG6UCviIK0RXgdwdksVDumaC', 'tecnico', 1, '2026-06-22 00:31:56', '2026-09-30'),
+	(3, 'helena.costa', 'helena.costa@medinventario.pt', 'Helena Costa', '$2y$10$7m5Z7Xx96pNfd9NYOwTch.99o.KglFHGoW88mdEBM9ZVdN2coY3Ym', 'gestor_hospitalar', 1, '2026-06-22 00:17:12', '2027-01-31'),
+	(4, 'carla.santos', 'carla.santos@medinventario.pt', 'Carla Santos', '$2y$10$s/.cXFVQzabf1W8.secjS.kH9nGpt6S6R50j2q3m8UvK2Oo6hzUaq', 'profissional_saude', 1, '2026-06-20 23:14:49', '2026-07-31'),
+	(5, 'joao.santos', 'joao.santos@medinventario.pt', 'João Santos', '$2y$10$bRb3sfWhsPIT9JJw2wntJO5Bl/y2XRCZjB1Lr.q6nUWcItF94NlQW', 'profissional_saude', 1, '2026-06-22 00:19:12', '2026-06-30');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
