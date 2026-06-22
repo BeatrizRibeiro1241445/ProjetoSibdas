@@ -1032,6 +1032,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $ligacao->commit();
 
+                registar_log('EQUIPAMENTO_ATUALIZADO', 'ID equipamento: ' . $idEquipamento . ' | Código interno: ' . $codigoInterno . ' | Designação: ' . $designacao);
+
                 header('Location: lista.php');
                 exit;
             }
@@ -1039,6 +1041,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($ligacao) && $ligacao->inTransaction()) {
                 $ligacao->rollBack();
             }
+
+            registar_log('ERRO_BD', 'Erro ao atualizar equipamento. ID equipamento: ' . $idEquipamento);
 
             $erroSistema = 'Erro ao atualizar o equipamento.';
         }

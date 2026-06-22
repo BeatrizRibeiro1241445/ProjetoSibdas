@@ -36,6 +36,12 @@ $perfil = $_SESSION['perfil'] ?? '';
             </a>
         <?php endif; ?>
 
+        <?php if ($perfil === 'administrador'): ?>
+            <a href="<?= BASE_URL ?>/private/views/logs/lista.php">
+                <i class="fas fa-clock-rotate-left"></i> Registo de eventos
+            </a>
+        <?php endif; ?>
+
         <?php if (in_array($perfil, ['administrador', 'tecnico', 'gestor_hospitalar', 'profissional_saude'])): ?>
             <a href="<?= BASE_URL ?>/private/views/dashboard/dashboard.php">
                 <i class="fas fa-chart-bar"></i> Dashboard

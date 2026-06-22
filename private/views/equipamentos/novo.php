@@ -800,6 +800,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $ligacao->commit();
 
+                registar_log('EQUIPAMENTO_CRIADO', 'ID equipamento: ' . $idEquipamentoCriado . ' | Código interno: ' . $codigoInterno . ' | Designação: ' . $designacao);
+
                 $sucesso = 'Equipamento registado com sucesso.';
 
                 $codigoInterno = '';
@@ -831,6 +833,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($ligacao) && $ligacao->inTransaction()) {
                 $ligacao->rollBack();
             }
+
+            registar_log('ERRO_BD', 'Erro ao guardar equipamento. Código interno: ' . $codigoInterno);
 
             $erroSistema = 'Erro ao guardar o equipamento.';
         }

@@ -54,9 +54,13 @@ try {
         $stmt->execute();
     }
 
+    registar_log('EQUIPAMENTO_RESTAURADO', 'ID equipamento: ' . $idEquipamento);
+
     header('Location: lista.php');
     exit;
 } catch (PDOException $e) {
+    registar_log('ERRO_BD', 'Erro ao restaurar equipamento. ID equipamento: ' . $idEquipamento);
+
     echo "<p class='text-danger'>Erro ao restaurar o equipamento.</p>";
     exit;
 }

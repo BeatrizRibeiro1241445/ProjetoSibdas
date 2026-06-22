@@ -277,6 +277,21 @@ INSERT INTO `Localizacao` (`idLocalizacao`, `categoria`, `edificio`, `piso`, `se
 	(5, 'Área Clinica', 'Hospital Central', '2', 'Unidade de Cuidados Intensivos', 'Sala 1', NULL, 1),
 	(6, 'A', 'A', '3', 'A', 'Sala 2', NULL, 0);
 
+-- A despejar estrutura para tabela db1241445.LogSistema
+CREATE TABLE IF NOT EXISTS `LogSistema` (
+  `idLogSistema` int NOT NULL AUTO_INCREMENT,
+  `idUtilizador` int DEFAULT NULL,
+  `username` varchar(80) DEFAULT NULL,
+  `perfil` varchar(50) DEFAULT NULL,
+  `tipoEvento` varchar(80) NOT NULL,
+  `descricao` text NOT NULL,
+  `ip` varchar(45) DEFAULT NULL,
+  `dataHora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idLogSistema`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- A despejar dados para tabela db1241445.LogSistema: ~0 rows (aproximadamente)
+
 -- A despejar estrutura para tabela db1241445.MovimentacaoEquipamento
 CREATE TABLE IF NOT EXISTS `MovimentacaoEquipamento` (
   `idMovimentacaoEquipamento` int NOT NULL AUTO_INCREMENT,
@@ -352,7 +367,7 @@ CREATE TABLE IF NOT EXISTS `Utilizador` (
 
 -- A despejar dados para tabela db1241445.Utilizador: ~5 rows (aproximadamente)
 INSERT INTO `Utilizador` (`idUtilizador`, `username`, `email`, `nome`, `passwordHash`, `perfil`, `ativo`, `lastLogin`, `dataFimContrato`) VALUES
-	(1, 'beatriz.ribeiro', 'beatriz.ribeiro@medinventario.pt', 'Beatriz Ribeiro', '$2y$10$6GU4Ocq2NrSpomoO9/xC5.yHYgdlH8Xb9aMP8o8OnMKt6Ri5i/OA.', 'administrador', 1, '2026-06-22 02:54:36', '2026-12-31'),
+	(1, 'beatriz.ribeiro', 'beatriz.ribeiro@medinventario.pt', 'Beatriz Ribeiro', '$2y$10$6GU4Ocq2NrSpomoO9/xC5.yHYgdlH8Xb9aMP8o8OnMKt6Ri5i/OA.', 'administrador', 1, '2026-06-22 07:05:03', '2026-12-31'),
 	(2, 'miguel.ferreira', 'miguel.ferreira@medinventario.pt', 'Miguel Ferreira', '$2y$10$k3YbWGzEKOTnIqXLkc77P.ATebkRRgG6UCviIK0RXgdwdksVDumaC', 'tecnico', 1, '2026-06-22 00:31:56', '2026-09-30'),
 	(3, 'helena.costa', 'helena.costa@medinventario.pt', 'Helena Costa', '$2y$10$7m5Z7Xx96pNfd9NYOwTch.99o.KglFHGoW88mdEBM9ZVdN2coY3Ym', 'gestor_hospitalar', 1, '2026-06-22 00:17:12', '2027-01-31'),
 	(4, 'carla.santos', 'carla.santos@medinventario.pt', 'Carla Santos', '$2y$10$s/.cXFVQzabf1W8.secjS.kH9nGpt6S6R50j2q3m8UvK2Oo6hzUaq', 'profissional_saude', 1, '2026-06-20 23:14:49', '2026-07-31'),

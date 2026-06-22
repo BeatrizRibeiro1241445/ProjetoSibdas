@@ -100,3 +100,70 @@ function aes_decrypt($value)
         OPENSSL_IV
     );
 }
+
+// ============================================================
+// Registo de eventos do sistema
+// ============================================================
+
+function registar_log($tipoEvento, $descricao = '')
+{
+    try {
+        start_session();
+
+        $ligacao = db_connect();
+
+        $idUtilizador = $_SESSION['idUtilizador'] ?? null;
+        $username = $_SESSION['utilizador'] ?? null;
+        $perfil = $_SESSION['perfil'] ?? null;
+        $ip = $_SERVER['REMOTE_ADDR'] ?? null;
+
+        $tipoEvento = trim((string) $tipoEvento);
+        $descricao = trim((string) $descricao);
+
+        if ($tipoEvento === '') {
+            $tipoEvento = 'EVENTO';
+        }
+
+        if (mb_strlen($tipoEvento) > 80) {
+            $tipoEvento = mb_substr($tipoEvento, 0, 80);
+        }
+
+        $stmt = $ligacao->prepare("
+            INSERT INTO LogSistema (
+                idUtilizador,
+                username,
+                perfil,
+                tipoEvento,
+                descricao,
+                ip,
+                dataHora
+            ) VALUES (
+                :idUtilizador,
+                :username,
+                :perfil,
+                :tipoEvento,
+                :descricao,
+                :ip,
+                NOW()
+            )
+        ");
+
+        if ($idUtilizador !== null && is_numeric($idUtilizador)) {
+            $stmt->bindValue(':idUtilizador', (int) $idUtilizador, PDO::PARAM_INT);
+        } else {
+            $stmt->bindValue(':idUtilizador', null, PDO::PARAM_NULL);
+        }
+
+        $stmt->bindValue(':username', $username, $username !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
+        $stmt->bindValue(':perfil', $perfil, $perfil !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
+        $stmt->bindValue(':tipoEvento', $tipoEvento, PDO::PARAM_STR);
+        $stmt->bindValue(':descricao', $descricao !== '' ? $descricao : null, $descricao !== '' ? PDO::PARAM_STR : PDO::PARAM_NULL);
+        $stmt->bindValue(':ip', $ip, $ip !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
+
+        $stmt->execute();
+
+        return true;
+    } catch (Throwable $e) {
+        return false;
+    }
+}

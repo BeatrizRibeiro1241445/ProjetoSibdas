@@ -1,6 +1,5 @@
 <?php
-
-require_once __DIR__ . '/includes/funcoes.php';
+require_once __DIR__ . '/../private/includes/funcoes.php';
 
 start_session();
 
@@ -24,21 +23,69 @@ if ($password === '') {
 
 if (!empty($validation_errors)) {
     $_SESSION['validation_errors'] = $validation_errors;
+
+    registar_log('LOGIN_FALHADO', 'Tentativa de login com campos vazios.');
+
     header('Location: ' . BASE_URL . '/public/login.php');
     exit;
 }
 
-// Login temporário da Ficha 10.
-// Na Ficha 14 vamos trocar isto por login real com base de dados.
-if ($utilizador !== 'admin' || $password !== '123456') {
-    $_SESSION['server_error'] = 'Utilizador ou palavra-passe incorretos.';
+try {
+    $ligacao = db_connect();
+
+    $comando = $ligacao->prepare("
+        SELECT
+            idUtilizador,
+            username,
+            email,
+            nome,
+            passwordHash,
+            perfil,
+            ativo
+        FROM Utilizador
+        WHERE ativo = true
+          AND (username = :utilizador OR email = :utilizador)
+        LIMIT 1
+    ");
+
+    $comando->bindValue(':utilizador', $utilizador, PDO::PARAM_STR);
+    $comando->execute();
+
+    $agente = $comando->fetch();
+
+    if (!$agente || !password_verify($password, $agente->passwordHash)) {
+        $_SESSION['server_error'] = 'Utilizador ou palavra-passe incorretos.';
+
+        registar_log('LOGIN_FALHADO', 'Tentativa com utilizador/email: ' . $utilizador);
+
+        header('Location: ' . BASE_URL . '/public/login.php');
+        exit;
+    }
+
+    $stmt = $ligacao->prepare("
+        UPDATE Utilizador
+        SET lastLogin = NOW()
+        WHERE idUtilizador = :idUtilizador
+    ");
+
+    $stmt->bindValue(':idUtilizador', $agente->idUtilizador, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $_SESSION['idUtilizador'] = $agente->idUtilizador;
+    $_SESSION['utilizador'] = $agente->username;
+    $_SESSION['nome'] = $agente->nome;
+    $_SESSION['perfil'] = $agente->perfil;
+    $_SESSION['profile'] = $agente->perfil;
+
+    registar_log('LOGIN_SUCESSO', 'Utilizador: ' . $agente->username . ' | Perfil: ' . $agente->perfil);
+
+    header('Location: ' . BASE_URL . '/private/area_pessoal.php');
+    exit;
+} catch (PDOException $e) {
+    $_SESSION['server_error'] = 'Erro ao ligar à base de dados.';
+
+    registar_log('ERRO_BD', 'Erro no processamento do login.');
+
     header('Location: ' . BASE_URL . '/public/login.php');
     exit;
 }
-
-$_SESSION['utilizador'] = 'admin';
-$_SESSION['nome'] = 'Administrador MedInventário';
-$_SESSION['perfil'] = 'administrador';
-
-header('Location: ' . BASE_URL . '/private/area_pessoal.php');
-exit;

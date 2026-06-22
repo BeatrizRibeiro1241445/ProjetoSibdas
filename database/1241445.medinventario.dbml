@@ -215,3 +215,14 @@ Ref fk_GarantiaContrato_Equipamento {
 Ref fk_GarantiaContrato_Fornecedor {
   GarantiaContrato.idFornecedorResponsavel > Fornecedor.idFornecedor
 }
+
+Table LogSistema {
+  idLogSistema int [pk, increment]
+  idUtilizador int [null]
+  username varchar(80) [null]
+  perfil varchar(50) [null]
+  tipoEvento varchar(80) [not null]
+  descricao text [null]
+  ip varchar(45) [null]
+  dataHora datetime [not null, default: `CURRENT_TIMESTAMP`]
+}

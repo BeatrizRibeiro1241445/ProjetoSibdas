@@ -9,6 +9,8 @@ USE `db1241445`;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
+
+DROP TABLE IF EXISTS `LogSistema`;
 DROP TABLE IF EXISTS `GarantiaContrato`;
 DROP TABLE IF EXISTS `Documento`;
 DROP TABLE IF EXISTS `MovimentacaoEquipamento`;
@@ -270,3 +272,22 @@ CREATE TABLE `GarantiaContrato` (
   CONSTRAINT `fk_GarantiaContrato_Fornecedor` FOREIGN KEY (`idFornecedorResponsavel`) REFERENCES `Fornecedor` (`idFornecedor`),
   CONSTRAINT `ck_GarantiaContrato_Datas` CHECK ((`dataFim` >= `dataInicio`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/* =========================================================
+   Tabela LogSistema
+   ========================================================= */
+CREATE TABLE `LogSistema` (
+  `idLogSistema` INT NOT NULL AUTO_INCREMENT,
+  `idUtilizador` INT NULL,
+  `username` VARCHAR(80) NULL,
+  `perfil` VARCHAR(50) NULL,
+  `tipoEvento` VARCHAR(80) NOT NULL,
+  `descricao` TEXT NULL,
+  `ip` VARCHAR(45) NULL,
+  `dataHora` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idLogSistema`),
+  KEY `idx_LogSistema_DataHora` (`dataHora`),
+  KEY `idx_LogSistema_TipoEvento` (`tipoEvento`),
+  KEY `idx_LogSistema_IdUtilizador` (`idUtilizador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+

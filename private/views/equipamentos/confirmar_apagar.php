@@ -59,9 +59,13 @@ try {
         $stmt->execute();
     }
 
+    registar_log('EQUIPAMENTO_REMOVIDO', 'ID equipamento: ' . $idEquipamento);
+
     header('Location: eliminados.php');
     exit;
 } catch (PDOException $e) {
+    registar_log('ERRO_BD', 'Erro ao remover equipamento. ID equipamento: ' . $idEquipamento);
+
     echo "<p class='text-danger'>Erro ao remover o equipamento.</p>";
     exit;
 }
