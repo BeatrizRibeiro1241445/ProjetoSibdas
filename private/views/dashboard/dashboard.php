@@ -36,6 +36,26 @@ $distribuicaoServicosGrafico = [];
 $distribuicaoEstados = [];
 $distribuicaoCriticidade = [];
 
+$graficoEstados = [
+    'labels' => [],
+    'dados' => []
+];
+
+$graficoCriticidade = [
+    'labels' => [],
+    'dados' => []
+];
+
+$graficoCategorias = [
+    'labels' => [],
+    'dados' => []
+];
+
+$graficoServicos = [
+    'labels' => [],
+    'dados' => []
+];
+
 function formatar_data_dashboard($data)
 {
     if (empty($data)) {
@@ -43,6 +63,22 @@ function formatar_data_dashboard($data)
     }
 
     return date('d/m/Y', strtotime($data));
+}
+
+function preparar_grafico_dashboard($linhas, $campoLabel)
+{
+    $labels = [];
+    $dados = [];
+
+    foreach ($linhas as $linha) {
+        $labels[] = (string) $linha->$campoLabel;
+        $dados[] = (int) $linha->total;
+    }
+
+    return [
+        'labels' => $labels,
+        'dados' => $dados
+    ];
 }
 
 try {
@@ -508,6 +544,11 @@ try {
                 cr.descricao
         ")
         ->fetchAll();
+
+    $graficoEstados = preparar_grafico_dashboard($distribuicaoEstados, 'estado');
+    $graficoCriticidade = preparar_grafico_dashboard($distribuicaoCriticidade, 'criticidade');
+    $graficoCategorias = preparar_grafico_dashboard($distribuicaoCategorias, 'categoria');
+    $graficoServicos = preparar_grafico_dashboard($distribuicaoServicosGrafico, 'servico');
 } catch (PDOException $e) {
     $erro = 'Erro ao obter dados do dashboard.';
 }
@@ -1155,7 +1196,7 @@ include __DIR__ . '/../../includes/sidebar.php';
         </div>
 
         <h3 class="dashboard-titulo-seccao mt-5">
-            <i class="fas fa-chart-pie"></i> Distribuições gerais
+            <i class="fas fa-chart-pie"></i> Gráficos estatísticos
         </h3>
 
         <div class="row mt-4">
@@ -1164,86 +1205,18 @@ include __DIR__ . '/../../includes/sidebar.php';
                 <div class="card shadow-sm h-100 dashboard-grafico-card">
                     <div class="card-body">
 
-                        <h4 id="secDistribuicaoCategoria" class="text-center">
-                            <i class="fas fa-chart-pie"></i> Distribuição por categoria
+                        <h4 class="text-center">
+                            <i class="fas fa-chart-simple"></i> Equipamentos por estado
                         </h4>
 
-                        <?php if (!empty($distribuicaoCategorias)): ?>
-
-                            <?php foreach ($distribuicaoCategorias as $linha): ?>
-                                <?php
-                                $totalCategoria = (int) $linha->total;
-                                $percentagemCategoria = $totalEquipamentos > 0 ? round(($totalCategoria / $totalEquipamentos) * 100, 1) : 0;
-                                ?>
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between">
-                                        <strong><?= e($linha->categoria) ?></strong>
-                                        <span><?= e($totalCategoria) ?> equipamento(s) - <?= e($percentagemCategoria) ?>%</span>
-                                    </div>
-
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar"
-                                            style="width: <?= e($percentagemCategoria) ?>%;"
-                                            aria-valuenow="<?= e($percentagemCategoria) ?>"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-
+                        <?php if (!empty($graficoEstados['dados'])): ?>
+                            <div class="dashboard-chart-area" style="position: relative; min-height: 280px;">
+                                <canvas id="graficoEstadosDashboard"></canvas>
+                            </div>
                         <?php else: ?>
-
                             <p class="text-center mb-0">
-                                Não existem equipamentos ativos para apresentar por categoria.
+                                Não existem dados para apresentar por estado.
                             </p>
-
-                        <?php endif; ?>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-6 mb-4">
-                <div class="card shadow-sm h-100 dashboard-grafico-card">
-                    <div class="card-body">
-
-                        <h4 id="secDistribuicaoLocalizacao" class="text-center">
-                            <i class="fas fa-chart-pie"></i> Distribuição por serviço
-                        </h4>
-
-                        <?php if (!empty($distribuicaoServicosGrafico)): ?>
-
-                            <?php foreach ($distribuicaoServicosGrafico as $linha): ?>
-                                <?php
-                                $totalServico = (int) $linha->total;
-                                $percentagemServico = $totalEquipamentos > 0 ? round(($totalServico / $totalEquipamentos) * 100, 1) : 0;
-                                ?>
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between">
-                                        <strong><?= e($linha->servico) ?></strong>
-                                        <span><?= e($totalServico) ?> equipamento(s) - <?= e($percentagemServico) ?>%</span>
-                                    </div>
-
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar"
-                                            style="width: <?= e($percentagemServico) ?>%;"
-                                            aria-valuenow="<?= e($percentagemServico) ?>"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-
-                        <?php else: ?>
-
-                            <p class="text-center mb-0">
-                                Não existem equipamentos ativos para apresentar por serviço.
-                            </p>
-
                         <?php endif; ?>
 
                     </div>
@@ -1255,40 +1228,17 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <div class="card-body">
 
                         <h4 class="text-center">
-                            <i class="fas fa-chart-simple"></i> Distribuição por estado
+                            <i class="fas fa-chart-simple"></i> Equipamentos por criticidade
                         </h4>
 
-                        <?php if (!empty($distribuicaoEstados)): ?>
-
-                            <?php foreach ($distribuicaoEstados as $linha): ?>
-                                <?php
-                                $totalEstado = (int) $linha->total;
-                                $percentagemEstado = $totalDistribuicaoEstados > 0 ? round(($totalEstado / $totalDistribuicaoEstados) * 100, 1) : 0;
-                                ?>
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between">
-                                        <strong><?= e($linha->estado) ?></strong>
-                                        <span><?= e($totalEstado) ?> equipamento(s) - <?= e($percentagemEstado) ?>%</span>
-                                    </div>
-
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar"
-                                            style="width: <?= e($percentagemEstado) ?>%;"
-                                            aria-valuenow="<?= e($percentagemEstado) ?>"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-
+                        <?php if (!empty($graficoCriticidade['dados'])): ?>
+                            <div class="dashboard-chart-area" style="position: relative; min-height: 280px;">
+                                <canvas id="graficoCriticidadeDashboard"></canvas>
+                            </div>
                         <?php else: ?>
-
                             <p class="text-center mb-0">
-                                Não existem equipamentos para apresentar por estado.
+                                Não existem dados para apresentar por criticidade.
                             </p>
-
                         <?php endif; ?>
 
                     </div>
@@ -1300,40 +1250,39 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <div class="card-body">
 
                         <h4 class="text-center">
-                            <i class="fas fa-chart-simple"></i> Distribuição por criticidade
+                            <i class="fas fa-chart-pie"></i> Equipamentos por categoria
                         </h4>
 
-                        <?php if (!empty($distribuicaoCriticidade)): ?>
-
-                            <?php foreach ($distribuicaoCriticidade as $linha): ?>
-                                <?php
-                                $totalCriticidade = (int) $linha->total;
-                                $percentagemCriticidade = $totalEquipamentos > 0 ? round(($totalCriticidade / $totalEquipamentos) * 100, 1) : 0;
-                                ?>
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between">
-                                        <strong><?= e($linha->criticidade) ?></strong>
-                                        <span><?= e($totalCriticidade) ?> equipamento(s) - <?= e($percentagemCriticidade) ?>%</span>
-                                    </div>
-
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar"
-                                            style="width: <?= e($percentagemCriticidade) ?>%;"
-                                            aria-valuenow="<?= e($percentagemCriticidade) ?>"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-
+                        <?php if (!empty($graficoCategorias['dados'])): ?>
+                            <div class="dashboard-chart-area" style="position: relative; min-height: 280px;">
+                                <canvas id="graficoCategoriasDashboard"></canvas>
+                            </div>
                         <?php else: ?>
-
                             <p class="text-center mb-0">
-                                Não existem equipamentos ativos para apresentar por criticidade.
+                                Não existem dados para apresentar por categoria.
                             </p>
+                        <?php endif; ?>
 
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card shadow-sm h-100 dashboard-grafico-card">
+                    <div class="card-body">
+
+                        <h4 class="text-center">
+                            <i class="fas fa-chart-pie"></i> Equipamentos por serviço
+                        </h4>
+
+                        <?php if (!empty($graficoServicos['dados'])): ?>
+                            <div class="dashboard-chart-area" style="position: relative; min-height: 280px;">
+                                <canvas id="graficoServicosDashboard"></canvas>
+                            </div>
+                        <?php else: ?>
+                            <p class="text-center mb-0">
+                                Não existem dados para apresentar por serviço.
+                            </p>
                         <?php endif; ?>
 
                     </div>
@@ -1342,7 +1291,101 @@ include __DIR__ . '/../../includes/sidebar.php';
 
         </div>
 
+
     </section>
 </main>
+
+<script src="<?= BASE_URL ?>/assets/chartjs/chart.umd.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        if (typeof Chart === 'undefined') {
+            return;
+        }
+
+        function criarGraficoCircular(idCanvas, labels, dados, titulo) {
+            var canvas = document.getElementById(idCanvas);
+
+            if (!canvas || !labels.length || !dados.length) {
+                return;
+            }
+
+            var cores = [
+                '#0d6efd',
+                '#198754',
+                '#ffc107',
+                '#dc3545',
+                '#6f42c1',
+                '#20c997',
+                '#fd7e14',
+                '#6c757d'
+            ];
+
+            new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'N.º de equipamentos',
+                        data: dados,
+                        backgroundColor: cores,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '55%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: titulo
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var valor = context.raw || 0;
+                                    return context.label + ': ' + valor + ' equipamento(s)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        criarGraficoCircular(
+            'graficoEstadosDashboard',
+            <?= json_encode($graficoEstados['labels'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            <?= json_encode($graficoEstados['dados'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            'Distribuição dos equipamentos por estado'
+        );
+
+        criarGraficoCircular(
+            'graficoCriticidadeDashboard',
+            <?= json_encode($graficoCriticidade['labels'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            <?= json_encode($graficoCriticidade['dados'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            'Distribuição dos equipamentos por criticidade'
+        );
+
+        criarGraficoCircular(
+            'graficoCategoriasDashboard',
+            <?= json_encode($graficoCategorias['labels'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            <?= json_encode($graficoCategorias['dados'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            'Distribuição dos equipamentos por categoria'
+        );
+
+        criarGraficoCircular(
+            'graficoServicosDashboard',
+            <?= json_encode($graficoServicos['labels'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            <?= json_encode($graficoServicos['dados'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>,
+            'Distribuição dos equipamentos por serviço'
+        );
+    });
+</script>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>
