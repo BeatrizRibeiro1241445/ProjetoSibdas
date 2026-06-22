@@ -8,7 +8,7 @@ define('APP_NAME', 'MedInventário');
 define('APP_VERSION', '1.0.0');
 define('APP_AUTHOR', '1241445');
 
-define('BASE_URL', '/MedInventario');
+define('BASE_URL', '/sibdas/1241445/medinventario');
 
 // =====================================================
 // Configuração da base de dados
