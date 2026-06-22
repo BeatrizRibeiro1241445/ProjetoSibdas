@@ -196,14 +196,30 @@ include __DIR__ . '/../../includes/sidebar.php';
 <main class="content">
     <section>
 
+        <?php
+        $queryExportar = $_GET;
+        unset($queryExportar['pagina']);
+
+        $linkExportar = 'exportar_csv.php';
+
+        if (!empty($queryExportar)) {
+            $linkExportar .= '?' . http_build_query($queryExportar);
+        }
+        ?>
+
         <div class="actions-top">
             <h2>
                 <strong>
                     <i class="fas fa-laptop-medical"></i> Gestão de Equipamentos
                 </strong>
             </h2>
-            <?php if ($podeGerirEquipamentos): ?>
-                <div class="d-flex gap-2">
+
+            <div class="d-flex gap-2">
+                <a href="<?= e($linkExportar) ?>" class="btn btn-outline-secondary botao-anterior">
+                    <i class="fas fa-file-excel"></i> Exportar Excel
+                </a>
+
+                <?php if ($podeGerirEquipamentos): ?>
                     <a href="eliminados.php" class="btn btn-outline-secondary botao-anterior">
                         <i class="fas fa-box-archive"></i> Equipamentos removidos
                     </a>
@@ -211,8 +227,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <a href="novo.php" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Novo equipamento
                     </a>
-                </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
 
         <hr>

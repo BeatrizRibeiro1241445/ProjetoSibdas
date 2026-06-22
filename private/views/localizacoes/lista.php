@@ -121,6 +121,17 @@ include __DIR__ . '/../../includes/sidebar.php';
 <main class="content">
     <section>
 
+        <?php
+        $queryExportar = $_GET;
+        unset($queryExportar['pagina']);
+
+        $linkExportar = 'exportar_csv.php';
+
+        if (!empty($queryExportar)) {
+            $linkExportar .= '?' . http_build_query($queryExportar);
+        }
+        ?>
+
         <div class="actions-top">
             <h2>
                 <strong>
@@ -128,11 +139,17 @@ include __DIR__ . '/../../includes/sidebar.php';
                 </strong>
             </h2>
 
-            <?php if ($podeGerirLocalizacoes): ?>
-                <a href="novo.php" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Nova localização
+            <div class="d-flex gap-2">
+                <a href="<?= e($linkExportar) ?>" class="btn btn-outline-secondary botao-anterior">
+                    <i class="fas fa-file-excel"></i> Exportar Excel
                 </a>
-            <?php endif; ?>
+
+                <?php if ($podeGerirLocalizacoes): ?>
+                    <a href="novo.php" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nova localização
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
 
         <hr>
