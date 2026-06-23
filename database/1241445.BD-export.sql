@@ -221,12 +221,11 @@ CREATE TABLE IF NOT EXISTS `Fornecedor` (
   UNIQUE KEY `uq_Fornecedor_Telefone` (`telefone`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- A despejar dados para tabela db1241445.Fornecedor: ~4 rows (aproximadamente)
+-- A despejar dados para tabela db1241445.Fornecedor: ~3 rows 
 INSERT INTO `Fornecedor` (`idFornecedor`, `nif`, `email`, `designacao`, `telefone`, `morada`, `website`, `pessoaContacto`, `telefonePessoaContacto`, `pessoaContacto2`, `telefonePessoaContacto2`, `observacoes`, `ativo`) VALUES
 	(1, '509000000', 'geral@medtech.pt', 'MedTech Portugal', '+351220000000', 'Rua da Saúde, Porto, Portugal', 'https://www.medtech.pt', 'Ana Martins', '+351914000000', NULL, NULL, 'Fornecedor associado a equipamentos de monitorização e manutenção hospitalar.', 1),
 	(2, '508111111', 'contacto@philipsmedical.pt', 'Philips Medical Systems', '+351210000000', 'Avenida da Tecnologia, Lisboa, Portugal', 'https://www.philips.pt', 'Carlos Ferreira', '+351913000000', NULL, NULL, 'Fabricante de equipamentos médicos de monitorização.', 1),
 	(3, '507222222', 'geral@hospitaldevices.pt', 'Hospital Devices S.A.', '+351221500001', 'Rua dos Dispositivos Médicos, Maia, Portugal', 'https://www.hospitaldevices.pt', 'Mariana Costa', '+351912000000', NULL, NULL, 'Fornecedor de equipamentos hospitalares e acessórios.', 1),
-	(4, '509888777', 'testeclinico@fornecedor.pt', 'Teste Clínico Lda', '+351220123123', 'Rua de Teste, Porto', 'https://www.testeclinico.pt', 'Ana Silva', '+351910111111', 'João Costa', '+351911222222', 'Fornecedor criado para teste da Ficha 12', 1);
 
 -- A despejar estrutura para tabela db1241445.GarantiaContrato
 CREATE TABLE IF NOT EXISTS `GarantiaContrato` (

@@ -162,7 +162,7 @@ Palavra-passe: helena1234
 
 Perfil: Profissional de Saúde
 Utilizador: carla.santos
-Palavra-passe: carla1234
+Palavra-passe: carla11234
 
 Nota:
 As palavras-passe encontram-se guardadas na base de dados através de password_hash().
