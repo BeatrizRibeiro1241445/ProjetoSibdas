@@ -140,10 +140,6 @@ include __DIR__ . '/../../includes/sidebar.php';
             </h2>
 
             <div class="d-flex gap-2">
-                <a href="<?= e($linkExportar) ?>" class="btn btn-outline-secondary botao-anterior">
-                    <i class="fas fa-file-excel"></i> Exportar Excel
-                </a>
-
                 <?php if ($podeGerirLocalizacoes): ?>
                     <a href="novo.php" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Nova localização

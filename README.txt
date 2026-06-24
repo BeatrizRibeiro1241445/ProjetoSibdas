@@ -144,10 +144,8 @@ Instalação e execução:
    * assets/fontawesome
    * assets/chartjs
 
-8. Confirmar que a pasta de uploads de documentos existe:
-   assets/uploads/documentos
 
-Credenciais de acesso à aplicação:
+Credenciais de acesso à aplicação para cada tipo de utilizador:
 Perfil: Administrador
 Utilizador: beatriz.ribeiro
 Palavra-passe: 111111

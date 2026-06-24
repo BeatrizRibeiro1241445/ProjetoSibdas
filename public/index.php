@@ -145,7 +145,7 @@ include __DIR__ . '/../private/includes/public_nav.php';
                     4 => 'Documentação PDF',
                     5 => 'Garantias e contratos',
                     6 => 'Dashboard',
-                    7 => 'Exportação de dados',
+                    7 => 'Exportação de equipamentos',
                     8 => 'Registo de eventos'
                 ];
 
@@ -156,7 +156,7 @@ include __DIR__ . '/../private/includes/public_nav.php';
                     4 => 'Upload e consulta de manuais, certificados e documentos técnicos em PDF.',
                     5 => 'Acompanhamento de garantias, contratos, datas de fim e entidades responsáveis.',
                     6 => 'Indicadores, alertas e gráficos estatísticos sobre o inventário.',
-                    7 => 'Exportação das listagens principais para consulta e análise externa.',
+                    7 => 'Exportação da lista de equipamentos para os formatos CSV, JSON e PDF, para consulta e análise externa.',
                     8 => 'Registo de ações importantes do sistema para consulta pelo administrador.'
                 ];
                 ?>

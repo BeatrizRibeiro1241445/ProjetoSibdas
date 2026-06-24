@@ -200,26 +200,40 @@ include __DIR__ . '/../../includes/sidebar.php';
         $queryExportar = $_GET;
         unset($queryExportar['pagina']);
 
-        $linkExportar = 'exportar_csv.php';
+        $sufixoExportar = '';
 
         if (!empty($queryExportar)) {
-            $linkExportar .= '?' . http_build_query($queryExportar);
+            $sufixoExportar = '?' . http_build_query($queryExportar);
         }
+
+        $linkExportarCsv = 'exportar_csv.php' . $sufixoExportar;
+        $linkExportarJson = 'exportar_json.php' . $sufixoExportar;
+        $linkExportarPdf = 'exportar_pdf.php' . $sufixoExportar;
         ?>
 
         <div class="actions-top">
-            <h2>
-                <strong>
-                    <i class="fas fa-laptop-medical"></i> Gestão de Equipamentos
-                </strong>
-            </h2>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <h2 class="mb-0">
+                    <strong>
+                        <i class="fas fa-laptop-medical"></i> Gestão de Equipamentos
+                    </strong>
+                </h2>
 
-            <div class="d-flex gap-2">
-                <a href="<?= e($linkExportar) ?>" class="btn btn-outline-secondary botao-anterior">
-                    <i class="fas fa-file-excel"></i> Exportar Excel
+                <a href="<?= e($linkExportarCsv) ?>" class="btn btn-outline-secondary botao-anterior">
+                    <i class="fas fa-file-csv"></i> Exportar CSV
                 </a>
 
-                <?php if ($podeGerirEquipamentos): ?>
+                <a href="<?= e($linkExportarJson) ?>" class="btn btn-outline-secondary botao-anterior">
+                    <i class="fas fa-file-code"></i> Exportar JSON
+                </a>
+
+                <a href="<?= e($linkExportarPdf) ?>" target="_blank" class="btn btn-outline-secondary botao-anterior">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </a>
+            </div>
+
+            <?php if ($podeGerirEquipamentos): ?>
+                <div class="d-flex gap-2">
                     <a href="eliminados.php" class="btn btn-outline-secondary botao-anterior">
                         <i class="fas fa-box-archive"></i> Equipamentos removidos
                     </a>
@@ -227,8 +241,8 @@ include __DIR__ . '/../../includes/sidebar.php';
                     <a href="novo.php" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Novo equipamento
                     </a>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php endif; ?>
         </div>
 
         <hr>
