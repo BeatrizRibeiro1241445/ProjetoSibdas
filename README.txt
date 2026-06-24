@@ -96,6 +96,95 @@ http://127.0.0.1/sibdas/1241445/medinventario
 Sem este ficheiro, seria necessário escrever manualmente /public/index.php no endereço do browser. Assim, ao abrir a raiz do
 projeto, a aplicação redireciona automaticamente para a página inicial pública.
 
+Descrição dos ficheiros do projeto:
+
+Raiz do projeto:
+* index.php — redireciona a raiz do projeto para a página pública (public/index.php).
+* README.txt — este ficheiro, com instruções, credenciais e testes.
+* commits.txt — lista dos commits realizados ao longo do projeto.
+
+config/
+* config.php — definições gerais da aplicação (nome, versão, BASE_URL) e dados de ligação à base de dados.
+
+public/ (área pública):
+* index.php — página pública principal, com as secções de apresentação e os cartões de funcionalidades.
+* login.php — formulário de autenticação para entrar na área reservada.
+* processa_login.php — valida as credenciais introduzidas e inicia a sessão.
+* logout.php — termina a sessão e regressa à área pública.
+
+private/ (área reservada):
+* area_pessoal.php — página de entrada após o login, com os atalhos para os módulos disponíveis ao perfil.
+* alterar_password.php — permite ao utilizador autenticado mudar a sua palavra-passe.
+
+private/includes/ (ficheiros reutilizáveis):
+* funcoes.php — ligação à base de dados, gestão de sessões, funções de segurança e registo de eventos.
+* header.php — cabeçalho HTML comum às páginas.
+* footer.php — rodapé comum da área privada.
+* nav.php — barra superior da área privada.
+* sidebar.php — menu lateral da área privada.
+* public_nav.php — barra de navegação da área pública.
+* public_footer.php — rodapé da área pública.
+
+private/views/dashboard/
+* dashboard.php — indicadores, alertas de gestão e gráficos estatísticos (Chart.js) com dados da base de dados.
+
+private/views/equipamentos/ (módulo principal):
+* lista.php — listagem de equipamentos com pesquisa, filtros, ordenação, paginação e exportação.
+* novo.php — formulário de criação de equipamento, com fornecedores, documentos e garantia associados.
+* editar.php — edição de um equipamento existente.
+* detalhes.php — ficha completa do equipamento.
+* apagar.php — página de confirmação apresentada antes de remover.
+* confirmar_apagar.php — executa a remoção do equipamento (soft delete).
+* eliminados.php — lista os equipamentos removidos.
+* restaurar.php — repõe um equipamento previamente removido.
+* exportar_csv.php — exporta a lista de equipamentos para CSV.
+* exportar_json.php — exporta a lista de equipamentos para JSON.
+* exportar_pdf.php — exporta a lista de equipamentos para PDF (página de impressão).
+
+private/views/fornecedores/
+* lista.php — listagem de fornecedores com pesquisa e filtros.
+* novo.php — criação de fornecedor.
+* editar.php — edição de fornecedor.
+* detalhes.php — ficha do fornecedor e equipamentos associados.
+* apagar.php — confirmação antes de remover.
+* confirmar_apagar.php — executa a remoção (soft delete).
+
+private/views/localizacoes/
+* lista.php — listagem de localizações.
+* novo.php — criação de localização.
+* editar.php — edição de localização.
+* detalhes.php — ficha da localização.
+* apagar.php — confirmação antes de remover.
+* confirmar_apagar.php — executa a remoção (soft delete).
+
+private/views/utilizadores/
+* lista.php — listagem de utilizadores (apenas administrador).
+* novo.php — criação de utilizador, com a palavra-passe guardada em hash.
+* apagar.php — confirmação antes de remover.
+* confirmar_apagar.php — executa a remoção do utilizador.
+
+private/views/gestao_conteudos/
+* gestao_conteudos.php — edição dos conteúdos da área pública (backoffice), apenas para administrador.
+
+private/views/logs/
+* lista.php — consulta do registo de eventos do sistema (apenas administrador).
+
+assets/
+* css/1241445.css — folha de estilos própria da aplicação.
+* js/1241445.js — scripts próprios da aplicação.
+* img/ — imagens utilizadas nas áreas pública e privada.
+* uploads/documentos/ — ficheiros PDF associados à documentação dos equipamentos.
+* bootstrap/, fontawesome/, chartjs/ — bibliotecas externas guardadas localmente.
+
+database/
+* 1241445.S01.ModeloFisico.sql — script de criação da estrutura da base de dados.
+* 1241445.S02.INSERT.sql — script de inserção dos dados de teste.
+* 1241445.S03.ConsultasSQL.sql — consultas SQL de teste e validação.
+* 1241445.BD-export.sql — exportação completa da base de dados.
+* 1241445.medinventario.dbml — representação da base de dados em DBML.
+* 1241445.modelo-relacional.drawio — modelo relacional editável (notação Crow's Foot).
+* 1241445.modelo-relacional.png — imagem do modelo relacional.
+
 Tecnologias e bibliotecas utilizadas:
 * HTML5: estrutura das páginas.
 * CSS3: estilos personalizados da aplicação.
@@ -261,7 +350,7 @@ Principais testes a realizar:
    * Confirmar que os alertas de garantias, documentação e criticidade são coerentes.
 
 11. Teste de exportação:
-   * Testar a exportação de dados nas listagens onde a funcionalidade está disponível.
+   * Testar a exportação da lista de equipamentos nos formatos CSV, JSON e PDF.
    * Confirmar que o ficheiro exportado contém os dados apresentados na lista.
 
 Informação adicional:
@@ -278,7 +367,7 @@ A área privada permite gerir os principais dados do inventário hospitalar, inc
 Foram implementadas funcionalidades adicionais de valorização, nomeadamente:
 * upload real de documentos PDF;
 * histórico de movimentações de equipamentos;
-* exportação de dados;
+* exportação de dados em CSV, JSON e PDF;
 * dashboard com gráficos estatísticos;
 * equipamentos removidos com possibilidade de restauro;
 * gestão dinâmica dos conteúdos públicos;
