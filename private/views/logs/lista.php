@@ -226,7 +226,7 @@ include __DIR__ . '/../../includes/sidebar.php';
         <!-- Tabela -->
         <div class="table-responsive tabela-lista-container">
             <table class="table table-hover table-bordered align-middle text-center tabela-lista tabela-paginada-dashboard"
-       data-linhas-pagina="10">
+       data-linhas-pagina="8">
 
                 <thead>
                     <tr>
